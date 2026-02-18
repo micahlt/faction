@@ -48,18 +48,6 @@ Here's Micah's basic Git cheat sheet:
 
 ***Workflow:***
 
-1. Branch from `master`.  Make sure you're on the `master` branch (see the bottom right of VSCode), and that there is nothing to be pulled from GitHub.  Then open the command palette (**Ctrl+Shift+P**) and run the **Git: Create branch...** command.  Name your branch something like `feature/## Git Cheatsheet
-
-Here's Micah's basic Git cheat sheet:
-
-***Rules:***
-
-- **Always do your work in a branch.**  Don't commit to `master`.
-- **Fetch and pull before branching.**  Don't forget this, as it'll cause merge conflicts down the line.
-- **Keep commits contextual.**  For readability's sake, don't do a TON of work in a single commit.  If you're done with a small fix or feature addition, go ahead and commit to your branch, then make another commit for the next change.
-
-***Workflow:***
-
 1. Branch from `master`.  Make sure you're on the `master` branch (see the bottom right of VSCode), and that there is nothing to be pulled from GitHub.  Then open the command palette (**Ctrl+Shift+P**) and run the **Git: Create branch...** command.  Name your branch something like `feature/add-image-sending` or `fix/missing-login-username`, based on whether or not it's a feature or a bugfix.  The current branch in the bottom right of VSCode should show your new branch name.
 2. Make changes to your code, and save each of your files (**Ctrl+S**).
 3. Stage the changes to be committed.  In the Source Control panel, hover over changes until the plus icon appears.  It should say **Stage All Changes** when you hover over it.  Click it.  Alternatively, you can choose which files you want to commit.  This is good for when you accidentally forgot to commit and need to separate your changes into two or more commits.
