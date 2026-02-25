@@ -25,11 +25,11 @@ All of the code lives in this monorepo.
 
 **Backend:**
 
-- [Firebase](https://firebase.google.com) - auth provider
 - [ImgBB](https://imgbb.com) - host for images
 - [Node.js](https://nodejs.org) - JavaScript runtime for servers
 - [Express.js](https://expressjs.com) - REST API server library
 - [Socket.io](https://socket.io) - realtime communication server
+- [MongoDB](https://mongodb.com) - database
 
 **Notes:**
 
