@@ -4,10 +4,10 @@ Faction is a Discord clone/alternative built for group C's Software Engineering 
 
 ## Team
 
-- Micah Lindley
-- Austin Day
-- JD Phillips
-- Caroline McCoy
+- Micah Lindley [@micahlt](https://github.com/micahlt)
+- Austin Day [@aaday96](https://github.com/aaday96)
+- JD Phillips [@JDP7567](https://github.com/JDP7567)
+- Caroline McCoy [@ccmccoy0327](https://github.com/ccmccoy0327)
 
 ## Stack
 
