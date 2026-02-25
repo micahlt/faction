@@ -9,12 +9,23 @@ Faction is a Discord clone/alternative built for group C's Software Engineering 
 - JD Phillips [@JDP7567](https://github.com/JDP7567)
 - Caroline McCoy [@ccmccoy0327](https://github.com/ccmccoy0327)
 
+## Workflow
+
+> [!TIP]
+> This repository is an [NPM Workspace](https://docs.npmjs.com/cli/v11/using-npm/workspaces), so most of the things you'll want to do, you can do with `npm` commands in the root of this repository.  Check out the `scripts` section of the [package.json file](/package.json) in this repository for the full list of provided npm scripts.
+
+1. Install Node.js version 22 or above.  Follow the steps for your operating system [here](https://nodejs.org/en/download).
+2. Clone this repository to your computer with `git clone https://github.com/micahlt/faction`
+3. Open a terminal at the root of the project.
+4. Run `npm install` to install dependencies
+5. Run `npm run dev:server` to run the server.
+6. In another terminal, run `npm run dev:web` to run the frontend.
+
+Alternatively, you can also run `npm run dev` which will simultaneously start the server and the webapp.  However, this means you cannot restart the web app without restarting the server, and vice versa.
+
 ## Stack
 
 All of the code lives in this monorepo.
-
-> [!IMPORTANT]  
-> We need to decide whether or not to use TypeScript.  It might help us, but it might also cause some extra complexity.
 
 **Frontend:**
 
