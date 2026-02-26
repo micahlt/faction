@@ -1,16 +1,15 @@
-# React + Vite
+# Faction Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React app for the Faction web frontend.
 
-Currently, two official plugins are available:
+## Running the app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can run the app from the `/apps/web` folder by running `npm run dev`.  Alternatively, run `npm run dev:web` from the root of the repository.
 
-## React Compiler
+## Routing
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Faction utilizes [Tanstack Router](https://tanstack.com/router/latest/docs/overview), a file-based routing system for React apps.  The layout of routes should be self-explanatory, but if it isn't, reference the Tanstack documentation.
 
-## Expanding the ESLint configuration
+## Style Guide
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Make sure UI looks consistent and is themed with the proper colors, spacing, and borders as defined in the provided mockups.  The font for Faction is [Sora](https://fonts.google.com/specimen/Sora), a Google Font that is pretty easy to work with.  Use CSS variables when possible to keep things consistent.
