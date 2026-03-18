@@ -18,8 +18,9 @@ Faction is a Discord clone/alternative built for group C's Software Engineering 
 2. Clone this repository to your computer with `git clone https://github.com/micahlt/faction`
 3. Open a terminal at the root of the project.
 4. Run `npm install` to install dependencies
-5. Run `npm run dev:server` to run the server.
-6. In another terminal, run `npm run dev:web` to run the frontend.
+5. Run the database migrations with `npm run db:migrate`
+6. Run `npm run dev:server` to run the server.
+7. In another terminal, run `npm run dev:web` to run the frontend.
 
 Alternatively, you can also run `npm run dev` which will simultaneously start the server and the webapp.  However, this means you cannot restart the web app without restarting the server, and vice versa.
 
@@ -40,7 +41,7 @@ All of the code lives in this monorepo.
 - [Node.js](https://nodejs.org) - JavaScript runtime for servers
 - [Express.js](https://expressjs.com) - REST API server library
 - [Socket.io](https://socket.io) - realtime communication server
-- [MongoDB](https://mongodb.com) - database
+- [SQLite + Prisma](https://www.prisma.io/docs/orm) - database & ORM
 
 **Notes:**
 

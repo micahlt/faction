@@ -25,3 +25,6 @@ dist-ssr
 
 # Environment-specific configs
 .env
+
+# Database
+faction.db

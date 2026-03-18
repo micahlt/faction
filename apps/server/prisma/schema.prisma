@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  email    String  @unique
+  password String
+  imageUrl String?
+
+  factions Faction[] @relation("FactionMembers")
+  messages Message[]
+  invites  Invite[]
+}
+
+// A faction is pretty much the same as a discord server
+model Faction {
+  id      Int     @id @default(autoincrement())
+  name    String
+  iconUrl String?
+
+  ownerId Int
+  topics  Topic[]
+  invites Invite[]
+  members User[]  @relation("FactionMembers")
+}
+
+// A topic is the same as a discord channel
+model Topic {
+  id        Int       @id @default(autoincrement())
+  name      String
+  order     Int
+  factionId Int
+  faction   Faction   @relation(fields: [factionId], references: [id])
+  messages  Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId Int
+  author   User  @relation(fields: [authorId], references: [id])
+  topicId  Int   @map("topicId")
+  topic    Topic @relation(fields: [topicId], references: [id])
+}
+
+model Invite {
+  code      String    @id @unique
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  
+  authorId  Int
+  author    User      @relation(fields: [authorId], references: [id])
+  factionId Int
+  faction   Faction   @relation(fields: [factionId], references: [id])
+}
