@@ -4,7 +4,7 @@
   "description": "The server for the Faction chat app",
   "license": "MIT",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

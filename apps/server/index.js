@@ -1,8 +1,11 @@
-const express = require('express');
-const { createServer } = require('http');
-const { Server } = require('socket.io');
-const connectDB = require('./src/config/db');
-const registerSocketHandlers = require('./src/sockets');
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import connectDB from "./src/config/db";
+import registerSocketHandlers from "./src/sockets";
+import { PrismaClient } from "./generated/prisma/client";
+
+const prisma = new PrismaClient();
 
 const app = express();
 const httpServer = createServer(app);
