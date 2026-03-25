@@ -7,9 +7,9 @@ import { PrismaClient } from "../generated/prisma/client.js";
  * @param {PrismaClient} prisma
  */
 export default function topicsRouter(prisma) {
-    router.get("/", async (req, res) => {
-        res.send("This is the root of /api/topics");
-    })
+  router.get("/", async (req, res) => {
+    res.send("This is the root of /api/topics");
+  });
 
-    return router;
+  return router;
 }
