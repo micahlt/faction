@@ -7,7 +7,9 @@ import { PrismaClient } from "../generated/prisma/client.js";
  * @param {PrismaClient} prisma
  */
 export default function factionsRouter(prisma) {
-  router.get("/", async (req, res) => {
+  // POST /api/factions/new
+  router.post("/new", async (req, res) => {
+    if (!res.body) return res.sendStatus(400);
     res.send("This is the root of /api/factions");
   });
 

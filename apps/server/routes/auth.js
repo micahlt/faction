@@ -79,7 +79,7 @@ export default function authRouter(prisma) {
                 },
             });
             if (newUser != null) {
-                return res.status(200).send({ success: "User has been created." });
+                return res.status(201).send({ success: "User has been created." });
             } else {
                 return res.sendStatus(500);
             }
@@ -113,7 +113,7 @@ export default function authRouter(prisma) {
                 secure: process.env.NODE_ENV === "production",
                 maxAge: 24 * 60 * 60 * 1000,
             });
-            res.sendStatus(200);
+            return res.sendStatus(200);
         } else {
             return res.status(401).send({
                 error: "Incorrect username or password.",
