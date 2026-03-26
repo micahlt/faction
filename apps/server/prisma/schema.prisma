@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String     @id @default(uuid())
   username String  @unique
   email    String  @unique
   password String
@@ -24,7 +24,7 @@ model User {
 
 // A faction is pretty much the same as a discord server
 model Faction {
-  id      Int     @id @default(autoincrement())
+  id      String     @id @default(uuid())
   name    String
   iconUrl String?
 
@@ -36,22 +36,22 @@ model Faction {
 
 // A topic is the same as a discord channel
 model Topic {
-  id        Int       @id @default(autoincrement())
+  id        String       @id @default(uuid())
   name      String
   order     Int
-  factionId Int
+  factionId String
   faction   Faction   @relation(fields: [factionId], references: [id])
   messages  Message[]
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   content   String
   createdAt DateTime @default(now())
 
-  authorId Int
+  authorId String
   author   User  @relation(fields: [authorId], references: [id])
-  topicId  Int   @map("topicId")
+  topicId  String   @map("topicId")
   topic    Topic @relation(fields: [topicId], references: [id])
 }
 
@@ -60,8 +60,8 @@ model Invite {
   createdAt DateTime  @default(now())
   expiresAt DateTime?
   
-  authorId  Int
+  authorId  String
   author    User      @relation(fields: [authorId], references: [id])
-  factionId Int
+  factionId String
   faction   Faction   @relation(fields: [factionId], references: [id])
 }

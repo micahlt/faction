@@ -1,5 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { PrismaClient } from "../generated/prisma/client.js";
 
 // Regexes sourced from https://regexr.com
@@ -17,6 +19,7 @@ const router = express.Router();
 export default function authRouter(prisma) {
     // POST /api/auth/checkusername
     router.post("/checkusername", async (req, res) => {
+        if (!req.body) return res.sendStatus(400);
         const { username } = req.body;
         if (!username) {
             return res.status(400).send({ error: "You must supply a username." });
@@ -37,11 +40,11 @@ export default function authRouter(prisma) {
 
     // POST /api/auth/signup
     router.post("/signup", async (req, res) => {
+        if (!req.body) return res.sendStatus(400);
         const { username, password, email } = req.body;
         if (!username || !password || !email) {
             return res.status(400).send({ error: "You must supply a username, password, and email." });
         }
-        console.log(username.match(USERNAME_REGEX));
         if (username.match(USERNAME_REGEX).length != 1) {
             return res.status(400).send({
                 error:
@@ -80,6 +83,41 @@ export default function authRouter(prisma) {
             } else {
                 return res.sendStatus(500);
             }
+        }
+    });
+
+    // POST /api/auth/login
+    router.post("/login", async (req, res) => {
+        if (!req.body) return res.sendStatus(400);
+        const { username, password } = req.body;
+        if (!username) {
+            return res.status(400).send({
+                error: "You must provide a valid username.",
+            });
+        }
+        if (!password) {
+            return res.status(400).send({
+                error: "You must provide a valid password.",
+            });
+        }
+        const dbUser = await prisma.user.findUnique({ where: { username: username } });
+        if (dbUser == null) {
+            return res.status(401).send({
+                error: "Incorrect username or password.",
+            });
+        }
+        if (await bcrypt.compare(password, dbUser.password)) {
+            const token = jwt.sign({ userId: dbUser.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+            res.cookie("auth_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 24 * 60 * 60 * 1000,
+            });
+            res.sendStatus(200);
+        } else {
+            return res.status(401).send({
+                error: "Incorrect username or password.",
+            });
         }
     });
 
