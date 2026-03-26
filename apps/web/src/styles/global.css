@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-optical-sizing: auto;
+  font-family: "Sora", system-ui, sans-serif;
+}
+
+/** Theme colors generated at https://colorffy.com/dark-theme-generator **/
+
+:root {
+  /** Base colors */
+  --clr-dark: #000000;
+  --clr-light: #ffffff;
+
+  /** Theme primary colors */
+  --clr-primary: #f0e100;
+  --clr-primary-10: #f4e43d;
+  --clr-primary-20: #f7e75c;
+  --clr-primary-30: #faeb76;
+  --clr-primary-40: #fcee8e;
+  --clr-primary-50: #fef1a5;
+
+  /** Theme surface colors */
+  --clr-surface: #121212;
+  --clr-surface-10: #282828;
+  --clr-surface-20: #3f3f3f;
+  --clr-surface-30: #575757;
+  --clr-surface-40: #717171;
+  --clr-surface-50: #8b8b8b;
+
+  /** Theme tonal surface colors */
+  --clr-surface-tonal: #252317;
+  --clr-surface-tonal-10: #3a382c;
+  --clr-surface-tonal-20: #4f4d43;
+  --clr-surface-tonal-30: #66645b;
+  --clr-surface-tonal-40: #7e7c74;
+  --clr-surface-tonal-50: #96958e;
+
+  /** Success colors */
+  --clr-success: #22946e;
+  --clr-success-10: #47d5a6;
+  --clr-success-20: #9ae8ce;
+
+  /** Warning colors */
+  --clr-warning: #a87a2a;
+  --clr-warning-10: #d7ac61;
+  --clr-warning-20: #ecd7b2;
+
+  /** Danger colors */
+  --clr-danger: #9c2121;
+  --clr-danger-10: #d94a4a;
+  --clr-danger-20: #eb9e9e;
+
+  /** Info colors */
+  --clr-info: #21498a;
+  --clr-info-10: #4077d1;
+  --clr-info-20: #92b2e5;
+
+  /** Other utilities */
+  --font: "Sora";
+  --shadow-sm: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 0.3rem 1rem rgba(0, 0, 0, 0.3);
+  --radius-xs: 0.2rem;
+  --radius-sm: 0.4rem;
+  --radius-md: 0.8rem;
+  --radius-lg: 1.2rem;
+  --radius-xl: 1.6rem;
+}
+
+body {
+  background: var(--clr-surface);
+  color: var(--clr-light);
+}

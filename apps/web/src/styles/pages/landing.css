@@ -1,0 +1,65 @@
+.cta {
+  background-image: linear-gradient(to top right, var(--clr-primary-10), var(--clr-primary));
+  min-height: 70vh;
+  width: 100%;
+  color: var(--clr-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-content h1 {
+  font-size: 5rem;
+  text-transform: uppercase;
+  margin: auto;
+  font-weight: 800;
+  letter-spacing: -0.18ch;
+}
+
+.cta-content h2 {
+  font-size: 1rem;
+}
+
+nav {
+  display: flex;
+  margin: auto;
+  background-color: var(--clr-surface-tonal-10);
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5rem;
+  align-items: center;
+  border: 1px solid var(--clr-surface-tonal-40);
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+nav > a {
+  color: var(--clr-light);
+  margin: 1rem 1rem;
+  text-decoration: none;
+  transition: 150ms all;
+}
+
+nav > a:first-of-type {
+  margin-left: 1.5rem;
+}
+
+nav > a:last-of-type {
+  background-color: var(--clr-primary);
+  color: var(--clr-surface-tonal);
+  font-weight: 700;
+  border-radius: 5rem;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  height: max-content;
+}
+
+nav > a:last-of-type:hover {
+  color: var(--clr-surface-tonal-20);
+  background-color: var(--clr-primary-20);
+}
+
+nav > a:hover {
+  color: var(--clr-primary);
+}
