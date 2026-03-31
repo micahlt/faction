@@ -1,0 +1,34 @@
+.main {
+  display: grid;
+  grid-template-columns: 20rem 1fr;
+  grid-template-rows: 1fr 8rem;
+  height: 100vh;
+}
+
+.sidebar {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+
+.messages {
+  background-color: var(--clr-surface-tonal-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user {
+  background-color: var(--clr-surface-tonal-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.messagebox {
+  background-color: var(--clr-surface-tonal-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

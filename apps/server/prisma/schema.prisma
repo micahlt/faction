@@ -27,8 +27,8 @@ model Faction {
   id      String     @id @default(uuid())
   name    String
   iconUrl String?
+  ownerId String
 
-  ownerId Int
   topics  Topic[]
   invites Invite[]
   members User[]  @relation("FactionMembers")

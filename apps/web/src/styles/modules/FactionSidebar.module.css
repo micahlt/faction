@@ -1,0 +1,17 @@
+.factionSidebar {
+  background-color: var(--clr-surface-10);
+  border: 1px solid var(--clr-surface-20);
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+
+  h2 {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.factionPretitle {
+  color: var(--clr-surface-40);
+  letter-spacing: 0.5ch;
+  font-weight: 300;
+  font-size: 0.9rem;
+}

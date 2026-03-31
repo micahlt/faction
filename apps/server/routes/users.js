@@ -9,7 +9,12 @@ import { PrismaClient } from "../generated/prisma/client.js";
 export default function usersRouter(prisma) {
   // POST /api/users/me
   router.get("/me", async (req, res) => {
-    const dbUser = await prisma.user.findUnique({ where: { id: req.user?.userId } });
+    const dbUser = await prisma.user.findUnique({
+      where: { id: req.user?.userId },
+      include: {
+        factions: true,
+      },
+    });
     if (dbUser == null) {
       return res.status(401).send({ error: "User not found." });
     }
@@ -18,6 +23,7 @@ export default function usersRouter(prisma) {
       username: dbUser.username,
       email: dbUser.email,
       imageUrl: dbUser.imageUrl,
+      factions: dbUser.factions,
     });
   });
 

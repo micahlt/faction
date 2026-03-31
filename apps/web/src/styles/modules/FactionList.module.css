@@ -1,0 +1,32 @@
+.factionList {
+  border: 1px solid var(--clr-surface-30);
+  background-color: var(--clr-surface-20);
+  width: 4rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-sm);
+}
+
+.logo {
+  color: var(--clr-primary);
+  font-weight: bold;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 0.8em;
+  letter-spacing: -0.2ch;
+  margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  width: max-content;
+
+  span {
+    display: flex;
+    width: max-content;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}

@@ -1,0 +1,24 @@
+.factionIcon {
+  cursor: pointer;
+  border: 2px solid;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 3.25rem;
+  width: 3.25rem;
+  display: flex;
+  background-color: var(--clr-surface-tonal-20);
+
+  img {
+    background-color: green;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.letter {
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.5rem;
+  margin: auto;
+  color: var(--clr-surface-tonal-50);
+}

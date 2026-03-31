@@ -1,0 +1,5 @@
+.topicListItem {
+  background-color: var(--clr-surface-20);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}

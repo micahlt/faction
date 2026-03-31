@@ -7,10 +7,51 @@ import { PrismaClient } from "../generated/prisma/client.js";
  * @param {PrismaClient} prisma
  */
 export default function factionsRouter(prisma) {
+  // GET /api/factions/:id
+  router.get("/:id", async (req, res) => {
+    if (!req.params.id) return res.sendStatus(400);
+    const faction = await prisma.faction.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        members: !!req.query.members,
+        topics: !!req.query.topics,
+      },
+    });
+    if (faction) {
+      return res.status(200).send(faction);
+    } else {
+      return res.sendStatus(404);
+    }
+  });
+
   // POST /api/factions/new
   router.post("/new", async (req, res) => {
-    if (!res.body) return res.sendStatus(400);
-    res.send("This is the root of /api/factions");
+    if (!req.body || !req.body.name) return res.sendStatus(400);
+    const createdFaction = await prisma.faction.create({
+      data: {
+        name: req.body.name,
+        ownerId: req.user.userId,
+        iconUrl: req.body.iconUrl || null,
+        topics: {
+          create: {
+            name: "general",
+            order: 1,
+          },
+        },
+        members: {
+          connect: {
+            id: req.user.userId,
+          },
+        },
+      },
+    });
+    if (!!createdFaction) {
+      res.status(201).send(createdFaction);
+    } else {
+      res.sendStatus(500);
+    }
   });
 
   return router;

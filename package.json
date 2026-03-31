@@ -34,10 +34,10 @@
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
-    "prisma": "^7.5.0"
+    "prisma": "^7.6.0"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.5.0",
-    "@prisma/client": "^7.5.0"
+    "@prisma/client": "^7.6.0"
   }
 }
