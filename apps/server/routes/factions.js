@@ -54,5 +54,33 @@ export default function factionsRouter(prisma) {
     }
   });
 
+  // PUT /api/factions/:id
+  router.put("/:id", async (req, res) => {
+    if (!req.params.id || !req.body) return res.sendStatus(400);
+    const originalFaction = await prisma.faction.findUnique({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (originalFaction.ownerId === req.user.userId) {
+      const modifiedFaction = await prisma.faction.update({
+        where: {
+          id: req.params.id,
+        },
+        data: {
+          iconUrl: req.body.iconUrl,
+          name: req.body.name,
+        },
+      });
+      if (modifiedFaction) {
+        return res.status(200).send(faction);
+      } else {
+        return res.sendStatus(500);
+      }
+    } else {
+      req.sendStatus(401);
+    }
+  });
+
   return router;
 }
