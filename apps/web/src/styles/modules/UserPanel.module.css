@@ -1,0 +1,37 @@
+.userPanel {
+  background-color: var(--clr-surface-20);
+  border: 1px solid var(--clr-surface-30);
+  flex: 1;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.userInfo {
+  margin-left: 1rem;
+  line-height: 1em;
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  p {
+    color: var(--clr-surface-50);
+    font-size: 0.8rem;
+
+    span {
+      color: var(--clr-success-10);
+    }
+  }
+}
+
+.settingsIcon {
+  margin-left: auto;
+  transition: transform 200ms;
+  cursor: pointer;
+}
+
+.settingsIcon:hover {
+  transform: rotate(60deg);
+}

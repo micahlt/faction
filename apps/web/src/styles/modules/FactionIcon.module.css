@@ -7,12 +7,18 @@
   width: 3.25rem;
   display: flex;
   background-color: var(--clr-surface-tonal-20);
+  transition: transform 100ms;
+  will-change: transform;
 
   img {
     background-color: green;
     height: 100%;
     width: 100%;
   }
+}
+
+.factionIcon:hover {
+  transform: scale(1.1);
 }
 
 .letter {

@@ -1,8 +1,11 @@
 .factionSidebar {
   background-color: var(--clr-surface-10);
   border: 1px solid var(--clr-surface-20);
+  margin: 0.5rem;
+  margin-left: 0;
   padding: 0.5rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
+  width: 14rem;
 
   h2 {
     margin-bottom: 0.5rem;

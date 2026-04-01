@@ -1,34 +1,41 @@
 .main {
-  display: grid;
-  grid-template-columns: 20rem 1fr;
-  grid-template-rows: 1fr 8rem;
   height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 4rem;
 }
 
-.sidebar {
+.top {
   display: grid;
   grid-template-columns: max-content 1fr;
-  padding: 0.25rem;
-  gap: 0.25rem;
 }
 
-.messages {
-  background-color: var(--clr-surface-tonal-20);
+.bottom {
+  display: grid;
+  grid-template-columns: 20.5rem 1fr;
+}
+
+.myFactions {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.currentFaction {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
 .user {
-  background-color: var(--clr-surface-tonal-20);
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  padding: 0.5rem;
+  padding-top: 0;
 }
 
 .messagebox {
-  background-color: var(--clr-surface-tonal-10);
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  padding-right: 0.5rem;
 }

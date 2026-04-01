@@ -13,6 +13,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app/index'
+import { Route as AuthenticatedAppFactionIdRouteImport } from './routes/_authenticated/app/$factionId'
+import { Route as AuthenticatedAppFactionIdIndexRouteImport } from './routes/_authenticated/app/$factionId/index'
+import { Route as AuthenticatedAppFactionIdTopicIdRouteImport } from './routes/_authenticated/app/$factionId/$topicId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -33,30 +37,79 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   path: '/app',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppFactionIdRoute =
+  AuthenticatedAppFactionIdRouteImport.update({
+    id: '/$factionId',
+    path: '/$factionId',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppFactionIdIndexRoute =
+  AuthenticatedAppFactionIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAppFactionIdRoute,
+  } as any)
+const AuthenticatedAppFactionIdTopicIdRoute =
+  AuthenticatedAppFactionIdTopicIdRouteImport.update({
+    id: '/$topicId',
+    path: '/$topicId',
+    getParentRoute: () => AuthenticatedAppFactionIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/$factionId': typeof AuthenticatedAppFactionIdRouteWithChildren
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/$factionId/$topicId': typeof AuthenticatedAppFactionIdTopicIdRoute
+  '/app/$factionId/': typeof AuthenticatedAppFactionIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
-  '/app': typeof AuthenticatedAppRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/$factionId/$topicId': typeof AuthenticatedAppFactionIdTopicIdRoute
+  '/app/$factionId': typeof AuthenticatedAppFactionIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/app': typeof AuthenticatedAppRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/$factionId': typeof AuthenticatedAppFactionIdRouteWithChildren
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/$factionId/$topicId': typeof AuthenticatedAppFactionIdTopicIdRoute
+  '/_authenticated/app/$factionId/': typeof AuthenticatedAppFactionIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/app'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/app'
+    | '/app/$factionId'
+    | '/app/'
+    | '/app/$factionId/$topicId'
+    | '/app/$factionId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/app'
-  id: '__root__' | '/' | '/_authenticated' | '/login' | '/_authenticated/app'
+  to: '/' | '/login' | '/app' | '/app/$factionId/$topicId' | '/app/$factionId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/login'
+    | '/_authenticated/app'
+    | '/_authenticated/app/$factionId'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/$factionId/$topicId'
+    | '/_authenticated/app/$factionId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,15 +148,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/$factionId': {
+      id: '/_authenticated/app/$factionId'
+      path: '/$factionId'
+      fullPath: '/app/$factionId'
+      preLoaderRoute: typeof AuthenticatedAppFactionIdRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/$factionId/': {
+      id: '/_authenticated/app/$factionId/'
+      path: '/'
+      fullPath: '/app/$factionId/'
+      preLoaderRoute: typeof AuthenticatedAppFactionIdIndexRouteImport
+      parentRoute: typeof AuthenticatedAppFactionIdRoute
+    }
+    '/_authenticated/app/$factionId/$topicId': {
+      id: '/_authenticated/app/$factionId/$topicId'
+      path: '/$topicId'
+      fullPath: '/app/$factionId/$topicId'
+      preLoaderRoute: typeof AuthenticatedAppFactionIdTopicIdRouteImport
+      parentRoute: typeof AuthenticatedAppFactionIdRoute
+    }
   }
 }
 
+interface AuthenticatedAppFactionIdRouteChildren {
+  AuthenticatedAppFactionIdTopicIdRoute: typeof AuthenticatedAppFactionIdTopicIdRoute
+  AuthenticatedAppFactionIdIndexRoute: typeof AuthenticatedAppFactionIdIndexRoute
+}
+
+const AuthenticatedAppFactionIdRouteChildren: AuthenticatedAppFactionIdRouteChildren =
+  {
+    AuthenticatedAppFactionIdTopicIdRoute:
+      AuthenticatedAppFactionIdTopicIdRoute,
+    AuthenticatedAppFactionIdIndexRoute: AuthenticatedAppFactionIdIndexRoute,
+  }
+
+const AuthenticatedAppFactionIdRouteWithChildren =
+  AuthenticatedAppFactionIdRoute._addFileChildren(
+    AuthenticatedAppFactionIdRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppFactionIdRoute: typeof AuthenticatedAppFactionIdRouteWithChildren
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+}
+
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppFactionIdRoute: AuthenticatedAppFactionIdRouteWithChildren,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+}
+
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRoute,
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

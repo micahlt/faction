@@ -41,7 +41,7 @@ export default function authRouter(prisma) {
   // POST /api/auth/signup
   router.post("/signup", async (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    const { username, password, email } = req.body;
+    const { username, password, email, nickname } = req.body;
     if (!username || !password || !email) {
       return res.status(400).send({ error: "You must supply a username, password, and email." });
     }
@@ -61,6 +61,11 @@ export default function authRouter(prisma) {
         error:
           "You must use a password that is 8 to 64 characters long and contains a mix of upper and lower case characters, one number and one special character.",
       });
+    }
+    if (nickname?.length < 1) {
+      return res
+        .status(400)
+        .send({ error: "You must choose a nickname.  You can change this later." });
     }
     const existingUser = await prisma.user.findFirst({
       where: {

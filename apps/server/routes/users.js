@@ -23,6 +23,7 @@ export default function usersRouter(prisma) {
       username: dbUser.username,
       email: dbUser.email,
       imageUrl: dbUser.imageUrl,
+      nickname: dbUser.nickname,
       factions: dbUser.factions,
     });
   });

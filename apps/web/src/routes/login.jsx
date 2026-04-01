@@ -8,9 +8,10 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const [formMode, setFormMode] = useState("login");
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [loginError, setLoginError] = useState("");
   const nav = useNavigate();
 
@@ -46,6 +47,7 @@ function LoginPage() {
         email,
         username,
         password,
+        nickname
       }),
       headers: {
         "Content-Type": "application/json",
@@ -85,6 +87,14 @@ function LoginPage() {
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
+            />
+            <br />
+            <input
+              type="text"
+              name="Nickname"
+              placeholder="Nickname"
+              onChange={(e) => setNickname(e.target.value)}
+              value={nickname}
             />
             <br />
           </>

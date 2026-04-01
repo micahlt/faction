@@ -1,0 +1,40 @@
+.message {
+  display: flex;
+  width: 100%;
+  background: transparent;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+
+.message:hover {
+  background: linear-gradient(to left, var(--clr-surface) 20%, var(--clr-surface-10) 50%);
+}
+
+.content {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.main {
+  margin-left: 0.75rem;
+  width: 100%;
+  margin-right: 1rem;
+}
+
+.metadata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+
+  .date {
+    color: var(--clr-surface-50);
+    font-weight: normal;
+  }
+}

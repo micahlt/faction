@@ -1,0 +1,13 @@
+.messageListRenderer {
+  margin: 0 1rem;
+  margin-left: 0.5rem;
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 6rem);
+  flex-direction: column-reverse;
+  row-gap: 0.1rem;
+  padding-bottom: 2rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  z-index: 0;
+}

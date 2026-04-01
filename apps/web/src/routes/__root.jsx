@@ -9,7 +9,7 @@ function RootComponent() {
   return (
     <>
       <Outlet />
-      <TanStackRouterDevtools />
+      {false && <TanStackRouterDevtools />}
     </>
   );
 }
