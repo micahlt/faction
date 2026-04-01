@@ -82,6 +82,7 @@ export default function authRouter(prisma) {
           username,
           email,
           password: await bcrypt.hash(password, 10),
+          nickname,
         },
       });
       if (newUser != null) {
