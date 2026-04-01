@@ -1,0 +1,31 @@
+.modalParent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  background-color: var(--clr-surface);
+  width: 90%;
+  height: 80%;
+  max-width: 700px;
+  max-height: 500px;
+  z-index: 1000;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}

@@ -86,6 +86,12 @@ export default function authRouter(prisma) {
         },
       });
       if (newUser != null) {
+        const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        res.cookie("auth_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 24 * 60 * 60 * 1000,
+        });
         return res.status(201).send({ success: "User has been created." });
       } else {
         return res.sendStatus(500);

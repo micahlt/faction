@@ -11,58 +11,60 @@ datasource db {
 }
 
 model User {
-  id       String     @id @default(uuid())
+  id       String  @id @default(uuid())
   username String  @unique
   email    String  @unique
   password String
   nickname String  @default("")
   imageUrl String?
 
-  factions Faction[] @relation("FactionMembers")
-  messages Message[]
-  invites  Invite[]
+  factions   Faction[] @relation("FactionMembers")
+  ownerships Faction[] @relation("OwnedFactions")
+  messages   Message[]
+  invites    Invite[]
 }
 
 // A faction is pretty much the same as a discord server
 model Faction {
-  id      String     @id @default(uuid())
+  id      String  @id @default(uuid())
   name    String
   iconUrl String?
   ownerId String
 
+  owner   User     @relation(fields: [ownerId], references: [id], name: "OwnedFactions", onDelete: Cascade)
   topics  Topic[]
   invites Invite[]
-  members User[]  @relation("FactionMembers")
+  members User[]   @relation("FactionMembers")
 }
 
 // A topic is the same as a discord channel
 model Topic {
-  id        String       @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   order     Int
   factionId String
-  faction   Faction   @relation(fields: [factionId], references: [id])
+  faction   Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
   messages  Message[]
 }
 
 model Message {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   content   String
   createdAt DateTime @default(now())
 
   authorId String
-  author   User  @relation(fields: [authorId], references: [id])
-  topicId  String   @map("topicId")
-  topic    Topic @relation(fields: [topicId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  topicId  String @map("topicId")
+  topic    Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
 }
 
 model Invite {
   code      String    @id @unique
   createdAt DateTime  @default(now())
   expiresAt DateTime?
-  
+
   authorId  String
-  author    User      @relation(fields: [authorId], references: [id])
+  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   factionId String
-  faction   Faction   @relation(fields: [factionId], references: [id])
+  faction   Faction @relation(fields: [factionId], references: [id], onDelete: Cascade)
 }

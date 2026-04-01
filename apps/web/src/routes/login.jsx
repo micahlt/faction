@@ -1,6 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import s from "../styles/modules/login.module.css";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -14,6 +15,7 @@ function LoginPage() {
   const [nickname, setNickname] = useState("");
   const [loginError, setLoginError] = useState("");
   const nav = useNavigate();
+  const queryClient = useQueryClient();
 
   const logIn = async (e) => {
     e.preventDefault();
@@ -54,8 +56,9 @@ function LoginPage() {
       },
     });
     if (signupReq.ok) {
+      queryClient.invalidateQueries();
       nav({
-        to: "/login",
+        to: "/app",
         reloadDocument: true,
       });
     } else {

@@ -1,0 +1,33 @@
+.initialFactionForm input {
+  outline: none;
+  border: 1px solid var(--clr-surface-20);
+  background-color: var(--clr-surface);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+  color: var(--clr-light);
+}
+
+.initialFactionForm input::placeholder {
+  color: var(--clr-surface-30);
+}
+
+.initialFactionForm button[type="submit"] {
+  color: var(--clr-surface);
+  background-color: var(--clr-primary);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid var(--clr-primary-30);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 150ms;
+}
+
+.initialFactionForm button[type="submit"]:hover {
+  color: var(--clr-surface-tonal);
+  background-color: var(--clr-primary-30);
+  border-color: var(--clr-primary-50);
+}

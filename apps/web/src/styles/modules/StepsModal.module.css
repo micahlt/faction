@@ -1,0 +1,44 @@
+.stepsModal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.steppers {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.stepper {
+  display: block;
+  height: 0.5rem;
+  width: 2rem;
+  border-radius: var(--radius-md);
+  background-color: var(--clr-surface-tonal);
+  cursor: pointer;
+  transition: background-color 250ms;
+  justify-self: flex-end;
+}
+
+.stepper:hover {
+  background-color: var(--clr-surface-tonal-10);
+}
+
+.active {
+  background-color: var(--clr-primary);
+}
+
+.content {
+  margin-top: 10vw;
+  text-align: center;
+  max-width: 400px;
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: var(--clr-primary-10);
+  }
+}
