@@ -127,5 +127,10 @@ export default function authRouter(prisma) {
     }
   });
 
+  // DELETE /api/auth/login
+  router.delete("/logout", async (req, res) => {
+    return res.clearCookie("auth_token").sendStatus(200);
+  });
+
   return router;
 }

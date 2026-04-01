@@ -26,8 +26,13 @@
   }
 }
 
-.settingsIcon {
+.logOutIcon {
   margin-left: auto;
+  cursor: pointer;
+}
+
+.settingsIcon {
+  margin-left: 0.5rem;
   transition: transform 200ms;
   cursor: pointer;
 }
