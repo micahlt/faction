@@ -24,6 +24,10 @@ Faction is a Discord clone/alternative built for group C's Software Engineering 
 
 Alternatively, you can also run `npm run dev` which will simultaneously start the server and the webapp. However, this means you cannot restart the web app without restarting the server, and vice versa.
 
+## Installing new packages
+
+For packages that need to be installed in more than one app (such as a package shared between the `server` and `web` folders), just run a standard `npm install {package}` command.  For packages that only need to be installed in one project, run the same command but append `-w @faction/{app}` - like `npm install react -w @faction/web`. 
+
 ## Stack
 
 All of the code lives in this monorepo.
