@@ -2,4 +2,17 @@
   background-color: var(--clr-surface-20);
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: border 100ms;
+  border: 1px solid transparent;
+}
+
+.topicListItem:hover {
+  border: 1px solid var(--clr-surface-30);
+}
+
+.topicListItem.active {
+  border-color: var(--clr-surface-tonal-40);
+  background-color: var(--clr-surface-tonal-10);
 }

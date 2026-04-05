@@ -28,7 +28,7 @@ export default function MessageBox({ }) {
     };
 
     return <div className={s.messageBox}>
-        <textarea value={messageText} onChange={(e) => setMessageText(e.target.value)} onKeyUp={keyUpHandler} />
+        <textarea value={messageText} onChange={(e) => setMessageText(e.target.value)} onKeyDown={keyUpHandler} />
         <PaperPlaneIcon weight="duotone" size={28} className={s.sendIcon} onClick={sendMessage} />
     </div>
 }

@@ -10,7 +10,7 @@ export default function MessageListRenderer({ factionId = "", topicId = {} }) {
 
     const updateMessageList = useCallback((message) => {
         setMessagesList(msgList => {
-            return [...msgList, message];
+            return [message, ...msgList];
         })
     }, [messagesList, setMessagesList])
 

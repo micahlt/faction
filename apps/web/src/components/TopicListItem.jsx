@@ -1,5 +1,6 @@
+import classNames from "classnames";
 import s from "../styles/modules/TopicListItem.module.css";
 
-export default function TopicListItem({ topic = {} }) {
-    return <div className={s.topicListItem}>{topic.name}</div>
+export default function TopicListItem({ topic = {}, active = false }) {
+    return <div className={classNames(s.topicListItem, active ? s.active : "")}>{topic.name}</div>
 }

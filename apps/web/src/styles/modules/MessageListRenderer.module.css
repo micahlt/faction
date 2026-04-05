@@ -4,11 +4,12 @@
   display: flex;
   width: 100%;
   height: calc(100vh - 6rem);
-  flex-direction: column;
+  flex-direction: column-reverse;
   row-gap: 0.1rem;
   padding-bottom: 2rem;
   overflow-x: hidden;
   overflow-y: scroll;
   z-index: 0;
-  justify-content: flex-end;
+  justify-items: flex-end;
+  scrollbar-width: none;
 }

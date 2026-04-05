@@ -17,7 +17,7 @@ function RouteComponent() {
         return () => {
             socket.emit("faction:leave", factionId);
         }
-    }, []);
+    }, [factionId]);
 
     return (
         <>

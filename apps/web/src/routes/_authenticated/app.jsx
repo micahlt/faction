@@ -13,7 +13,6 @@ import MessageBox from "../../components/MessageBox";
 import { createPortal } from "react-dom";
 import StepsModal from "../../components/StepsModal";
 import InitialFactionForm from "../../components/InitialFactionForm";
-import { Route as TopicRoute } from "./app/$factionId/$topicId";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: RouteComponent,

@@ -6,6 +6,8 @@
   padding: 0.5rem;
   border-radius: var(--radius-md);
   width: 14rem;
+  display: flex;
+  flex-direction: column;
 
   h2 {
     margin-bottom: 0.5rem;
@@ -17,4 +19,21 @@
   letter-spacing: 0.5ch;
   font-weight: 300;
   font-size: 0.9rem;
+}
+
+.topicsList {
+  flex: 1;
+}
+
+.createTopic {
+  background-color: var(--clr-surface-tonal-20);
+  padding: 0.5rem 0.5rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--clr-light);
+  display: flex;
+  align-items: center;
+  line-height: 1rem;
+  gap: 0.5rem;
 }

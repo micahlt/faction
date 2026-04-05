@@ -33,4 +33,27 @@
   align-items: center;
   justify-content: flex-start;
   row-gap: 0.25rem;
+  flex-grow: 1;
+}
+
+.newFaction {
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  height: 3.25rem;
+  width: 3.25rem;
+  display: flex;
+  background-color: var(--clr-primary);
+  transition: transform 100ms;
+  will-change: transform;
+  border-color: none;
+  font-size: 3rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--clr-surface-tonal);
 }

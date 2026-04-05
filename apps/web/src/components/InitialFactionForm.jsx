@@ -2,7 +2,7 @@ import { useState } from "react";
 import s from "../styles/modules/InitialFactionForm.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function InitialFactionForm() {
+export default function InitialFactionForm({ onCreated = () => { } }) {
     const [name, setName] = useState();
     const queryClient = useQueryClient();
 
@@ -17,6 +17,7 @@ export default function InitialFactionForm() {
             }
         });
         queryClient.invalidateQueries();
+        onCreated();
     }
 
     return <form className={s.initialFactionForm} onSubmitCapture={(e) => {
