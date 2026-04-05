@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-export default function authenticateJWT(req, res, next) {
-  if (req.path.startsWith("/api/auth")) {
+export default function expressJWT(req, res, next) {
+  if (req.path && req.path.startsWith("/api/auth")) {
     return next();
   }
   const authHeader = req.headers["authorization"];

@@ -86,7 +86,11 @@ export default function authRouter(prisma) {
         },
       });
       if (newUser != null) {
-        const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        const token = jwt.sign(
+          { userId: newUser.id, username: newUser.username },
+          process.env.JWT_SECRET,
+          { expiresIn: "7d" }
+        );
         res.cookie("auth_token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",

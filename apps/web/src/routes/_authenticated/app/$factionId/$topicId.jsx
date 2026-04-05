@@ -8,5 +8,6 @@ export const Route = createFileRoute("/_authenticated/app/$factionId/$topicId")(
 );
 
 function RouteComponent() {
-  return <MessageListRenderer />;
+  const { factionId, topicId } = Route.useParams();
+  return <MessageListRenderer factionId={factionId} topicId={topicId} />;
 }

@@ -19,5 +19,5 @@ export default function UserAvatar({ size = "md", imageUrl = "" }) {
         }
     }, [size])
 
-    return <img className={s.userAvatar} src={imageUrl} height={imageSize} width={imageSize} alt=""></img>
+    return <img className={s.userAvatar} src={imageUrl} height={imageSize} width={imageSize} alt=" "></img>
 }

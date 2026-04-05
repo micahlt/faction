@@ -19,6 +19,7 @@ function RouteComponent() {
     return (
       <Navigate
         to="/app/$factionId/$topicId"
+        from="/"
         params={{ factionId, topicId: firstTopicId }}
         replace
       />

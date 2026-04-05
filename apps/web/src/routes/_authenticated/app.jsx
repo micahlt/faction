@@ -4,7 +4,7 @@ import {
   createFileRoute,
   useLocation,
 } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../../utils/api/apiGetQuery";
 import s from "../../styles/modules/app.module.css";
 import FactionList from "../../components/FactionList";
@@ -13,6 +13,7 @@ import MessageBox from "../../components/MessageBox";
 import { createPortal } from "react-dom";
 import StepsModal from "../../components/StepsModal";
 import InitialFactionForm from "../../components/InitialFactionForm";
+import { Route as TopicRoute } from "./app/$factionId/$topicId";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: RouteComponent,
@@ -20,7 +21,6 @@ export const Route = createFileRoute("/_authenticated/app")({
 
 function RouteComponent() {
   const location = useLocation();
-  const queryClient = useQueryClient();
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: () => apiGetQuery(`/api/users/me`),
@@ -33,6 +33,7 @@ function RouteComponent() {
     return (
       <Navigate
         to="/app/$factionId"
+        from="/"
         params={{ factionId: firstFactionId }}
         replace
       />

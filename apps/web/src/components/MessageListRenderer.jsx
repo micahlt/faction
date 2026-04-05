@@ -1,8 +1,32 @@
 import sampleMessageObject from "../utils/sampleMessageObject";
 import Message from "./Message";
 import s from "../styles/modules/MessageListRenderer.module.css";
+import { useSocket } from "./contexts/SocketContext";
+import { useCallback, useEffect, useState } from "react";
 
-export default function MessageListRenderer({ factionId = "", topic = {} }) {
-    return <div className={s.messageListRenderer}>{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28].map((index, i) => <Message key={index} message={sampleMessageObject} />)}
+export default function MessageListRenderer({ factionId = "", topicId = {} }) {
+    const socket = useSocket();
+    const [messagesList, setMessagesList] = useState([]);
+
+    const updateMessageList = useCallback((message) => {
+        setMessagesList(msgList => {
+            return [...msgList, message];
+        })
+    }, [messagesList, setMessagesList])
+
+    useEffect(() => {
+        console.log("registering")
+        socket.on("message:recieve", (message) => {
+            console.log(message);
+            if (message.topicId === topicId) {
+                updateMessageList(message)
+            }
+        });
+        return () => socket.off("message:recieve");
+    }, []);
+
+    useEffect(() => console.log(messagesList), [messagesList])
+
+    return <div className={s.messageListRenderer}>{messagesList.map((msg, index) => <Message key={index} message={msg} />)}
     </div>;
 }

@@ -32,6 +32,7 @@ function LoginPage() {
     if (loginReq.ok) {
       nav({
         to: "/app",
+        from: "/"
       });
     } else {
       const json = await loginReq.json();

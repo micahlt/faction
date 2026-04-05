@@ -16,8 +16,8 @@ When you modify the database schema (`schema.prisma`), make sure you add a migra
 
 ## Folder structure
 
-- **controllers**: logic
 - **middleware**: mostly for authentication
 - **prisma**: database stuff
   - **migrations**: database migrations (incremental updates)
+- **sockets**: Socket.io handlers
 - **routes**: REST route definitions
