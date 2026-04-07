@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
+import { doesUserAdministrateFaction } from "../utils/access.js";
 
 /**
  * Router for /api/factions
@@ -15,12 +16,21 @@ export default function factionsRouter(prisma) {
         id: req.params.id,
       },
       include: {
-        members: !!req.query.members,
+        members: {
+          omit: {
+            password: true,
+            email: true,
+          },
+        },
         topics: !!req.query.topics,
       },
     });
     if (faction) {
-      return res.status(200).send(faction);
+      if (faction.members.findIndex((m) => m.id === req.user.userId) != -1) {
+        return res.status(200).send(faction);
+      } else {
+        res.sendStatus(401);
+      }
     } else {
       return res.sendStatus(404);
     }
@@ -57,12 +67,7 @@ export default function factionsRouter(prisma) {
   // PUT /api/factions/:id
   router.put("/:id", async (req, res) => {
     if (!req.params.id || !req.body) return res.sendStatus(400);
-    const originalFaction = await prisma.faction.findUnique({
-      where: {
-        id: req.params.id,
-      },
-    });
-    if (originalFaction.ownerId === req.user.userId) {
+    if (await doesUserAdministrateFaction(req.user.userId, req.params.id, prisma)) {
       const modifiedFaction = await prisma.faction.update({
         where: {
           id: req.params.id,
@@ -73,7 +78,7 @@ export default function factionsRouter(prisma) {
         },
       });
       if (modifiedFaction) {
-        return res.status(200).send(faction);
+        return res.status(200).send(modifiedFaction);
       } else {
         return res.sendStatus(500);
       }
