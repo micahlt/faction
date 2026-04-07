@@ -25,6 +25,11 @@ export default function MessageListRenderer({ factionId = "", topicId = {} }) {
         return () => socket.off("message:recieve");
     }, []);
 
+    useEffect(() => {
+        setMessagesList([]);
+        // TODO: Load old messages here
+    }, [topicId])
+
     useEffect(() => console.log(messagesList), [messagesList])
 
     return <div className={s.messageListRenderer}>{messagesList.map((msg, index) => <Message key={index} message={msg} />)}
