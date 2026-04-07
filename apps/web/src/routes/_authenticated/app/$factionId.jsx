@@ -8,7 +8,6 @@ export const Route = createFileRoute("/_authenticated/app/$factionId")({
 });
 
 function RouteComponent() {
-    console.log("AT FACTIONID")
     const { factionId } = Route.useParams();
 
     const socket = useSocket();

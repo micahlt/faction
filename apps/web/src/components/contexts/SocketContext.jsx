@@ -17,7 +17,9 @@ export const SocketProvider = ({ children }) => {
         setSocket(io('http://localhost:3000', {
             autoConnect: true,
             withCredentials: true,
-            secure: false
+            secure: false,
+            closeOnBeforeunload: true,
+
         }))
         return () => socket?.disconnect();
     }, [])

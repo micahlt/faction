@@ -13,12 +13,15 @@ import MessageBox from "../../components/MessageBox";
 import { createPortal } from "react-dom";
 import StepsModal from "../../components/StepsModal";
 import InitialFactionForm from "../../components/InitialFactionForm";
+import { useEffect } from "react";
+import { useSocket } from "../../components/contexts/SocketContext";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const socket = useSocket();
   const location = useLocation();
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
@@ -27,6 +30,15 @@ function RouteComponent() {
 
   const firstFactionId = user?.factions?.[0]?.id;
   const isAppIndexPath = location.pathname === "/app" || location.pathname === "/app/";
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit("ping:alive");
+    const int = setInterval(() => {
+      socket.emit("ping:alive");
+    }, 15000);
+    return () => clearInterval(int);
+  }, [socket])
 
   if (!userLoading && firstFactionId && isAppIndexPath) {
     return (

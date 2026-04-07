@@ -35,7 +35,9 @@ app.use("/api/topics", topicsRouter(prisma));
 app.use("/api/users", usersRouter(prisma));
 
 io.on("connection", (socket) => {
-  console.log(`Socket ID ${socket.id} connected`);
+  socket.on("ping:alive", () => {
+    console.log(`User ${socket.data.user.username} sent alive ping`);
+  });
 
   socket.on("faction:join", async (factionId) => {
     if (socket.data.user.factions.findIndex((f) => f.id === factionId) != -1) {
