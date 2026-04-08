@@ -46,8 +46,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  //Austin: Because we want multiple servers and channels to be able to be made we need to have a file update with each message.
-
   socket.on("message:send", async (message) => {
     console.log("Sending: " + message.content);
     const msgToSend = {
@@ -58,11 +56,13 @@ io.on("connection", (socket) => {
       topicId: message.topicId,
       author: {
         imageUrl: "https://google.com/logo.svg", //TODO: make it display the users pfp: Austin
-        nickname: '${socket.data.user.nickname}', //display their actual username
+        nickname: `${socket.data.user.nickname}`,
       },
     };
     io.to(`f:${message.factionId}`).emit("message:recieve", msgToSend);
+    
   });
+
 });
 
 io.on("disconnect", (socket) => {
