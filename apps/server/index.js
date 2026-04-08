@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
       topicId: message.topicId,
       author: {
         imageUrl: "https://google.com/logo.svg", //TODO: make it display the users pfp: Austin
-        nickname: "${socket.data.user.nickname}", //display their actual username
+        nickname: '${socket.data.user.nickname}', //display their actual username
       },
     };
     io.to(`f:${message.factionId}`).emit("message:recieve", msgToSend);
