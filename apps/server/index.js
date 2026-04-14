@@ -46,6 +46,14 @@ io.on("connection", (socket) => {
     }
   });
 
+ //load messages for topic
+  socket.on("topic:join", async (topicId) => {
+    if (socket.data.user.topics.findIndex((t) => t.id === topicId) != -1){
+      socket.join(`t:${topicId}`);
+      console.log("In topic", `t:${topicId}`);
+    }
+  });
+
   socket.on("message:send", async (message) => {
     console.log("Sending: " + message.content);
     const msgToSend = {
@@ -61,6 +69,16 @@ io.on("connection", (socket) => {
     };
     io.to(`f:${message.factionId}`).emit("message:recieve", msgToSend);
     
+    // save message to db
+    prisma.message.create({
+      data: {
+        content: message.content,
+        authorId: socket.data.user.id,
+        topicId: message.topicId,
+        createdAt: new Date(),
+        id: msgToSend.id,
+      }
+    })
   });
 
 });
