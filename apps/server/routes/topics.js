@@ -42,7 +42,7 @@ export default function topicsRouter(prisma) {
 
         return await tx.topic.create({
           data: {
-            name: name,
+            name: name.toLowerCase(),
             order: agg._count + 1,
             factionId: factionId,
           },

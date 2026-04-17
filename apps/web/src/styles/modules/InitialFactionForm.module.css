@@ -1,3 +1,7 @@
+.initialFactionForm h2 {
+  margin-bottom: 1rem;
+}
+
 .initialFactionForm input {
   outline: none;
   border: 1px solid var(--clr-surface-20);
@@ -15,7 +19,8 @@
 .initialFactionForm button[type="submit"] {
   color: var(--clr-surface);
   background-color: var(--clr-primary);
-  padding: 0.5rem 0.75rem;
+  padding: 0.4rem 0.75rem;
+  margin-left: 0.5rem;
   font-size: 0.95rem;
   text-transform: uppercase;
   font-weight: bold;

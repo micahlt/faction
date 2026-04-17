@@ -2,8 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import s from "../styles/modules/FactionSidebar.module.css";
 import apiGetQuery from "../utils/api/apiGetQuery";
 import TopicListItem from "./TopicListItem";
-import { PlusIcon } from "@phosphor-icons/react";
+import { EnvelopeIcon, PlusIcon } from "@phosphor-icons/react";
 import { useParams } from "@tanstack/react-router";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import CreateTopicForm from "./CreateTopicForm";
+import Modal from "./Modal";
 
 export default function FactionSidebar({ factionId = "" }) {
     const {
@@ -15,8 +19,8 @@ export default function FactionSidebar({ factionId = "" }) {
         queryFn: () => apiGetQuery(`/api/factions/${factionId}?topics=true`),
     });
     const { topicId } = useParams({ strict: false });
+    const [creatingTopic, setCreatingTopic] = useState(false);
 
-    console.log(topicId)
     return <div className={s.factionSidebar}>
         {faction && !factionError && <>
             <span className={s.factionPretitle}>FACTION</span>
@@ -24,8 +28,18 @@ export default function FactionSidebar({ factionId = "" }) {
             <div className={s.topicsList}>
                 {faction.topics.map((topic) => <TopicListItem topic={topic} active={topic.id === topicId} />)}
             </div>
-            <a href="#" className={s.createTopic}>
-                <PlusIcon /> Create Topic</a>
+            <div className={s.sidebarOptions}>
+                <a href="#" className={s.sidebarOptionBtn} onClick={(e) => {
+                    e.preventDefault();
+                    setCreatingTopic(true);
+                }}>
+                    <PlusIcon size={18} /> Topic</a>
+                <a href="#" className={s.sidebarOptionBtn}>
+                    <EnvelopeIcon size={18} /> Invite</a>
+            </div>
         </>}
+        {creatingTopic && createPortal(<Modal canCloseOnOverlay={true} onClose={() => setCreatingTopic(false)}>
+            <CreateTopicForm factionId={faction.id} onCreated={() => setCreatingTopic(false)} />
+        </Modal>, document.body)}
     </div>
 }

@@ -28,4 +28,13 @@
   z-index: 1000;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--clr-surface-20);
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.contentWrapper {
+  display: block;
+  text-align: center;
 }

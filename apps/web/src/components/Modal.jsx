@@ -4,7 +4,9 @@ export default function Modal({ canCloseOnOverlay = true, onClose = () => { }, c
     return <div className={s.modalParent}>
         <div className={s.overlay} onClick={onClose} />
         <div className={s.content}>
-            {children}
+            <div className={s.contentWrapper}>
+                {children}
+            </div>
         </div>
     </div>
 }
