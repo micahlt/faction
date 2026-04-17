@@ -7,7 +7,11 @@ export default function Message({ message = {} }) {
         <div className={s.main}>
             <span className={s.metadata}>
                 <p>{message.author.nickname}</p>
-                <p className={s.date}>{message.createdAt.toLocaleString()}</p>
+                <p className={s.date}>{new Date().toLocaleString("en-US", {
+                    hour12: true,
+                    minute: "numeric",
+                    hour: "numeric"
+                })}</p>
             </span>
             <div className={s.content}>
                 {message.content}

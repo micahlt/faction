@@ -10,7 +10,7 @@ import { authRouter, factionsRouter, topicsRouter, usersRouter } from "./routes/
 import cookieParser from "cookie-parser";
 import socketJWT from "./middleware/socketJWT.js";
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL });
+const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL || "faction.db" });
 const prisma = new PrismaClient({ adapter });
 
 const app = express();
