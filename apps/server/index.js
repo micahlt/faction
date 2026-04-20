@@ -46,21 +46,40 @@ io.on("connection", (socket) => {
     }
   });
 
+ //load messages for topic
+  socket.on("topic:join", async (topicId) => {
+    if (socket.data.user.topics.findIndex((t) => t.id === topicId) != -1){
+      socket.join(`t:${topicId}`);
+      console.log("In topic", `t:${topicId}`);
+    }
+  });
+
   socket.on("message:send", async (message) => {
     console.log("Sending: " + message.content);
-    const msgToSend = {
-      id: "fsfdls256df-lasdfkl-j435",
-      content: message.content,
-      createdAt: new Date(),
-      authorId: "asf39q205-5235fasa-j433592d",
-      topicId: message.topicId,
-      author: {
-        imageUrl: "https://google.com/logo.svg",
-        nickname: "Micah Lindley",
+    const createdMsg = await prisma.message.create({
+      data: {
+        content: message.content,
+        authorId: socket.data.user.id,
+        topicId: message.topicId
       },
-    };
-    io.to(`f:${message.factionId}`).emit("message:recieve", msgToSend);
+      include: {
+        author: {
+          select: {
+            id: true,
+            imageUrl: true,
+            nickname: true,
+            username: true
+          }
+        }
+      }
+    });
+
+    io.to(`f:${message.factionId}`).emit("message:recieve", createdMsg);
+    
+    // save message to db
+    
   });
+
 });
 
 io.on("disconnect", (socket) => {

@@ -27,7 +27,11 @@ export default function MessageListRenderer({ factionId = "", topicId = {} }) {
 
     useEffect(() => {
         setMessagesList([]);
-        // TODO: Load old messages here
+        fetch(`/api/topics/${topicId}/messages?start=${new Date().getTime() - 604000000}&end=${new Date().getTime()}`).then (messages => {
+            return messages.json()
+        }).then(data => {
+            setMessagesList(data)
+        })
     }, [topicId])
 
     useEffect(() => console.log(messagesList), [messagesList])
