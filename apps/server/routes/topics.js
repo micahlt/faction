@@ -92,10 +92,10 @@ export default function topicsRouter(prisma) {
 
   //Get messages from server per topic, with optional start and end times for filtering.
   //GET /api/topics/:id/messages?start=<timestamp>&end=<timestamp>
-  router.get("/api/topics/:id/messages?start+<timestamp>&end=<timestamp>", async(req, res) =>{
+  router.get("/:id/messages", async(req, res) =>{
     if (!req.params.id || !req.query.start || !req.query.end) return res.sendStatus(400);
-    if (!(await isUserInFaction(req.user.userId, req.params.id, prisma)))
-      return res.sendStatus(401);
+    //if (!(await isUserInFaction(req.user.userId, req.params.id, prisma)))
+     // return res.sendStatus(401);
     const messages = await prisma.message.findMany({
       where: {
         topicId: req.params.id,
@@ -103,8 +103,19 @@ export default function topicsRouter(prisma) {
           gte: new Date(parseInt(req.query.start)),
           lte: new Date(parseInt(req.query.end)),
         },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            imageUrl: true,
+            nickname: true,
+            username: true
+          }
+        }
       }
-    })
+    });
+    return res.send(messages);
   })
 
   // DELETE /api/topics/:id

@@ -56,29 +56,28 @@ io.on("connection", (socket) => {
 
   socket.on("message:send", async (message) => {
     console.log("Sending: " + message.content);
-    const msgToSend = {
-      id: "fsfdls256df-lasdfkl-j435",
-      content: message.content,
-      createdAt: new Date(),
-      authorId: "asf39q205-5235fasa-j433592d",
-      topicId: message.topicId,
-      author: {
-        imageUrl: "https://google.com/logo.svg", //TODO: make it display the users pfp: Austin
-        nickname: `${socket.data.user.nickname}`,
-      },
-    };
-    io.to(`f:${message.factionId}`).emit("message:recieve", msgToSend);
-    
-    // save message to db
-    prisma.message.create({
+    const createdMsg = await prisma.message.create({
       data: {
         content: message.content,
         authorId: socket.data.user.id,
-        topicId: message.topicId,
-        createdAt: new Date(),
-        id: msgToSend.id,
+        topicId: message.topicId
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            imageUrl: true,
+            nickname: true,
+            username: true
+          }
+        }
       }
-    })
+    });
+
+    io.to(`f:${message.factionId}`).emit("message:recieve", createdMsg);
+    
+    // save message to db
+    
   });
 
 });
