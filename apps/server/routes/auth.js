@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { PrismaClient } from "../generated/prisma/client.js";
 
 // Regexes sourced from https://regexr.com
-const USERNAME_REGEX = /[a-zA-Z][a-zA-Z0-9-_]{3,32}/gi;
+const USERNAME_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{2,31}$/;
 const EMAIL_REGEX =
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 const PASSWORD_REGEX = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
@@ -17,20 +17,22 @@ const router = express.Router();
  * @param {PrismaClient} prisma
  */
 export default function authRouter(prisma) {
-  // POST /api/auth/checkusername
-  router.post("/checkusername", async (req, res) => {
-    if (!req.body) return res.sendStatus(400);
-    const { username } = req.body;
+  // GET /api/auth/checkusername
+  router.get("/checkusername", async (req, res) => {
+    if (!req.query) return res.sendStatus(400);
+    let { username } = req.query;
     if (!username) {
       return res.status(400).send({ error: "You must supply a username." });
     }
-    if (username.match(USERNAME_REGEX).length != 1) {
+    if (username.match(USERNAME_REGEX)?.length != 1) {
       return res.status(400).send({
         error:
-          "Usernames must start with an alphabetic character. Can contain only alphanumeric chars, dashes, and underscores.",
+          "Usernames must start with an alphabetic character. Can contain only alphanumeric chars, dashes, and underscores.  They must be between  and 32 characters long.",
       });
     }
-    const existingUser = await prisma.user.findFirst({ where: { username: { equals: username } } });
+    const existingUser = await prisma.user.findFirst({
+      where: { username: { equals: username.toLowerCase() } },
+    });
     if (existingUser != null) {
       return res.status(409).send({ error: "A user with the same username already exists." });
     } else {
@@ -41,14 +43,14 @@ export default function authRouter(prisma) {
   // POST /api/auth/signup
   router.post("/signup", async (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    const { username, password, email, nickname } = req.body;
+    let { username, password, email, nickname } = req.body;
     if (!username || !password || !email) {
       return res.status(400).send({ error: "You must supply a username, password, and email." });
     }
     if (username.match(USERNAME_REGEX)?.length != 1) {
       return res.status(400).send({
         error:
-          "Username must start with an alphabetic character. Can contain only alphanumeric chars, dashes, and underscores.",
+          "Username must start with an alphabetic character. Can contain only alphanumeric chars, dashes, and underscores.  They must be between 3 and 32 characters long.",
       });
     }
     if (email.match(EMAIL_REGEX)?.length != 1) {
@@ -67,6 +69,7 @@ export default function authRouter(prisma) {
         .status(400)
         .send({ error: "You must choose a nickname.  You can change this later." });
     }
+    username = username.toLowerCase();
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ username: { equals: username } }, { email: { equals: email } }],
@@ -106,7 +109,7 @@ export default function authRouter(prisma) {
   // POST /api/auth/login
   router.post("/login", async (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    const { username, password } = req.body;
+    let { username, password } = req.body;
     if (!username) {
       return res.status(400).send({
         error: "You must provide a valid username.",
@@ -117,6 +120,7 @@ export default function authRouter(prisma) {
         error: "You must provide a valid password.",
       });
     }
+    username = username.toLowerCase();
     const dbUser = await prisma.user.findUnique({ where: { username: username } });
     if (dbUser == null) {
       return res.status(401).send({
