@@ -12,7 +12,7 @@ To avoid paying for a database in the future, we're actually switching to Prisma
 
 Every time you pull new commits from the repository, you should run `npm run db:migrate` to make sure the database is up-to-date with the latest changes. If you run into migration errors, you can always run `npm run db:reset` to clear out the database and start over. This WILL wipe all of the data in your db.
 
-When you modify the database schema (`schema.prisma`), make sure you add a migration with `npm run db:migrate <short-description-of-changes>`. This will let other teammates' machines get your strucutral changes.
+When you modify the database schema (`schema.prisma`), make sure you add a migration with `npm run db:migrate <short-description-of-changes>`. This will let other teammates' machines get your structural changes.
 
 ## Folder structure
 
