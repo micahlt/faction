@@ -17,27 +17,6 @@ const router = express.Router();
  * @param {PrismaClient} prisma
  */
 export default function authRouter(prisma) {
-  // POST /api/auth/checkusername
-  router.post("/checkusername", async (req, res) => {
-    if (!req.body) return res.sendStatus(400);
-    const { username } = req.body;
-    if (!username) {
-      return res.status(400).send({ error: "You must supply a username." });
-    }
-    if (username.match(USERNAME_REGEX).length != 1) {
-      return res.status(400).send({
-        error:
-          "Usernames must start with an alphabetic character. Can contain only alphanumeric chars, dashes, and underscores.",
-      });
-    }
-    const existingUser = await prisma.user.findFirst({ where: { username: { equals: username } } });
-    if (existingUser != null) {
-      return res.status(409).send({ error: "A user with the same username already exists." });
-    } else {
-      return res.sendStatus(200);
-    }
-  });
-
   // POST /api/auth/signup
   router.post("/signup", async (req, res) => {
     if (!req.body) return res.sendStatus(400);
