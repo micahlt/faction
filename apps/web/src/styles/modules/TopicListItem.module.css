@@ -1,0 +1,28 @@
+.topicListItem {
+  background-color: var(--clr-surface-20);
+  padding: 0.25rem 0.5rem;
+  display: block;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: all 100ms;
+  border: 1px solid transparent;
+  margin-bottom: 0.2rem;
+  color: var(--clr-light);
+  text-decoration: none;
+}
+
+.topicListItem:hover {
+  border: 1px solid var(--clr-surface-30);
+}
+
+.topicListItem.active {
+  border-color: var(--clr-surface-tonal-40);
+  background-color: var(--clr-surface-tonal-10);
+  transition: all 100ms;
+}
+
+.topicListItem.active:hover {
+  border-color: var(--clr-surface-tonal-40);
+  background-color: var(--clr-surface-tonal-20);
+}

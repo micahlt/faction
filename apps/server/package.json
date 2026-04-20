@@ -1,0 +1,29 @@
+{
+  "name": "@faction/server",
+  "version": "0.0.0",
+  "description": "The server for the Faction chat app",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "npm run dev",
+    "db:migrate": "prisma migrate dev && prisma generate",
+    "db:reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie": "^0.7.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.2",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "nodemon": "^3.1.14"
+  }
+}

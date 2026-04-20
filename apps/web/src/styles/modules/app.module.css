@@ -1,0 +1,41 @@
+.main {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 4rem;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: 20.5rem 1fr;
+}
+
+.myFactions {
+  display: flex;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.currentFaction {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.user {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0.5rem;
+  padding-top: 0;
+}
+
+.messagebox {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding-right: 0.5rem;
+}

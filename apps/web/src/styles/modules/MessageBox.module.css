@@ -1,0 +1,61 @@
+.messageBox {
+  background-color: var(--clr-surface);
+  border: 2px solid var(--clr-surface-10);
+  flex: 1;
+  border-radius: var(--radius-md);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-width: 0;
+  display: flex;
+  align-items: center;
+  transition: border-color 100ms;
+  position: relative;
+  z-index: 20;
+
+  textarea {
+    flex: 1;
+    border: none;
+    background: transparent;
+    resize: none;
+    outline: none;
+    color: var(--clr-light);
+    padding: 0.5rem;
+    padding-right: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.messageBox:focus-within {
+  border-color: var(--clr-surface-tonal-20);
+
+  .sendIcon {
+    color: var(--clr-primary);
+  }
+}
+
+.messageBox::before {
+  content: "";
+  background: linear-gradient(to top, var(--clr-surface), transparent);
+  position: absolute;
+  top: calc(-2.5rem - 2px);
+  right: 0;
+  left: -2.5rem;
+  height: 2.5rem;
+  z-index: 15;
+}
+
+.sendIcon {
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+  transition: all 200ms;
+  color: var(--clr-surface-50);
+  cursor: pointer;
+}
+
+.sendIcon:hover {
+  color: var(--clr-primary-20) !important;
+}
+
+.sendIcon:hover {
+  transform: translateY(-15%);
+}

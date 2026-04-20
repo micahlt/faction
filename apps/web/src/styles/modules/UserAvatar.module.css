@@ -1,0 +1,6 @@
+.userAvatar {
+  border-radius: 100%;
+  overflow: hidden;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?_=20150327203541");
+  background-size: cover;
+}
