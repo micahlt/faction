@@ -24,7 +24,7 @@ function LoginPage() {
   const isSignupDisabled =
     formMode === "signup" && usernameStatus !== "valid";
 
-  // 🔍 Username check (debounced)
+  // Debounced username check
   useEffect(() => {
     if (formMode !== "signup") {
       setUsernameStatus("idle");
@@ -59,14 +59,13 @@ function LoginPage() {
         }
       } catch {
         setUsernameStatus("invalid");
-        setUsernameMessage("Could not check username.");
+        setUsernameMessage("Failed to check username.");
       }
     }, 700);
 
     return () => clearTimeout(timeout);
   }, [username, formMode]);
 
-  // 🔐 Login
   const logIn = async (e) => {
     e.preventDefault();
 
@@ -91,7 +90,6 @@ function LoginPage() {
     }
   };
 
-  // 📝 Signup
   const signUp = async (e) => {
     e.preventDefault();
 
@@ -171,7 +169,6 @@ function LoginPage() {
           value={username}
         />
 
-        {/* Username feedback */}
         {formMode === "signup" && usernameMessage && (
           <p
             className={
@@ -182,8 +179,8 @@ function LoginPage() {
                 usernameStatus === "valid"
                   ? "green"
                   : usernameStatus === "checking"
-                  ? "#777"
-                  : undefined,
+                    ? "#777"
+                    : undefined,
               margin: "4px 0",
               fontSize: "14px",
             }}
