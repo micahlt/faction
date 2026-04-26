@@ -46,9 +46,9 @@ io.on("connection", (socket) => {
     }
   });
 
- //load messages for topic
+  //load messages for topic
   socket.on("topic:join", async (topicId) => {
-    if (socket.data.user.topics.findIndex((t) => t.id === topicId) != -1){
+    if (socket.data.user.topics.findIndex((t) => t.id === topicId) != -1) {
       socket.join(`t:${topicId}`);
       console.log("In topic", `t:${topicId}`);
     }
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
       data: {
         content: message.content,
         authorId: socket.data.user.id,
-        topicId: message.topicId
+        topicId: message.topicId,
       },
       include: {
         author: {
@@ -68,18 +68,16 @@ io.on("connection", (socket) => {
             id: true,
             imageUrl: true,
             nickname: true,
-            username: true
-          }
-        }
-      }
+            username: true,
+          },
+        },
+      },
     });
 
     io.to(`f:${message.factionId}`).emit("message:recieve", createdMsg);
-    
-    // save message to db
-    
-  });
 
+    // save message to db
+  });
 });
 
 io.on("disconnect", (socket) => {

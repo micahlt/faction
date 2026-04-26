@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { createContext, useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 /** @typedef {import('socket.io-client').Socket} SocketInstance */
 /** @typedef {{ children: import('react').ReactNode }} SocketProviderProps */
@@ -12,23 +12,20 @@ const SocketContext = createContext(undefined);
  * @param {SocketProviderProps} props
  */
 export const SocketProvider = ({ children }) => {
-    const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */(undefined));
-    useEffect(() => {
-        setSocket(io('http://localhost:3000', {
-            autoConnect: true,
-            withCredentials: true,
-            secure: false,
-            closeOnBeforeunload: true,
-
-        }))
-        return () => socket?.disconnect();
-    }, [])
-
-    return (
-        <SocketContext.Provider value={socket}>
-            {children}
-        </SocketContext.Provider>
+  const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */ (undefined));
+  useEffect(() => {
+    setSocket(
+      io("http://localhost:3000", {
+        autoConnect: true,
+        withCredentials: true,
+        secure: false,
+        closeOnBeforeunload: true,
+      })
     );
+    return () => socket?.disconnect();
+  }, []);
+
+  return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };
 
 // Custom hook for easy access

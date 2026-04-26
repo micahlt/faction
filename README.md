@@ -26,7 +26,7 @@ Alternatively, you can also run `npm run dev` which will simultaneously start th
 
 ## Installing new packages
 
-For packages that need to be installed in more than one app (such as a package shared between the `server` and `web` folders), just run a standard `npm install {package}` command.  For packages that only need to be installed in one project, run the same command but append `-w @faction/{app}` - like `npm install react -w @faction/web`. 
+For packages that need to be installed in more than one app (such as a package shared between the `server` and `web` folders), just run a standard `npm install {package}` command. For packages that only need to be installed in one project, run the same command but append `-w @faction/{app}` - like `npm install react -w @faction/web`.
 
 ## Stack
 

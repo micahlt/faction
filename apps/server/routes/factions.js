@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
 import { doesUserAdministrateFaction } from "../utils/access.js";
+import randomString from "../utils/randomString.js";
 
 /**
  * Router for /api/factions
@@ -84,6 +85,58 @@ export default function factionsRouter(prisma) {
       }
     } else {
       req.sendStatus(401);
+    }
+  });
+
+  // POST /api/factions/:id/invite
+  router.post("/:id/invite", async (req, res) => {
+    if (!req.params.id || !req.body) return res.sendStatus(400);
+    const { expiresAt } = req.body;
+    if (await doesUserAdministrateFaction(req.user.userId, req.params.id, prisma)) {
+      const createdInvite = await prisma.invite.create({
+        data: {
+          code: randomString(6),
+          authorId: req.user.userId,
+          expiresAt: expiresAt ? new Date(expiresAt) : undefined,
+          factionId: req.params.id,
+        },
+      });
+      if (createdInvite) {
+        return res.status(201).send({ code: createdInvite.code });
+      }
+    }
+  });
+
+  router.get("/invites/:inviteId", async (req, res) => {
+    if (!req.params.inviteId) return res.sendStatus(404);
+    const foundInvite = await prisma.invite.findUnique({
+      where: {
+        code: req.params.inviteId,
+      },
+    });
+
+    if (foundInvite) {
+      console.log(foundInvite);
+      if (foundInvite.expiresAt >= new Date()) {
+        const factionAddedTo = await prisma.faction.update({
+          where: {
+            id: foundInvite.factionId,
+          },
+          data: {
+            members: {
+              connect: {
+                id: req.user.userId,
+              },
+            },
+          },
+        });
+
+        if (factionAddedTo) {
+          return res.redirect(`/app/${factionAddedTo.id}`);
+        }
+      } else {
+        return res.status(410).send({ error: "This invite is expired." });
+      }
     }
   });
 

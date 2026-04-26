@@ -5,37 +5,49 @@ import { useSocket } from "./contexts/SocketContext";
 import { useCallback, useEffect, useState } from "react";
 
 export default function MessageListRenderer({ factionId = "", topicId = {} }) {
-    const socket = useSocket();
-    const [messagesList, setMessagesList] = useState([]);
+  const socket = useSocket();
+  const [messagesList, setMessagesList] = useState([]);
 
-    const updateMessageList = useCallback((message) => {
-        setMessagesList(msgList => {
-            return [message, ...msgList];
-        })
-    }, [messagesList, setMessagesList])
+  const updateMessageList = useCallback(
+    (message) => {
+      setMessagesList((msgList) => {
+        return [message, ...msgList];
+      });
+    },
+    [messagesList, setMessagesList]
+  );
 
-    useEffect(() => {
-        console.log("registering")
-        socket.on("message:recieve", (message) => {
-            console.log(message);
-            if (message.topicId === topicId) {
-                updateMessageList(message)
-            }
-        });
-        return () => socket.off("message:recieve");
-    }, []);
+  useEffect(() => {
+    console.log("registering");
+    socket.on("message:recieve", (message) => {
+      console.log(message);
+      if (message.topicId === topicId) {
+        updateMessageList(message);
+      }
+    });
+    return () => socket.off("message:recieve");
+  }, []);
 
-    useEffect(() => {
-        setMessagesList([]);
-        fetch(`/api/topics/${topicId}/messages?start=${new Date().getTime() - 604000000}&end=${new Date().getTime()}`).then (messages => {
-            return messages.json()
-        }).then(data => {
-            setMessagesList(data)
-        })
-    }, [topicId])
+  useEffect(() => {
+    setMessagesList([]);
+    fetch(
+      `/api/topics/${topicId}/messages?start=${new Date().getTime() - 604000000}&end=${new Date().getTime()}`
+    )
+      .then((messages) => {
+        return messages.json();
+      })
+      .then((data) => {
+        setMessagesList(data);
+      });
+  }, [topicId]);
 
-    useEffect(() => console.log(messagesList), [messagesList])
+  useEffect(() => console.log(messagesList), [messagesList]);
 
-    return <div className={s.messageListRenderer}>{messagesList.map((msg, index) => <Message key={index} message={msg} />)}
-    </div>;
+  return (
+    <div className={s.messageListRenderer}>
+      {messagesList.map((msg, index) => (
+        <Message key={index} message={msg} />
+      ))}
+    </div>
+  );
 }

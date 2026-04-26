@@ -21,8 +21,7 @@ function LoginPage() {
   const nav = useNavigate();
   const queryClient = useQueryClient();
 
-  const isSignupDisabled =
-    formMode === "signup" && usernameStatus !== "valid";
+  const isSignupDisabled = formMode === "signup" && usernameStatus !== "valid";
 
   // Debounced username check
   useEffect(() => {
@@ -45,9 +44,7 @@ function LoginPage() {
 
     const timeout = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `/api/auth/checkusername?username=${encodeURIComponent(trimmed)}`
-        );
+        const res = await fetch(`/api/auth/checkusername?username=${encodeURIComponent(trimmed)}`);
 
         if (res.ok) {
           setUsernameStatus("valid");
@@ -171,9 +168,7 @@ function LoginPage() {
 
         {formMode === "signup" && usernameMessage && (
           <p
-            className={
-              usernameStatus === "invalid" ? s.errorText : undefined
-            }
+            className={usernameStatus === "invalid" ? s.errorText : undefined}
             style={{
               color:
                 usernameStatus === "valid"
@@ -215,9 +210,7 @@ function LoginPage() {
         {loginError && <p className={s.errorText}>{loginError}</p>}
 
         <p className={s.switchMode}>
-          {formMode === "login"
-            ? "Don't have an account? "
-            : "Already have an account? "}
+          {formMode === "login" ? "Don't have an account? " : "Already have an account? "}
           <a
             href="#"
             onClick={(e) => {

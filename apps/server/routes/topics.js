@@ -81,7 +81,6 @@ export default function topicsRouter(prisma) {
       });
       if (updated) {
         return res.send(updated);
-        
       } else {
         return res.sendStatus(500);
       }
@@ -92,10 +91,10 @@ export default function topicsRouter(prisma) {
 
   //Get messages from server per topic, with optional start and end times for filtering.
   //GET /api/topics/:id/messages?start=<timestamp>&end=<timestamp>
-  router.get("/:id/messages", async(req, res) =>{
+  router.get("/:id/messages", async (req, res) => {
     if (!req.params.id || !req.query.start || !req.query.end) return res.sendStatus(400);
     //if (!(await isUserInFaction(req.user.userId, req.params.id, prisma)))
-     // return res.sendStatus(401);
+    // return res.sendStatus(401);
     const messages = await prisma.message.findMany({
       where: {
         topicId: req.params.id,
@@ -110,13 +109,13 @@ export default function topicsRouter(prisma) {
             id: true,
             imageUrl: true,
             nickname: true,
-            username: true
-          }
-        }
-      }
+            username: true,
+          },
+        },
+      },
     });
     return res.send(messages);
-  })
+  });
 
   // DELETE /api/topics/:id
   router.delete("/:id", async (req, res) => {
