@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import CreateTopicForm from "./CreateTopicForm";
 import CreateInviteForm from "./CreateInviteForm";
 import Modal from "./Modal";
+import useDoesHaveAdmin from "../hooks/useDoesHaveAdmin";
 
 export default function FactionSidebar({ factionId = "" }) {
   const {
@@ -22,6 +23,7 @@ export default function FactionSidebar({ factionId = "" }) {
   const { topicId } = useParams({ strict: false });
   const [creatingTopic, setCreatingTopic] = useState(false);
   const [creatingInvite, setCreatingInvite] = useState(false);
+  const isAdmin = useDoesHaveAdmin(factionId)
 
   return (
     <div className={s.factionSidebar}>
@@ -34,7 +36,7 @@ export default function FactionSidebar({ factionId = "" }) {
               <TopicListItem topic={topic} active={topic.id === topicId} />
             ))}
           </div>
-          <div className={s.sidebarOptions}>
+          {isAdmin && <div className={s.sidebarOptions}>
             <a
               href="#"
               className={s.sidebarOptionBtn}
@@ -55,7 +57,7 @@ export default function FactionSidebar({ factionId = "" }) {
             >
               <EnvelopeIcon size={18} /> Invite
             </a>
-          </div>
+          </div>}
         </>
       )}
       {creatingTopic &&
