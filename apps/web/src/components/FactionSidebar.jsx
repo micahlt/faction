@@ -67,7 +67,7 @@ export default function FactionSidebar({ factionId = "" }) {
         )}
       {creatingInvite &&
         createPortal(
-          <Modal canCloseOnOverlay={true} onClose={() => setCreatingTopic(false)}>
+          <Modal canCloseOnOverlay={true} onClose={() => setCreatingInvite(false)}>
             <CreateInviteForm factionId={faction.id} onCreated={() => setCreatingInvite(false)} />
           </Modal>,
           document.body

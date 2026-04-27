@@ -1,13 +1,14 @@
 .factionIcon {
   cursor: pointer;
   border: 1px solid;
+  border-color: var(--clr-surface-tonal-30);
   border-radius: var(--radius-md);
   overflow: hidden;
   height: 3.25rem;
   width: 3.25rem;
   display: flex;
   background-color: var(--clr-surface-tonal-20);
-  transition: transform 100ms;
+  transition: all 100ms;
   will-change: transform;
 
   img {
@@ -17,8 +18,21 @@
   }
 }
 
+.selected {
+  background-color: var(--clr-surface-tonal-30) !important;
+  border-color: var(--clr-primary);
+
+  .letter {
+    color: var(--clr-primary);
+  }
+}
+
 .factionIcon:hover {
-  transform: scale(1.1);
+  border-color: var(--clr-surface-tonal-50);
+
+  .letter {
+    color: var(--clr-primary);
+  }
 }
 
 .letter {
@@ -27,4 +41,5 @@
   font-size: 1.5rem;
   margin: auto;
   color: var(--clr-surface-tonal-50);
+  transition: color 100ms;
 }

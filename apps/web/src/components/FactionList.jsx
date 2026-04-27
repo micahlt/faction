@@ -1,14 +1,16 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import s from "../styles/modules/FactionList.module.css";
 import FactionIcon from "./FactionIcon";
 import { createPortal } from "react-dom";
 import StepsModal from "./StepsModal";
 import InitialFactionForm from "./InitialFactionForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function FactionList({ factions = [], currentFaction = {} }) {
+export default function FactionList({ factions = [] }) {
   const nav = useNavigate();
+  const { factionId } = useParams({ strict: false });
   const [isCreatingFaction, setIsCreatingFaction] = useState(false);
+
 
   const setCurrentFaction = (id) => {
     nav({
@@ -30,7 +32,7 @@ export default function FactionList({ factions = [], currentFaction = {} }) {
           <FactionIcon
             faction={faction}
             key={faction.id}
-            isSelected={currentFaction?.id == faction.id}
+            isSelected={factionId == faction.id}
             onClick={() => setCurrentFaction(faction.id)}
           />
         ))}

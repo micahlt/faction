@@ -20,7 +20,7 @@
   left: 50%;
   overflow: hidden;
   transform: translate(-50%, -50%);
-  background-color: var(--clr-surface);
+  background-color: var(--clr-surface-10);
   width: 90%;
   height: 80%;
   max-width: 700px;

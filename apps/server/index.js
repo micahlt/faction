@@ -75,8 +75,6 @@ io.on("connection", (socket) => {
     });
 
     io.to(`f:${message.factionId}`).emit("message:recieve", createdMsg);
-
-    // save message to db
   });
   socket.on("typing:start", ({ factionId, topicId }) => {
     if (!factionId || !topicId) return;

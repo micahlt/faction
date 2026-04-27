@@ -2,11 +2,11 @@ import { useState } from "react";
 import s from "../styles/modules/InitialFactionForm.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
+export default function CreateTopicForm({ onCreated = () => { }, factionId }) {
   const [name, setName] = useState();
   const queryClient = useQueryClient();
 
-  const createFaction = async () => {
+  const createTopic = async () => {
     await fetch(`/api/topics/new`, {
       method: "POST",
       body: JSON.stringify({
@@ -26,7 +26,7 @@ export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
       className={s.initialFactionForm}
       onSubmitCapture={(e) => {
         e.preventDefault();
-        createFaction();
+        createTopic();
       }}
     >
       <h2>Create a new topic</h2>
@@ -36,6 +36,7 @@ export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
           name="name"
           placeholder="Topic Name"
           onChange={(e) => setName(e.target.value)}
+          autoComplete="none"
           value={name}
         />
         <button type="submit">Create</button>

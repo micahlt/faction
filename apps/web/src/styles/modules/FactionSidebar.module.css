@@ -36,8 +36,9 @@
 }
 
 .sidebarOptionBtn {
-  background-color: var(--clr-surface-tonal-10);
+  background-color: var(--clr-surface-20);
   padding: 0.5rem 0.5rem;
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
   text-decoration: none;
   text-transform: uppercase;
@@ -50,4 +51,10 @@
   flex: 1;
   text-align: center;
   justify-content: center;
+  transition: all 100ms;
+}
+
+.sidebarOptionBtn:hover {
+  border-color: var(--clr-surface-tonal-30);
+  background-color: var(--clr-surface-tonal-20);
 }
