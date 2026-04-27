@@ -78,6 +78,28 @@ io.on("connection", (socket) => {
 
     // save message to db
   });
+  socket.on("typing:start", ({ factionId, topicId }) => {
+    if (!factionId || !topicId) return;
+
+    socket.to(`f:${factionId}`).emit("typing:start", {
+      topicId,
+      user: {
+        id: socket.data.user.id,
+        imageUrl: socket.data.user.imageUrl,
+        nickname: socket.data.user.nickname,
+        username: socket.data.user.username,
+      },
+    });
+  });
+
+  socket.on("typing:stop", ({ factionId, topicId }) => {
+    if (!factionId || !topicId) return;
+
+    socket.to(`f:${factionId}`).emit("typing:stop", {
+      topicId,
+      userId: socket.data.user.id,
+    });
+  });
 });
 
 io.on("disconnect", (socket) => {
