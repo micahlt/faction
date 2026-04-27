@@ -13,3 +13,9 @@
   justify-items: flex-end;
   scrollbar-width: none;
 }
+.typingIndicator {
+  color: #9aa6c4;
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 8px;
+}

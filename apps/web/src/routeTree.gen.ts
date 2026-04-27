@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as CreateFactionRouteImport } from './routes/create-faction'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
@@ -21,6 +22,11 @@ import { Route as AuthenticatedAppFactionIdTopicIdRouteImport } from './routes/_
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateFactionRoute = CreateFactionRouteImport.update({
+  id: '/create-faction',
+  path: '/create-faction',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -63,6 +69,7 @@ const AuthenticatedAppFactionIdTopicIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/create-faction': typeof CreateFactionRoute
   '/login': typeof LoginRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/app/$factionId': typeof AuthenticatedAppFactionIdRouteWithChildren
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/create-faction': typeof CreateFactionRoute
   '/login': typeof LoginRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/$factionId/$topicId': typeof AuthenticatedAppFactionIdTopicIdRoute
@@ -81,6 +89,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/create-faction': typeof CreateFactionRoute
   '/login': typeof LoginRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/app/$factionId': typeof AuthenticatedAppFactionIdRouteWithChildren
@@ -92,6 +101,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/create-faction'
     | '/login'
     | '/app'
     | '/app/$factionId'
@@ -99,11 +109,18 @@ export interface FileRouteTypes {
     | '/app/$factionId/$topicId'
     | '/app/$factionId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/app' | '/app/$factionId/$topicId' | '/app/$factionId'
+  to:
+    | '/'
+    | '/create-faction'
+    | '/login'
+    | '/app'
+    | '/app/$factionId/$topicId'
+    | '/app/$factionId'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/create-faction'
     | '/login'
     | '/_authenticated/app'
     | '/_authenticated/app/$factionId'
@@ -115,6 +132,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  CreateFactionRoute: typeof CreateFactionRoute
   LoginRoute: typeof LoginRoute
 }
 
@@ -125,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-faction': {
+      id: '/create-faction'
+      path: '/create-faction'
+      fullPath: '/create-faction'
+      preLoaderRoute: typeof CreateFactionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -224,6 +249,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  CreateFactionRoute: CreateFactionRoute,
   LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport

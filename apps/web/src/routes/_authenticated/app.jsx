@@ -81,7 +81,7 @@ function RouteComponent() {
               <UserPanel loggedInUser={user} />
             </div>
             <div className={s.messagebox}>
-              <MessageBox />
+              <MessageBox loggedInUser={user} />
             </div>
           </div>
         </main>
