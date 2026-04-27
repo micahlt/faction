@@ -28,7 +28,6 @@ export default function UserListPanel({ factionId }) {
                     <li key={user.id}>
                         <UserAvatar size="sm" imageUrl={user.imageUrl}/>
                         <span>{user.username}</span>
-                        <!-- This is where the online status indicator should go. -->
                     </li>
                 ))}
             </ul>
