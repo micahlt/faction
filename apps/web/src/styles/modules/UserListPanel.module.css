@@ -3,7 +3,9 @@
     flex-direction: column;
     width: 20rem;
     height: 100%;
-    border-left: 1px solid #e0e0e0;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--radius-md);
+    margin: 0.5rem;
     padding: 1rem;
     overflow-y: auto;
     gap: 0.5rem;
