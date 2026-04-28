@@ -10,7 +10,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   const updateMessageList = useCallback((message) => {
     setMessagesList((msgList) => [message, ...msgList]);
-}, []);
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
@@ -62,11 +62,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     setMessagesList([]);
     setTypingUsers([]);
 
-    fetch(
-      `/api/topics/${topicId}/messages?start=${
-        Date.now() - 604000000
-      }&end=${Date.now()}`
-    )
+    fetch(`/api/topics/${topicId}/messages?start=${Date.now() - 604000000}&end=${Date.now()}`)
       .then((messages) => messages.json())
       .then((data) => {
         setMessagesList(data);

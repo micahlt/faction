@@ -1,57 +1,10 @@
 import { useRef, useState } from "react";
 import s from "../styles/modules/MessageBox.module.css";
-import { Plus, PaperPlaneIcon } from "@phosphor-icons/react";
+import { PlusIcon, PaperPlaneIcon } from "@phosphor-icons/react";
 import { useSocket } from "./contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
-
-const fileToBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const result = reader.result || "";
-      resolve(result.toString().split(",")[1]);
-    };
-
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
-const shrinkImage = (file, maxWidth = 1600, quality = 0.75) =>
-  new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-
-      const scale = Math.min(1, maxWidth / img.width);
-      const canvas = document.createElement("canvas");
-
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
-
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) return reject(new Error("Image compression failed"));
-
-          resolve(
-            new File([blob], file.name.replace(/\.\w+$/, ".jpg"), {
-              type: "image/jpeg",
-            })
-          );
-        },
-        "image/jpeg",
-        quality
-      );
-    };
-
-    img.onerror = reject;
-    img.src = url;
-  });
+import shrinkImage from "../utils/shrinkImage";
+import fileToBase64 from "../utils/fileToBase64";
 
 export default function MessageBox({ loggedInUser = {} }) {
   const { factionId, topicId } = useParams({ strict: false });
@@ -77,9 +30,7 @@ export default function MessageBox({ loggedInUser = {} }) {
   };
 
   const addImages = (files = []) => {
-    const images = Array.from(files).filter((file) =>
-      file.type.startsWith("image/")
-    );
+    const images = Array.from(files).filter((file) => file.type.startsWith("image/"));
 
     if (!images.length) return;
 
@@ -95,12 +46,11 @@ export default function MessageBox({ loggedInUser = {} }) {
   };
 
   const uploadImage = async (file) => {
-    const smallerFile =
-      file.size > 5 * 1024 * 1024 ? await shrinkImage(file) : file;
+    const smallerFile = file.size > 5 * 1024 * 1024 ? await shrinkImage(file) : file;
 
     const image = await fileToBase64(smallerFile);
 
-    const res = await fetch("/api/upload/image", {
+    const res = await fetch("/api/assets/upload/image", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -214,7 +164,7 @@ export default function MessageBox({ loggedInUser = {} }) {
         onClick={() => fileInput.current?.click()}
         title="Attach image"
       >
-        <Plus weight="bold" size={22} />
+        <PlusIcon weight="bold" size={22} />
       </button>
 
       <div className={s.inputArea}>
@@ -222,11 +172,7 @@ export default function MessageBox({ loggedInUser = {} }) {
           <div className={s.previewList}>
             {imageFiles.map((file, index) => (
               <div className={s.preview} key={`${file.name}-${index}`}>
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="preview"
-                  className={s.previewImage}
-                />
+                <img src={URL.createObjectURL(file)} alt="preview" className={s.previewImage} />
 
                 <div className={s.previewInfo}>
                   <span>{file.name}</span>
@@ -258,12 +204,7 @@ export default function MessageBox({ loggedInUser = {} }) {
         />
       </div>
 
-      <PaperPlaneIcon
-        weight="duotone"
-        size={28}
-        className={s.sendIcon}
-        onClick={sendMessage}
-      />
+      <PaperPlaneIcon weight="duotone" size={28} className={s.sendIcon} onClick={sendMessage} />
 
       {isDragging && <div className={s.dragOverlay}>Drop images here</div>}
     </div>

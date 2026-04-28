@@ -1,7 +1,7 @@
 import s from "../styles/modules/FactionIcon.module.css";
 import classNames from "classnames";
 
-export default function FactionIcon({ faction = {}, isSelected = false, onClick = () => { } }) {
+export default function FactionIcon({ faction = {}, isSelected = false, onClick = () => {} }) {
   return (
     <div
       onClick={onClick}

@@ -2,8 +2,7 @@ import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 
-const isImageUrl = (content = "") =>
-  /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
+const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
 export default function Message({ message = {} }) {
   const [expanded, setExpanded] = useState(false);
