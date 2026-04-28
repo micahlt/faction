@@ -1,5 +1,6 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import FactionSidebar from "../../../components/FactionSidebar";
+import UserListPanel from "../../../components/UserListPanel";
 import { useSocket } from "../../../components/contexts/SocketContext";
 import { useEffect } from "react";
 
@@ -22,6 +23,7 @@ function RouteComponent() {
     <>
       <FactionSidebar factionId={factionId} />
       <Outlet />
+      <UserListPanel factionId={factionId} />
     </>
   );
 }
