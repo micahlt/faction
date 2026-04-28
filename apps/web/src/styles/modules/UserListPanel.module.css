@@ -25,6 +25,23 @@
     gap: 0.25rem;
 }
 
+.onlineIndicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid rgb(70, 70, 70);
+    border-radius: 50%;
+    background-color: #22c55e; /*green*/
+    margin-left: auto;
+}
+
+.offlineIndicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 2px solid rgb(70, 70, 70);
+    border-radius: 50%;
+    margin-left: auto;
+}
+
 .UserListPanel li {
     padding: 0.5rem;
     border-radius: 4px;

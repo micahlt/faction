@@ -37,6 +37,14 @@ app.use("/api/users", usersRouter(prisma));
 io.on("connection", (socket) => {
   socket.on("ping:alive", () => {
     console.log(`User ${socket.data.user.username} sent alive ping`);
+    
+    // notifies all factions the user is in that they are online
+    socket.data.user.factions.forEach(faction => {
+      io.to(`f:${faction.id}`).emit("user:online", {
+        userId: socket.data.user.id,
+        username: socket.data.user.username,
+      });
+    });
   });
 
   socket.on("faction:join", async (factionId) => {
