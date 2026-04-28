@@ -4,8 +4,9 @@ import FormData from "form-data";
 
 const router = express.Router();
 
-export default function uploadRouter() {
-  router.post("/image", async (req, res) => {
+export default function assetsRouter() {
+  // POST /api/assets/upload/image
+  router.post("/upload/image", async (req, res) => {
     try {
       const { image } = req.body;
 
