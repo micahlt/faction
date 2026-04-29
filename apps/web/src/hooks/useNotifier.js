@@ -11,7 +11,7 @@ export default function useNotifier() {
   };
 
   const notifyIfBlurred = (title, body) => {
-    if (!isBlurred) {
+    if (isBlurred) {
       notify(title, body);
     }
   };
