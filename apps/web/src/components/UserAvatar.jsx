@@ -6,6 +6,7 @@ export default function UserAvatar({
   size = "md",
   imageUrl = "",
   isOnline = undefined,
+  isAway = false,
   showActivityStatus = false,
 }) {
   const imageSize = useMemo(() => {
@@ -29,11 +30,11 @@ export default function UserAvatar({
     <img
       className={classNames(
         s.userAvatar,
-        showActivityStatus && isOnline
-          ? s.statusOnline
-          : showActivityStatus && !isOnline
-            ? s.statusOffline
-            : ""
+        showActivityStatus && isAway
+          ? s.statusAway
+          : showActivityStatus && isOnline
+            ? s.statusOnline
+              : s.statusOffline
       )}
       src={imageUrl}
       style={{

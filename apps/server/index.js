@@ -199,6 +199,26 @@ io.on("connection", (socket) => {
   });
 });
 
+socket.on('user:away', () => {
+  //sets the status to away for all factions user is in
+  socket.data.user.factions.forEach((faction) => {
+    io.to(`f:${faction.id}`).emit('user:away', {
+      userId: socket.data.user.id,
+      username: socket.data.user.username,
+    });
+  });
+});
+
+socket.on('user:back', () => {
+  //User came back
+  socket.data.user.factions.forEach((faction) => {
+    io.to(`f:${faction.id}`).emit('user:back', {
+      userId: socket.data.user.id,
+      username: socket.data.user.username,
+    });
+  });
+});
+
 io.on("disconnect", (socket) => {
   console.log(`Socket ID ${socket.id} disconnected.`);
 });

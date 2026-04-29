@@ -25,6 +25,22 @@ export const SocketProvider = ({ children }) => {
     return () => socket?.disconnect();
   }, []);
 
+  // detect when a user goes away
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        socket.emit('user:away');
+      } else {
+        socket.emit('user:back');
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [socket])
+
   return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };
 
