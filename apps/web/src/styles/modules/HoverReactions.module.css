@@ -12,6 +12,7 @@
   z-index: 10;
   transform: scale(0.7) translateY(50%);
   opacity: 0;
+  box-shadow: var(--shadow-md);
 }
 
 .open {
