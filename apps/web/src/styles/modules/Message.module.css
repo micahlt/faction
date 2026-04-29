@@ -30,6 +30,10 @@
   font-weight: 300;
 }
 
+.contentLink {
+  color: var(--clr-light);
+}
+
 .main {
   margin-left: 0.75rem;
   width: 100%;

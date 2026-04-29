@@ -2,6 +2,7 @@ import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 import classNames from "classnames";
+import { LinkItUrl } from "react-linkify-it"
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
@@ -36,7 +37,9 @@ export default function Message({ message = {}, hideAuthor = false }) {
               onClick={() => setExpanded(true)}
             />
           ) : (
-            message.content
+            <LinkItUrl className={s.contentLink}>
+              {message.content}
+            </LinkItUrl>
           )}
         </div>
       </div>
