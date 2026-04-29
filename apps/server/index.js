@@ -15,14 +15,33 @@ import {
 } from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import socketJWT from "./middleware/socketJWT.js";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL || "faction.db" });
 const prisma = new PrismaClient({ adapter });
 
 const app = express();
 const httpServer = createServer(app);
+
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",")
+  : "http://localhost:3000";
+
+// Express middlewares go here
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+};
+
+import cors from "cors";
+app.use(cors(corsOptions));
+
 const io = new Server(httpServer, {
-  cors: { origin: process.env.CORS_ORIGINS, credentials: true },
+  cors: corsOptions,
 });
 
 io.use(async (socket, next) => {
@@ -32,14 +51,21 @@ io.use(async (socket, next) => {
 // Express middlewares go here
 app.use(express.json({ limit: "25mb" }));
 app.use(cookieParser());
-app.use(expressJWT);
 
 // Register REST endpoints here
 app.use("/api/auth", authRouter(prisma));
-app.use("/api/factions", factionsRouter(prisma));
-app.use("/api/topics", topicsRouter(prisma));
-app.use("/api/users", usersRouter(prisma));
-app.use("/api/assets", assetsRouter(prisma));
+app.use("/api/factions", expressJWT, factionsRouter(prisma));
+app.use("/api/topics", expressJWT, topicsRouter(prisma));
+app.use("/api/users", expressJWT, usersRouter(prisma));
+app.use("/api/assets", expressJWT, assetsRouter(prisma));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../web/dist")));
+
+  app.get("/{*splat}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../web/dist", "index.html"));
+  });
+}
 
 io.on("connection", (socket) => {
   socket.on("ping:alive", () => {

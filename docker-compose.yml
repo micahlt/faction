@@ -1,0 +1,21 @@
+services:
+  faction:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3007
+    image: faction-app:latest
+    container_name: faction_backend
+    restart: unless-stopped
+    ports:
+      - "3007:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/faction.db
+      - CORS_ORIGINS=http://localhost:3007
+      - JWT_SECRET=change_this_to_a_secure_random_string
+      - VITE_API_URL=http://localhost:3007
+      - IMGBB_API_KEY=your_imgbb_key_goes_here
+    volumes:
+      - ./faction_data:/app/data

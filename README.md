@@ -52,6 +52,10 @@ All of the code lives in this monorepo.
 - The backend should _not_ serve the frontend files. The frontend will be deployed as a static site.
 - Socket.io should only be used for explicitly realtime communiciation, like message sending. Anything else should run over a [REST](https://restfulapi.net/) API provided by Express.
 
+## Production
+
+This project is designed to work in production using Docker.  To run it in production, clone this repository to the host machine, add your customized environment variables to the `docker-compose.yml` file, and run `docker compose up -d --build` to start the container.
+
 ## Git Cheatsheet
 
 Here's Micah's basic Git cheat sheet:
