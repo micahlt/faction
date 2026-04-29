@@ -3,13 +3,24 @@
   display: flex;
   width: 100%;
   background: transparent;
-  padding: 0.5rem;
+  padding: 0.5rem 0.3rem;
   border-radius: var(--radius-md);
   transition: all 0.2s;
 }
 
 .message:hover {
   background: linear-gradient(to left, var(--clr-surface) 20%, var(--clr-surface-10) 50%);
+}
+
+.message.hiddenAuthor {
+  padding-top: 0;
+  padding-bottom: 0.6rem;
+}
+
+.avatarPlaceholder {
+  width: 32px;
+  min-width: 32px;
+  height: 0;
 }
 
 .content {

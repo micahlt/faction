@@ -51,9 +51,12 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   return (
     <div className={s.messageListRenderer}>
-      {messagesList.map((msg, index) => (
-        <Message key={msg.id ?? index} message={msg} />
-      ))}
+      {messagesList.map((msg, index) => {
+        const previousMessage = messagesList[index + 1];
+        const hideAuthor = previousMessage?.author?.id === msg.author?.id;
+
+        return <Message key={msg.id ?? index} message={msg} hideAuthor={hideAuthor} />;
+      })}
     </div>
   );
 }

@@ -1,28 +1,31 @@
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
+import classNames from "classnames";
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
-export default function Message({ message = {} }) {
+export default function Message({ message = {}, hideAuthor = false }) {
   const [expanded, setExpanded] = useState(false);
   const imageMessage = isImageUrl(message.content);
 
   return (
-    <div className={s.message}>
-      <UserAvatar imageUrl={message?.author?.imageUrl} />
+    <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")}>
+      {hideAuthor ? <div className={s.avatarPlaceholder} /> : <UserAvatar imageUrl={message?.author?.imageUrl} />}
 
       <div className={s.main}>
-        <span className={s.metadata}>
-          <p>{message.author.nickname}</p>
-          <p className={s.date}>
-            {new Date(message.createdAt).toLocaleString("en-US", {
-              hour12: true,
-              minute: "numeric",
-              hour: "numeric",
-            })}
-          </p>
-        </span>
+        {!hideAuthor && (
+          <span className={s.metadata}>
+            <p>{message.author.nickname}</p>
+            <p className={s.date}>
+              {new Date(message.createdAt).toLocaleString("en-US", {
+                hour12: true,
+                minute: "numeric",
+                hour: "numeric",
+              })}
+            </p>
+          </span>
+        )}
 
         <div className={s.content}>
           {imageMessage ? (
