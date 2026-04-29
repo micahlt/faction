@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import s from "../styles/modules/MessageBox.module.css";
 import { PlusIcon, PaperPlaneIcon } from "@phosphor-icons/react";
 import { useSocket } from "./contexts/SocketContext";
@@ -12,11 +12,46 @@ export default function MessageBox({ loggedInUser = {} }) {
   const [imageFiles, setImageFiles] = useState([]);
   const [isSending, setIsSending] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [typingUsers, setTypingUsers] = useState([]);
 
   const socket = useSocket();
   const typingTimeout = useRef(null);
   const isTyping = useRef(false);
   const fileInput = useRef(null);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleTypingStart = ({ topicId: typingTopicId, user }) => {
+      if (typingTopicId !== topicId || !user?.id) return;
+
+      setTypingUsers((users) => {
+        if (users.some((existingUser) => existingUser.id === user.id)) {
+          return users;
+        }
+
+        return [...users, user];
+      });
+    };
+
+    const handleTypingStop = ({ topicId: typingTopicId, userId }) => {
+      if (typingTopicId !== topicId || !userId) return;
+
+      setTypingUsers((users) => users.filter((user) => user.id !== userId));
+    };
+
+    socket.on("typing:start", handleTypingStart);
+    socket.on("typing:stop", handleTypingStop);
+
+    return () => {
+      socket.off("typing:start", handleTypingStart);
+      socket.off("typing:stop", handleTypingStop);
+    };
+  }, [socket, topicId]);
+
+  useEffect(() => {
+    setTypingUsers([]);
+  }, [topicId]);
 
   const stopTyping = () => {
     if (!socket || !factionId || !topicId || !isTyping.current) return;
@@ -135,9 +170,11 @@ export default function MessageBox({ loggedInUser = {} }) {
     }
   };
 
+  const typingText = getTypingText(typingUsers);
+
   return (
     <div
-      className={`${s.messageBox} ${isDragging ? s.dragging : ""}`}
+      className={`${s.messageBox} ${isDragging ? s.dragging : ""} ${typingText ? s.isTyping : ""}`}
       onDragOver={(e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -149,6 +186,8 @@ export default function MessageBox({ loggedInUser = {} }) {
         addImages(e.dataTransfer.files);
       }}
     >
+      {typingText && <div className={s.typingIndicator}>{typingText}</div>}
+
       <input
         ref={fileInput}
         type="file"
@@ -209,4 +248,14 @@ export default function MessageBox({ loggedInUser = {} }) {
       {isDragging && <div className={s.dragOverlay}>Drop images here</div>}
     </div>
   );
+}
+
+function getTypingText(users) {
+  const names = users.map((user) => user.nickname || user.username);
+
+  if (names.length === 0) return "";
+  if (names.length === 1) return `${names[0]} is typing...`;
+  if (names.length === 2) return `${names[0]} and ${names[1]} are typing...`;
+
+  return `${names[0]}, ${names[1]}, and ${names.length - 2} others are typing...`;
 }

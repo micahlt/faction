@@ -71,3 +71,7 @@ body {
   background: var(--clr-surface);
   color: var(--clr-light);
 }
+
+html {
+  overflow: hidden;
+}
