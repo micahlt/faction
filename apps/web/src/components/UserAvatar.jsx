@@ -2,7 +2,12 @@ import { useMemo } from "react";
 import s from "../styles/modules/UserAvatar.module.css";
 import classNames from "classnames";
 
-export default function UserAvatar({ size = "md", imageUrl = "", isOnline = undefined, showActivityStatus = false }) {
+export default function UserAvatar({
+  size = "md",
+  imageUrl = "",
+  isOnline = undefined,
+  showActivityStatus = false,
+}) {
   const imageSize = useMemo(() => {
     switch (size) {
       case "xs":
@@ -21,8 +26,20 @@ export default function UserAvatar({ size = "md", imageUrl = "", isOnline = unde
   }, [size]);
 
   return (
-    <img className={classNames(s.userAvatar, showActivityStatus && isOnline ? s.statusOnline : showActivityStatus && !isOnline ? s.statusOffline : "")} src={imageUrl} style={{
-      "--avatarSize": `${imageSize}px`
-    }} alt=" " />
+    <img
+      className={classNames(
+        s.userAvatar,
+        showActivityStatus && isOnline
+          ? s.statusOnline
+          : showActivityStatus && !isOnline
+            ? s.statusOffline
+            : ""
+      )}
+      src={imageUrl}
+      style={{
+        "--avatarSize": `${imageSize}px`,
+      }}
+      alt=" "
+    />
   );
 }

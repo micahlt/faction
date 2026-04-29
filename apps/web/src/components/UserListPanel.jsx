@@ -68,8 +68,18 @@ export default function UserListPanel({ factionId }) {
   }, [socket, factionId]);
 
   //minor error handling, could be expanded on later.
-  if (isLoading) return <div className={`${s.container}`}><div className={s.UserListPanel}>Loading...</div></div>;
-  if (error) return <div className={`${s.Container}`}><div className={s.UserListPanel}>Error loading users</div></div>;
+  if (isLoading)
+    return (
+      <div className={`${s.container}`}>
+        <div className={s.UserListPanel}>Loading...</div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className={`${s.Container}`}>
+        <div className={s.UserListPanel}>Error loading users</div>
+      </div>
+    );
 
   //TODO: Ideally there should be an AFK/Idle indicator as well.
   //TODO: there should be some functionality to click on a user and view thier profile/send them a DM?
@@ -88,7 +98,12 @@ export default function UserListPanel({ factionId }) {
         <ul>
           {sortedUsers.map((user) => (
             <li key={user.id}>
-              <UserAvatar size="sm" imageUrl={user.imageUrl} isOnline={onlineUserIds.has(user.id)} showActivityStatus={true} />
+              <UserAvatar
+                size="sm"
+                imageUrl={user.imageUrl}
+                isOnline={onlineUserIds.has(user.id)}
+                showActivityStatus={true}
+              />
               <div>
                 <p className={s.username}>{user.username}</p>
                 <span>{user.nickname}</span>

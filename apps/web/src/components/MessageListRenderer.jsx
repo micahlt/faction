@@ -2,9 +2,18 @@ import Message from "./Message";
 import s from "../styles/modules/MessageListRenderer.module.css";
 import { useSocket } from "./contexts/SocketContext";
 import { useCallback, useEffect, useState } from "react";
+import useNotifier from "../hooks/useNotifier";
+import { useParams } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 
 export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   const socket = useSocket();
+  const { notifyIfBlurred } = useNotifier();
+  const { data: faction } = useQuery({
+    queryKey: ["factions", factionId],
+    queryFn: () => apiGetQuery(`/api/factions/${factionId}`),
+  });
+
   const [messagesList, setMessagesList] = useState([]);
 
   const updateMessageList = useCallback((message) => {
@@ -18,6 +27,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
       if (message.topicId === topicId) {
         updateMessageList(message);
       }
+      notifyIfBlurred(`New message in ${faction.name}`, message.content);
     };
 
     socket.on("message:recieve", handleMessage);
@@ -25,7 +35,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     return () => {
       socket.off("message:recieve", handleMessage);
     };
-  }, [socket, topicId, updateMessageList]);
+  }, [socket, topicId, updateMessageList, faction]);
 
   useEffect(() => {
     setMessagesList([]);
@@ -34,7 +44,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
       .then((messages) => messages.json())
       .then((data) => {
         // messages were returned oldest on bottom, we want the most recent stuff on bottom
-        const messageOrder = data.sort((a, b) => new Date(b.createdAt) - new Date (a.createdAt));
+        const messageOrder = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setMessagesList(messageOrder);
       });
   }, [topicId]);
