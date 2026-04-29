@@ -158,6 +158,8 @@ export default function factionsRouter(prisma) {
       } else {
         return res.status(410).send({ error: "This invite is expired." });
       }
+    } else {
+      return res.sendStatus(404);
     }
   });
 

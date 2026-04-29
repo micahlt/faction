@@ -59,6 +59,9 @@ app.use("/api/factions", expressJWT, factionsRouter(prisma));
 app.use("/api/topics", expressJWT, topicsRouter(prisma));
 app.use("/api/users", expressJWT, usersRouter(prisma));
 app.use("/api/assets", expressJWT, assetsRouter(prisma));
+app.get("/invite/:inviteId", (req, res) => {
+  res.redirect(`/api/factions/invites/${req.params.inviteId}`);
+});
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../web/dist")));

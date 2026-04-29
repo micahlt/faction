@@ -18,7 +18,7 @@ export default function FactionSidebar({ factionId = "" }) {
     error: factionError,
     isLoading: factionLoading,
   } = useQuery({
-    queryKey: ["factions", factionId],
+    queryKey: ["factions", factionId, "topics"],
     queryFn: () => apiGetQuery(`/api/factions/${factionId}?topics=true`),
   });
   const { topicId } = useParams({ strict: false });
@@ -57,7 +57,7 @@ export default function FactionSidebar({ factionId = "" }) {
           <span className={s.factionPretitle}>FACTION</span>
           <h2>{faction?.name}</h2>
           <div className={s.topicsList}>
-            {faction.topics.map((topic) => (
+            {faction?.topics.map((topic) => (
               <TopicListItem topic={topic} active={topic.id === topicId} typingInTopic={typingTopics.includes(topic.id)} key={topic.id} />
             ))}
           </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import s from "../styles/modules/InitialFactionForm.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
+export default function CreateTopicForm({ onCreated = () => { }, factionId }) {
   const [expiration, setExpiration] = useState();
   const [code, setCode] = useState("");
   const queryClient = useQueryClient();
@@ -48,7 +48,7 @@ export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
           <input
             type="text"
             disabled
-            value={`${window.location.origin}/api/factions/invites/${code}`}
+            value={`${window.location.origin}/invite/${code}`}
           />
         )}
       </div>
