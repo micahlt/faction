@@ -1,6 +1,9 @@
 import express from "express";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
+import bcrypt from "bcrypt";
+
+const PASSWORD_REGEX = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
 
 /**
  * Router for /api/factions
@@ -42,7 +45,7 @@ export default function usersRouter(prisma) {
       const user = await prisma.user.findUnique({ where: { id: userId } });
 
       //use your current password to change your password
-      if (newPassord) {
+      if (newPassword) {
         if (!currentPassword) {
           return res.status(400).send({ error: "Current password is required to change password"});
         }

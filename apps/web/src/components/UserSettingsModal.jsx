@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import s from "../styles/modules/UserSettingsModal.module.css";
 
 export default function UserSettingsModal({ user, onClose, onSuccess }) {
+    const queryClient = useQueryClient();
     const [nickname, setNickname] = useState(user.nickname || "");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -40,7 +42,12 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || "Failed to update settings");
             }
-
+            // Invalidate all queries to refresh user data everywhere
+            queryClient.invalidateQueries({ queryKey: ["factionUsers"] });
+            queryClient.invalidateQueries({ queryKey: ["factions"] });
+            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            
+            
             onSuccess();
         } catch (err) {
             setError(err.message);

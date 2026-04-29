@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import s from "../styles/modules/UserPanel.module.css";
 import UserAvatar from "./UserAvatar";
 import Modal from "./Modal";
