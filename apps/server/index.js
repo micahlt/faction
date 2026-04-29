@@ -38,6 +38,7 @@ const corsOptions = {
 };
 
 import cors from "cors";
+import { isUserInTopic } from "./utils/access.js";
 app.use(cors(corsOptions));
 
 const io = new Server(httpServer, {
@@ -69,7 +70,7 @@ if (process.env.NODE_ENV === "production") {
 
 io.on("connection", (socket) => {
   socket.on("ping:alive", () => {
-    console.log(`User ${socket.data.user.username} sent alive ping`);
+    // console.log(`User ${socket.data.user.username} sent alive ping`);
 
     // notifies all factions the user is in that they are online
     socket.data.user.factions.forEach((faction) => {
@@ -95,10 +96,14 @@ io.on("connection", (socket) => {
 
   //load messages for topic
   socket.on("topic:join", async (topicId) => {
-    if (socket.data.user.topics.findIndex((t) => t.id === topicId) != -1) {
+    if (isUserInTopic(socket.data.user.id, topicId, prisma)) {
       socket.join(`t:${topicId}`);
       console.log("In topic", `t:${topicId}`);
     }
+  });
+
+  socket.on("topic:leave", async (topicId) => {
+    socket.leave(`t:${topicId}`);
   });
 
   socket.on("message:send", async (message) => {
@@ -123,6 +128,50 @@ io.on("connection", (socket) => {
 
     io.to(`f:${message.factionId}`).emit("message:recieve", createdMsg);
   });
+
+  socket.on("message:react", async (reaction) => {
+    const existingReaction = await prisma.reaction.findUnique({
+      where: {
+        messageId_userId_emoji: {
+          messageId: reaction.messageId,
+          userId: socket.data.user.id,
+          emoji: reaction.emoji,
+        },
+      },
+    });
+
+    if (existingReaction) {
+      await prisma.reaction.delete({
+        where: {
+          messageId_userId_emoji: {
+            messageId: reaction.messageId,
+            userId: socket.data.user.id,
+            emoji: reaction.emoji,
+          },
+        },
+      });
+    } else {
+      await prisma.reaction.create({
+        data: {
+          emoji: reaction.emoji,
+          userId: socket.data.user.id,
+          messageId: reaction.messageId,
+        },
+      });
+    }
+
+    const allReactions = await prisma.reaction.findMany({
+      where: {
+        messageId: reaction.messageId,
+      },
+    });
+
+    io.to(`t:${reaction.topicId}`).emit("message:update_react", {
+      messageId: reaction.messageId,
+      reactions: allReactions,
+    });
+  });
+
   socket.on("typing:start", ({ factionId, topicId }) => {
     if (!factionId || !topicId) return;
 

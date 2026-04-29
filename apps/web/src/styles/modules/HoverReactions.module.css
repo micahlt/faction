@@ -1,0 +1,85 @@
+.hoverReactions {
+  position: absolute;
+  top: -1rem;
+  right: 1rem;
+  background-color: var(--clr-surface-10);
+  border: 1px solid var(--clr-surface-20);
+  display: flex;
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 0.65rem;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  z-index: 10;
+  transform: scale(0.7) translateY(50%);
+  opacity: 0;
+}
+
+.open {
+  animation: pop-in 200ms forwards;
+  animation-delay: 0.75s;
+}
+
+.closing {
+  animation: pop-out 100ms forwards;
+}
+
+.reaction {
+  will-change: transform;
+  transition: transform 150ms;
+  cursor: pointer;
+  animation: pop-in 0.3s backwards;
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.reaction:hover {
+  transform: scale(1.3) translateY(0);
+}
+
+.reaction:nth-child(1) {
+  animation-delay: 0.75s;
+}
+
+.reaction:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.reaction:nth-child(3) {
+  animation-delay: 0.85s;
+}
+
+.reaction:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.reaction:nth-child(5) {
+  animation-delay: 0.95s;
+}
+
+.reaction:nth-child(6) {
+  animation-delay: 1s;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.7) translateY(50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pop-out {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.85) translateY(30%);
+    opacity: 0;
+  }
+}

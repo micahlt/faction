@@ -19,6 +19,7 @@
   --clr-primary-30: #faeb76;
   --clr-primary-40: #fcee8e;
   --clr-primary-50: #fef1a5;
+  --clr-primary-transparent: #fced8e42;
 
   /** Theme surface colors */
   --clr-surface: #121212;

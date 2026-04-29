@@ -1,19 +1,83 @@
-import { useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 import classNames from "classnames";
 import { LinkItUrl } from "react-linkify-it"
+const HoverReactions = lazy(() => import("../components/HoverReactions"));
+import { useSocket } from "../components/contexts/SocketContext";
+import { useParams } from "@tanstack/react-router";
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
 export default function Message({ message = {}, hideAuthor = false }) {
   const [expanded, setExpanded] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [showReactions, setShowReactions] = useState(false);
+  const [canAnimateOut, setCanAnimateOut] = useState(false);
+  const hideTimerRef = useRef(null);
+  const visibleTimerRef = useRef(null);
   const imageMessage = isImageUrl(message.content);
+  const { topicId } = useParams({ strict: false });
+  const socket = useSocket();
+
+  useEffect(() => {
+    if (isHovering) {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = null;
+      }
+      if (visibleTimerRef.current) {
+        clearTimeout(visibleTimerRef.current);
+        visibleTimerRef.current = null;
+      }
+      setShowReactions(true);
+
+      visibleTimerRef.current = setTimeout(() => {
+        setCanAnimateOut(true);
+      }, 950);
+      return;
+    }
+
+    if (visibleTimerRef.current) {
+      clearTimeout(visibleTimerRef.current);
+      visibleTimerRef.current = null;
+    }
+
+    if (!canAnimateOut) {
+      setShowReactions(false);
+      return;
+    }
+
+    hideTimerRef.current = setTimeout(() => {
+      setShowReactions(false);
+      setCanAnimateOut(false);
+    }, 220);
+
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+        hideTimerRef.current = null;
+      }
+      if (visibleTimerRef.current) {
+        clearTimeout(visibleTimerRef.current);
+        visibleTimerRef.current = null;
+      }
+    };
+  }, [canAnimateOut, isHovering]);
+
+  const sendReaction = (emoji) => {
+    socket.emit("message:react", {
+      messageId: message.id,
+      topicId,
+      emoji,
+    })
+  }
 
   return (
     <>
-      <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")}>
+      <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        {showReactions ? <HoverReactions onPick={sendReaction} isVisible={isHovering} /> : ""}
         {hideAuthor ? <div className={s.avatarPlaceholder} /> : <UserAvatar imageUrl={message?.author?.imageUrl} />}
 
         <div className={s.main}>
@@ -44,6 +108,21 @@ export default function Message({ message = {}, hideAuthor = false }) {
               </LinkItUrl>
             )}
           </div>
+
+          {message.reactions?.length > 0 && (
+            <div className={s.reactionsGrid}>
+              {Object.entries(
+                message.reactions.reduce((acc, r) => {
+                  acc[r.emoji] = (acc[r.emoji] || 0) + 1;
+                  return acc;
+                }, {})
+              ).map(([emoji, count]) => (
+                <div key={emoji} className={s.reactionChip} onClick={() => sendReaction(emoji)}>
+                  {emoji} <span>{count}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

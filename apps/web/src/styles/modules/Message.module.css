@@ -6,10 +6,20 @@
   padding: 0.5rem 0.3rem;
   border-radius: var(--radius-md);
   transition: all 0.2s;
+  position: relative;
 }
 
 .message:hover {
-  background: linear-gradient(to left, var(--clr-surface) 20%, var(--clr-surface-10) 50%);
+  background: linear-gradient(to right, var(--clr-surface-10) 10%, var(--clr-surface) 90%);
+}
+
+.hoverReactionsWrapper {
+  display: none;
+  z-index: 10;
+}
+
+.message:hover .hoverReactionsWrapper {
+  display: block;
 }
 
 .message.hiddenAuthor {
@@ -91,4 +101,36 @@
   max-width: 90vw;
   max-height: 90vh;
   border-radius: var(--radius-md);
+}
+
+.reactionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+}
+
+.reactionChip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.45rem;
+  background-color: var(--clr-surface-tonal);
+  border: 1px solid var(--clr-surface-tonal-10);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.reactionChip:hover {
+  background-color: var(--clr-surface-tonal-10);
+  border-color: var(--clr-surface-tonal-20);
+  box-shadow: 0 0 10px var(--clr-primary-transparent);
+}
+
+.reactionChip span {
+  font-weight: 500;
+  color: var(--clr-surface-50);
 }

@@ -110,6 +110,7 @@ export default function topicsRouter(prisma) {
             username: true,
           },
         },
+        reactions: true,
       },
       orderBy: {
         createdAt: "desc",
