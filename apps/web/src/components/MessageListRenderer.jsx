@@ -11,7 +11,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   const { notifyIfBlurred } = useNotifier();
   const { data: faction } = useQuery({
     queryKey: ["factions", factionId],
-    queryFn: () => apiGetQuery(`/api/faction/${factionId}`),
+    queryFn: () => apiGetQuery(`/api/factions/${factionId}`),
   });
   const { data: topic, status } = useQuery({
     queryKey: ["topics", topicId],
@@ -34,10 +34,26 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
       notifyIfBlurred(`Message from ${message.author.username} (${faction.name}, #${topic.name})`, message.content);
     };
 
+    const handleUpdateReaction = ({ messageId, reactions }) => {
+      setMessagesList((msgList) => {
+        return msgList.map((msg) => {
+          if (msg.id === messageId) {
+            return {
+              ...msg,
+              reactions: reactions,
+            };
+          }
+          return msg;
+        });
+      });
+    };
+
     socket.on("message:recieve", handleMessage);
+    socket.on("message:update_react", handleUpdateReaction);
 
     return () => {
       socket.off("message:recieve", handleMessage);
+      socket.off("message:update_react", handleUpdateReaction);
     };
   }, [socket, topicId, updateMessageList, faction, topic]);
 
