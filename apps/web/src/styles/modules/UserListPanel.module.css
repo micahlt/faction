@@ -1,4 +1,12 @@
-.UserListPanel {
+.container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.userListPanel {
   display: flex;
   flex-direction: column;
   width: 13rem;
@@ -8,11 +16,61 @@
   margin: 0.5rem;
   padding: 0.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
   gap: 0.5rem;
   z-index: 10;
+  transition:
+    width 0.3s ease,
+    margin 0.3s ease,
+    padding 0.3s ease,
+    border-width 0.3s ease,
+    opacity 0.3s ease;
+  white-space: nowrap;
 }
 
-.UserListPanel h3 {
+.collapsed {
+  width: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-width: 0;
+  opacity: 0;
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 0.65rem;
+  left: -2rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--clr-surface-10);
+  border: 1px solid var(--clr-surface-20);
+  color: var(--clr-surface-40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    left 0.3s ease,
+    transform 0.3s ease;
+}
+
+.toggleBtn:hover {
+  background-color: var(--clr-surface-30);
+  color: var(--clr-light);
+}
+
+.collapsedBtn {
+  left: -2.5rem;
+  transform: rotate(180deg);
+}
+
+.userListPanel h3 {
   color: var(--clr-surface-40);
   letter-spacing: 0.5ch;
   font-weight: 300;
@@ -20,7 +78,7 @@
   text-transform: uppercase;
 }
 
-.UserListPanel ul {
+.userListPanel ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -29,23 +87,23 @@
 }
 
 .onlineIndicator {
-    width: 0.5rem;
-    height: 0.5rem;
-    border: 1px solid rgb(70, 70, 70);
-    border-radius: 50%;
-    background-color: #22c55e; /*green*/
-    margin-left: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 50%;
+  background-color: #22c55e; /*green*/
+  margin-left: auto;
 }
 
 .offlineIndicator {
-    width: 0.5rem;
-    height: 0.5rem;
-    border: 2px solid rgb(70, 70, 70);
-    border-radius: 50%;
-    margin-left: auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: 2px solid rgb(70, 70, 70);
+  border-radius: 50%;
+  margin-left: auto;
 }
 
-.UserListPanel li {
+.userListPanel li {
   padding: 0.4rem 0.3rem;
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
@@ -55,11 +113,21 @@
     color 150ms;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
   color: var(--clr-surface-tonal-50);
 }
 
-.UserListPanel li:hover {
+.userListPanel li:hover {
   background-color: var(--clr-surface-tonal-20);
   color: var(--clr-light);
+}
+
+.username {
+  color: var(--clr-light);
+  font-weight: bold;
+  line-height: 0.7rem;
+}
+
+.userListPanel span {
+  font-size: 0.8rem;
 }

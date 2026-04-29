@@ -4,6 +4,7 @@ import { useSocket } from "./contexts/SocketContext";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/UserListPanel.module.css";
 import { useEffect, useState } from "react";
+import { CaretLineRightIcon } from "@phosphor-icons/react";
 
 //Queries the faction for its users and displays them in a list in its own unique panel..
 //..to the right of the messages panel.
@@ -19,6 +20,7 @@ export default function UserListPanel({ factionId }) {
 
   const socket = useSocket();
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const users = faction.members || [];
 
   const sortedUsers = [...users].sort((a, b) => {
@@ -66,23 +68,35 @@ export default function UserListPanel({ factionId }) {
   }, [socket, factionId]);
 
   //minor error handling, could be expanded on later.
-  if (isLoading) return <div className={s.UserListPanel}>Loading...</div>;
-  if (error) return <div className={s.UserListPanel}>Error loading users</div>;
+  if (isLoading) return <div className={`${s.container}`}><div className={s.UserListPanel}>Loading...</div></div>;
+  if (error) return <div className={`${s.Container}`}><div className={s.UserListPanel}>Error loading users</div></div>;
 
   //TODO: Ideally there should be an AFK/Idle indicator as well.
   //TODO: there should be some functionality to click on a user and view thier profile/send them a DM?
   //TODO: if roles are ever added some sorting/indicator should be added here too.
   return (
-    <div className={s.UserListPanel}>
-      <h3>Users</h3>
-      <ul>
-        {sortedUsers.map((user) => (
-          <li key={user.id}>
-            <UserAvatar size="sm" imageUrl={user.imageUrl} isOnline={onlineUserIds.has(user.id)} showActivityStatus={true} />
-            <span>{user.username}</span>
-          </li>
-        ))}
-      </ul>
+    <div className={s.container}>
+      <button
+        className={`${s.toggleBtn} ${isCollapsed ? s.collapsedBtn : ""}`}
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        title={isCollapsed ? "Show Users" : "Hide Users"}
+      >
+        <CaretLineRightIcon size={20} />
+      </button>
+      <div className={`${s.userListPanel} ${isCollapsed ? s.collapsed : ""}`}>
+        <h3>Users</h3>
+        <ul>
+          {sortedUsers.map((user) => (
+            <li key={user.id}>
+              <UserAvatar size="sm" imageUrl={user.imageUrl} isOnline={onlineUserIds.has(user.id)} showActivityStatus={true} />
+              <div>
+                <p className={s.username}>{user.username}</p>
+                <span>{user.nickname}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
