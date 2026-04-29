@@ -11,7 +11,11 @@ export default function Message({ message = {}, hideAuthor = false }) {
 
   return (
     <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")}>
-      {hideAuthor ? <div className={s.avatarPlaceholder} /> : <UserAvatar imageUrl={message?.author?.imageUrl} />}
+      {hideAuthor ? (
+        <div className={s.avatarPlaceholder} />
+      ) : (
+        <UserAvatar imageUrl={message?.author?.imageUrl} />
+      )}
 
       <div className={s.main}>
         {!hideAuthor && (

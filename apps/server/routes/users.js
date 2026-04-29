@@ -47,7 +47,7 @@ export default function usersRouter(prisma) {
       //use your current password to change your password
       if (newPassword) {
         if (!currentPassword) {
-          return res.status(400).send({ error: "Current password is required to change password"});
+          return res.status(400).send({ error: "Current password is required to change password" });
         }
         const passwordMatched = await bcrypt.compare(currentPassword, user.password);
         if (!passwordMatched) {
@@ -74,9 +74,9 @@ export default function usersRouter(prisma) {
           nickname: true,
         },
       });
-      
+
       return res.status(200).send(updatedUser);
-    }catch (error) {
+    } catch (error) {
       console.error(error);
       return res.status(500).send({ error: "Failed to update user" });
     }
