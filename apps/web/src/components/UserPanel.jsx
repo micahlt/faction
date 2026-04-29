@@ -1,10 +1,22 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query"
 import s from "../styles/modules/UserPanel.module.css";
 import UserAvatar from "./UserAvatar";
+import Modal from "./Modal";
+import UserSettingsModal from "./UserSettingsModal";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
 
 export default function UserPanel({ loggedInUser = {} }) {
   const nav = useNavigate();
+  const queryClient = useQueryClient();
+  const [showSettings, setShowSettings] = useState(false);
+
+  const handleSettingsSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    setShowSettings(false);
+  };
+  
   return (
     <div className={s.userPanel}>
       <UserAvatar size="md" imageUrl={loggedInUser.imageUrl} />
@@ -28,7 +40,17 @@ export default function UserPanel({ loggedInUser = {} }) {
           });
         }}
       />
-      <GearSixIcon weight="duotone" size={24} className={s.settingsIcon} />
+      <GearSixIcon weight="duotone" size={24} className={s.settingsIcon} onClick={() => setShowSettings(true)} />
+      
+      {showSettings && (
+        <Modal onClose={() => setShowSettings(false)}>
+          <UserSettingsModal
+            user={loggedInUser}
+            onClose={() => setShowSettings(false)}
+            onSuccess={handleSettingsSuccess}
+            />
+        </Modal>
+      )}        
     </div>
   );
 }
