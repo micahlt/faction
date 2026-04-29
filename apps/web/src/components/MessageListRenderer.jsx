@@ -3,16 +3,22 @@ import s from "../styles/modules/MessageListRenderer.module.css";
 import { useSocket } from "./contexts/SocketContext";
 import { useCallback, useEffect, useState } from "react";
 import useNotifier from "../hooks/useNotifier";
-import { useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import apiGetQuery from "../utils/api/apiGetQuery";
 
 export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   const socket = useSocket();
   const { notifyIfBlurred } = useNotifier();
   const { data: faction } = useQuery({
     queryKey: ["factions", factionId],
-    queryFn: () => apiGetQuery(`/api/factions/${factionId}`),
+    queryFn: () => apiGetQuery(`/api/faction/${factionId}`),
   });
+  const { data: topic, status } = useQuery({
+    queryKey: ["topics", topicId],
+    queryFn: () => apiGetQuery(`/api/topics/${topicId}`),
+  });
+
+  console.log(status)
 
   const [messagesList, setMessagesList] = useState([]);
 
@@ -22,12 +28,13 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   useEffect(() => {
     if (!socket) return;
+    console.log(topic)
 
     const handleMessage = (message) => {
       if (message.topicId === topicId) {
         updateMessageList(message);
       }
-      notifyIfBlurred(`New message in ${faction.name}`, message.content);
+      notifyIfBlurred(`Message from ${message.author.username} (${faction.name}, #${topic.name})`, message.content);
     };
 
     socket.on("message:recieve", handleMessage);
@@ -35,7 +42,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     return () => {
       socket.off("message:recieve", handleMessage);
     };
-  }, [socket, topicId, updateMessageList, faction]);
+  }, [socket, topicId, updateMessageList, faction, topic]);
 
   useEffect(() => {
     setMessagesList([]);

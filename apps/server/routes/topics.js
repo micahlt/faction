@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
-import { doesUserAdministrateFaction, isUserInFaction } from "../utils/access.js";
+import { doesUserAdministrateFaction, isUserInFaction, isUserInTopic } from "../utils/access.js";
 
 /**
  * Router for /api/topics
@@ -11,15 +11,15 @@ export default function topicsRouter(prisma) {
   // GET /api/topics/:id
   router.get("/:id", async (req, res) => {
     if (!req.params.id) return res.sendStatus(400);
-    if (!(await isUserInFaction(req.user.userId, req.params.id, prisma)))
-      return res.sendStatus(401);
-    const faction = await prisma.topic.findUnique({
+    console.log("TOPIC ID");
+    if (!(await isUserInTopic(req.user.userId, req.params.id, prisma))) return res.sendStatus(401);
+    const topic = await prisma.topic.findUnique({
       where: {
         id: req.params.id,
       },
     });
-    if (faction) {
-      res.status(200).send(faction);
+    if (topic) {
+      res.status(200).send(topic);
     } else {
       return res.sendStatus(404);
     }
@@ -93,8 +93,7 @@ export default function topicsRouter(prisma) {
   //GET /api/topics/:id/messages?start=<timestamp>&end=<timestamp>
   router.get("/:id/messages", async (req, res) => {
     if (!req.params.id || !req.query.start || !req.query.end) return res.sendStatus(400);
-    //if (!(await isUserInFaction(req.user.userId, req.params.id, prisma)))
-    // return res.sendStatus(401);
+    if (!(await isUserInTopic(req.user.userId, req.params.id, prisma))) return res.sendStatus(401);
     const messages = await prisma.message.findMany({
       where: {
         topicId: req.params.id,
