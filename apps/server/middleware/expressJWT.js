@@ -11,7 +11,7 @@ export default function expressJWT(req, res, next) {
   if (authCookie) token = authCookie;
 
   if (!token) {
-    if (req.path && req.path.startsWith("/invites")) {
+    if (req.path && req.method == "GET" && req.path.startsWith("/invite")) {
       return res.redirect(`/login?redirect=${encodeURIComponent(req.path)}`);
     }
     return res.status(401).json({ message: "JWT missing" });

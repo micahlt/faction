@@ -129,7 +129,7 @@ export default function factionsRouter(prisma) {
     }
   });
 
-  router.get("/invites/:inviteId", async (req, res) => {
+  router.get("/invite/:inviteId", async (req, res) => {
     if (!req.params.inviteId) return res.sendStatus(404);
     const foundInvite = await prisma.invite.findUnique({
       where: {
