@@ -20,9 +20,8 @@
   gap: 0.5rem;
 }
 .currentFaction {
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
 }
 
 .user {
@@ -36,6 +35,6 @@
 .messagebox {
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  position: relative;
   padding-right: 0.5rem;
 }

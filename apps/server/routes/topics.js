@@ -113,6 +113,9 @@ export default function topicsRouter(prisma) {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return res.send(messages);
   });

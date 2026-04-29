@@ -4,7 +4,7 @@
   width: 100%;
   background: transparent;
   padding: 0.5rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   transition: all 0.2s;
 }
 
@@ -38,4 +38,40 @@
     color: var(--clr-surface-50);
     font-weight: normal;
   }
+}
+
+.messageImage {
+  display: block;
+  max-width: 320px;
+  max-height: 320px;
+  border-radius: var(--radius-md);
+  margin-top: 0.25rem;
+  object-fit: contain;
+}
+
+.messageImage {
+  display: block;
+  max-width: 320px;
+  max-height: 320px;
+  border-radius: var(--radius-md);
+  margin-top: 0.25rem;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: var(--radius-md);
 }

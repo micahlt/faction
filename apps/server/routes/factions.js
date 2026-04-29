@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
-import { doesUserAdministrateFaction } from "../utils/access.js";
+import { doesUserAdministrateFaction, isUserInFaction } from "../utils/access.js";
 import randomString from "../utils/randomString.js";
 
 /**
@@ -86,6 +86,28 @@ export default function factionsRouter(prisma) {
     } else {
       req.sendStatus(401);
     }
+  });
+
+  // GET /api/factions/:id/perms
+  router.get("/:id/perms", async (req, res) => {
+    if (!req.params.id) return res.sendStatus(400);
+    const userInFaction = await isUserInFaction(req.user.userId, req.params.id, prisma);
+    if (!userInFaction) {
+      return res.status(200).send({
+        owner: false,
+        member: false,
+      });
+    }
+    const doesAdministrateFaction = await doesUserAdministrateFaction(
+      req.user.userId,
+      req.params.id,
+      prisma
+    );
+
+    return res.status(200).send({
+      owner: doesAdministrateFaction,
+      member: userInFaction,
+    });
   });
 
   // POST /api/factions/:id/invite

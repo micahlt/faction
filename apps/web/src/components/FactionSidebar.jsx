@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import CreateTopicForm from "./CreateTopicForm";
 import CreateInviteForm from "./CreateInviteForm";
 import Modal from "./Modal";
+import useDoesHaveAdmin from "../hooks/useDoesHaveAdmin";
 
 export default function FactionSidebar({ factionId = "" }) {
   const {
@@ -22,6 +23,7 @@ export default function FactionSidebar({ factionId = "" }) {
   const { topicId } = useParams({ strict: false });
   const [creatingTopic, setCreatingTopic] = useState(false);
   const [creatingInvite, setCreatingInvite] = useState(false);
+  const isAdmin = useDoesHaveAdmin(factionId);
 
   return (
     <div className={s.factionSidebar}>
@@ -34,28 +36,30 @@ export default function FactionSidebar({ factionId = "" }) {
               <TopicListItem topic={topic} active={topic.id === topicId} />
             ))}
           </div>
-          <div className={s.sidebarOptions}>
-            <a
-              href="#"
-              className={s.sidebarOptionBtn}
-              onClick={(e) => {
-                e.preventDefault();
-                setCreatingTopic(true);
-              }}
-            >
-              <PlusIcon size={18} /> Topic
-            </a>
-            <a
-              href="#"
-              className={s.sidebarOptionBtn}
-              onClick={(e) => {
-                e.preventDefault();
-                setCreatingInvite(true);
-              }}
-            >
-              <EnvelopeIcon size={18} /> Invite
-            </a>
-          </div>
+          {isAdmin && (
+            <div className={s.sidebarOptions}>
+              <a
+                href="#"
+                className={s.sidebarOptionBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCreatingTopic(true);
+                }}
+              >
+                <PlusIcon size={18} /> Topic
+              </a>
+              <a
+                href="#"
+                className={s.sidebarOptionBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCreatingInvite(true);
+                }}
+              >
+                <EnvelopeIcon size={18} /> Invite
+              </a>
+            </div>
+          )}
         </>
       )}
       {creatingTopic &&
@@ -67,7 +71,7 @@ export default function FactionSidebar({ factionId = "" }) {
         )}
       {creatingInvite &&
         createPortal(
-          <Modal canCloseOnOverlay={true} onClose={() => setCreatingTopic(false)}>
+          <Modal canCloseOnOverlay={true} onClose={() => setCreatingInvite(false)}>
             <CreateInviteForm factionId={faction.id} onCreated={() => setCreatingInvite(false)} />
           </Modal>,
           document.body

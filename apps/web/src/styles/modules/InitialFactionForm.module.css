@@ -5,11 +5,15 @@
 .initialFactionForm input {
   outline: none;
   border: 1px solid var(--clr-surface-20);
-  background-color: var(--clr-surface);
+  background-color: var(--clr-surface-10);
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-sm);
   margin-bottom: 0.5rem;
   color: var(--clr-light);
+}
+
+.initialFactionForm input:focus {
+  border-color: var(--clr-primary);
 }
 
 .initialFactionForm input::placeholder {

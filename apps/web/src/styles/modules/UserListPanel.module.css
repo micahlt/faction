@@ -1,28 +1,31 @@
 .UserListPanel {
-    display: flex;
-    flex-direction: column;
-    width: 20rem;
-    height: 100%;
-    border-left: 1px solid #e0e0e0;
-    padding: 1rem;
-    overflow-y: auto;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 13rem;
+  background-color: var(--clr-surface-10);
+  border: 1px solid var(--clr-surface-20);
+  border-radius: var(--radius-md);
+  margin: 0.5rem;
+  padding: 0.5rem;
+  overflow-y: auto;
+  gap: 0.5rem;
+  z-index: 10;
 }
 
 .UserListPanel h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    color: #666;
+  color: var(--clr-surface-40);
+  letter-spacing: 0.5ch;
+  font-weight: 300;
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
 .UserListPanel ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .onlineIndicator {
@@ -43,17 +46,20 @@
 }
 
 .UserListPanel li {
-    padding: 0.5rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  padding: 0.4rem 0.3rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    color 150ms;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--clr-surface-tonal-50);
 }
 
 .UserListPanel li:hover {
-    background-color: var(--clr-primary); /*adds some of that faction yellow to the hover state*/
-    color: #000000;
+  background-color: var(--clr-surface-tonal-20);
+  color: var(--clr-light);
 }
