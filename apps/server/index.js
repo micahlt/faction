@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === "production") {
 
 io.on("connection", (socket) => {
   socket.on("ping:alive", () => {
-    // console.log(`User ${socket.data.user.username} sent alive ping`);
+    console.log(`User ${socket.data.user.username} sent alive ping`);
 
     // notifies all factions the user is in that they are online
     socket.data.user.factions.forEach((faction) => {
@@ -84,6 +84,12 @@ io.on("connection", (socket) => {
     if (socket.data.user.factions.findIndex((f) => f.id === factionId) != -1) {
       socket.join(`f:${factionId}`);
       console.log("Joined room", `f:${factionId}`);
+      socket.data.user.factions.forEach((faction) => {
+        io.to(`f:${faction.id}`).emit("user:online", {
+          userId: socket.data.user.id,
+          username: socket.data.user.username,
+        });
+      });
     }
   });
 
