@@ -33,7 +33,9 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     fetch(`/api/topics/${topicId}/messages?start=${Date.now() - 604000000}&end=${Date.now()}`)
       .then((messages) => messages.json())
       .then((data) => {
-        setMessagesList(data);
+        // messages were returned oldest on bottom, we want the most recent stuff on bottom
+        const messageOrder = data.sort((a, b) => new Date(b.createdAt) - new Date (a.createdAt));
+        setMessagesList(messageOrder);
       });
   }, [topicId]);
 
