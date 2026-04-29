@@ -21,6 +21,14 @@ export default function UserListPanel({ factionId }) {
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
   const users = faction.members || [];
 
+  const sortedUsers = [...users].sort((a, b) => {
+    const aOnline = onlineUserIds.has(a.id);
+    const bOnline = onlineUserIds.has(b.id);
+    if (aOnline === bOnline) {
+      return a.username.localeCompare(b.username);
+    }
+    return aOnline ? -1 : 1;
+  });
 
   useEffect(() => {
     if (!socket) return;
@@ -63,16 +71,15 @@ export default function UserListPanel({ factionId }) {
 
   //TODO: Ideally there should be an AFK/Idle indicator as well.
   //TODO: there should be some functionality to click on a user and view thier profile/send them a DM?
-  //TODO: if roles are ever added some sorting/indicator should be added here too.s
+  //TODO: if roles are ever added some sorting/indicator should be added here too.
   return (
     <div className={s.UserListPanel}>
-      <h3>Users in this faction</h3>
+      <h3>Users</h3>
       <ul>
-        {users.map((user) => (
+        {sortedUsers.map((user) => (
           <li key={user.id}>
-            <UserAvatar size="sm" imageUrl={user.imageUrl} />
+            <UserAvatar size="sm" imageUrl={user.imageUrl} isOnline={onlineUserIds.has(user.id)} showActivityStatus={true} />
             <span>{user.username}</span>
-            <span className={onlineUserIds.has(user.id) ? s.onlineIndicator : s.offlineIndicator}></span>
           </li>
         ))}
       </ul>
