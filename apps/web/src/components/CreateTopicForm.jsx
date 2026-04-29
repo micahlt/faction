@@ -2,7 +2,7 @@ import { useState } from "react";
 import s from "../styles/modules/InitialFactionForm.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function CreateTopicForm({ onCreated = () => { }, factionId }) {
+export default function CreateTopicForm({ onCreated = () => {}, factionId }) {
   const [name, setName] = useState();
   const queryClient = useQueryClient();
 

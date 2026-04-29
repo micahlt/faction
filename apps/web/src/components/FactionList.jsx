@@ -11,7 +11,6 @@ export default function FactionList({ factions = [] }) {
   const { factionId } = useParams({ strict: false });
   const [isCreatingFaction, setIsCreatingFaction] = useState(false);
 
-
   const setCurrentFaction = (id) => {
     nav({
       to: "/app/$factionId",

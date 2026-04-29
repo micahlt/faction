@@ -6,7 +6,13 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "./generated/prisma/client.js";
 
 import expressJWT from "./middleware/expressJWT.js";
-import { authRouter, factionsRouter, topicsRouter, usersRouter } from "./routes/index.js";
+import {
+  authRouter,
+  factionsRouter,
+  topicsRouter,
+  usersRouter,
+  assetsRouter,
+} from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import socketJWT from "./middleware/socketJWT.js";
 
@@ -24,7 +30,7 @@ io.use(async (socket, next) => {
 });
 
 // Express middlewares go here
-app.use(express.json());
+app.use(express.json({ limit: "25mb" }));
 app.use(cookieParser());
 app.use(expressJWT);
 
@@ -33,6 +39,7 @@ app.use("/api/auth", authRouter(prisma));
 app.use("/api/factions", factionsRouter(prisma));
 app.use("/api/topics", topicsRouter(prisma));
 app.use("/api/users", usersRouter(prisma));
+app.use("/api/assets", assetsRouter(prisma));
 
 io.on("connection", (socket) => {
   socket.on("ping:alive", () => {

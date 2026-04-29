@@ -23,7 +23,7 @@ export default function FactionSidebar({ factionId = "" }) {
   const { topicId } = useParams({ strict: false });
   const [creatingTopic, setCreatingTopic] = useState(false);
   const [creatingInvite, setCreatingInvite] = useState(false);
-  const isAdmin = useDoesHaveAdmin(factionId)
+  const isAdmin = useDoesHaveAdmin(factionId);
 
   return (
     <div className={s.factionSidebar}>
@@ -36,28 +36,30 @@ export default function FactionSidebar({ factionId = "" }) {
               <TopicListItem topic={topic} active={topic.id === topicId} />
             ))}
           </div>
-          {isAdmin && <div className={s.sidebarOptions}>
-            <a
-              href="#"
-              className={s.sidebarOptionBtn}
-              onClick={(e) => {
-                e.preventDefault();
-                setCreatingTopic(true);
-              }}
-            >
-              <PlusIcon size={18} /> Topic
-            </a>
-            <a
-              href="#"
-              className={s.sidebarOptionBtn}
-              onClick={(e) => {
-                e.preventDefault();
-                setCreatingInvite(true);
-              }}
-            >
-              <EnvelopeIcon size={18} /> Invite
-            </a>
-          </div>}
+          {isAdmin && (
+            <div className={s.sidebarOptions}>
+              <a
+                href="#"
+                className={s.sidebarOptionBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCreatingTopic(true);
+                }}
+              >
+                <PlusIcon size={18} /> Topic
+              </a>
+              <a
+                href="#"
+                className={s.sidebarOptionBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCreatingInvite(true);
+                }}
+              >
+                <EnvelopeIcon size={18} /> Invite
+              </a>
+            </div>
+          )}
         </>
       )}
       {creatingTopic &&
