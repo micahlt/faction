@@ -1,6 +1,5 @@
 import { useState } from "react";
 import s from "../styles/modules/UserSettingsModal.module.css";
-import FormInput from "./FormInput";
 
 export default function UserSettingsModal({ user, onClose, onSuccess }) {
     const [nickname, setNickname] = useState(user.nickname || "");
@@ -56,7 +55,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
             <form onSubmit={handleSubmit}>
                 <div className={s.formGroup}>
                     <label>Nickname</label>
-                    <FormInput
+                    <input
                         value={nickname}
                         onChange={(e) => setNickname(e.target.value)}
                         placeholder="Enter a nickname"
@@ -67,7 +66,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
 
                 <div className={s.formGroup}>
                     <label>Current Password</label>
-                    <FormInput
+                    <input
                         type="password"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
@@ -77,7 +76,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
 
                 <div className={s.formGroup}>
                     <label>New Password</label>
-                    <FormInput
+                    <input
                         type="password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
@@ -87,7 +86,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
 
                 <div className={s.formGroup}>
                     <label>Confirm New Password</label>
-                    <FormInput
+                    <input
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
