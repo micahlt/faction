@@ -36,24 +36,21 @@ export default function Message({ message = {}, hideAuthor = false }) {
       visibleTimerRef.current = setTimeout(() => {
         setCanAnimateOut(true);
       }, 950);
-      return;
+    } else {
+      if (visibleTimerRef.current) {
+        clearTimeout(visibleTimerRef.current);
+        visibleTimerRef.current = null;
+      }
+
+      if (!canAnimateOut) {
+        setShowReactions(false);
+      } else {
+        hideTimerRef.current = setTimeout(() => {
+          setShowReactions(false);
+          setCanAnimateOut(false);
+        }, 220);
+      }
     }
-
-    if (visibleTimerRef.current) {
-      clearTimeout(visibleTimerRef.current);
-      visibleTimerRef.current = null;
-    }
-
-    if (!canAnimateOut) {
-      setShowReactions(false);
-      return;
-    }
-
-    hideTimerRef.current = setTimeout(() => {
-      setShowReactions(false);
-      setCanAnimateOut(false);
-    }, 220);
-
     return () => {
       if (hideTimerRef.current) {
         clearTimeout(hideTimerRef.current);
