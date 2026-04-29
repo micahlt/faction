@@ -45,7 +45,7 @@
   z-index: -1;
   top: calc(-2.5rem - 2px);
   left: 0;
-  right: 0;
+  right: -1rem;
   height: 2.5rem;
   transition:
     top 200ms,

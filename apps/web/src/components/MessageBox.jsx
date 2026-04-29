@@ -239,7 +239,7 @@ export default function MessageBox({ loggedInUser = {} }) {
             addImages(files);
           }}
           disabled={isSending}
-          placeholder={isSending ? "Uploading..." : ""}
+          placeholder={isSending ? "Uploading..." : "Type a message..."}
         />
       </div>
 
