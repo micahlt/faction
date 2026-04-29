@@ -138,7 +138,6 @@ export default function factionsRouter(prisma) {
     });
 
     if (foundInvite) {
-      console.log(foundInvite);
       if (foundInvite.expiresAt >= new Date()) {
         const factionAddedTo = await prisma.faction.update({
           where: {

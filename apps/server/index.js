@@ -96,7 +96,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message:send", async (message) => {
-    console.log("Sending: " + message.content);
+    // console.log("Sending: " + message.content);
     const createdMsg = await prisma.message.create({
       data: {
         content: message.content,

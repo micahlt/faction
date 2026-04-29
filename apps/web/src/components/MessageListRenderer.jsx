@@ -18,8 +18,6 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     queryFn: () => apiGetQuery(`/api/topics/${topicId}`),
   });
 
-  console.log(status)
-
   const [messagesList, setMessagesList] = useState([]);
 
   const updateMessageList = useCallback((message) => {
@@ -28,7 +26,6 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   useEffect(() => {
     if (!socket) return;
-    console.log(topic)
 
     const handleMessage = (message) => {
       if (message.topicId === topicId) {

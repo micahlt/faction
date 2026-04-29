@@ -2,10 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function useNotifier() {
   const notify = useCallback((title, body) => {
-    if (!("Notification" in window)) {
-      console.log("No Notification in window");
-      return;
-    }
+    if (!("Notification" in window)) return;
     console.log(Notification.permission);
     if (Notification.permission == "granted") {
       new Notification(title, { body });

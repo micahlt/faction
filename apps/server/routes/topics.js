@@ -11,7 +11,6 @@ export default function topicsRouter(prisma) {
   // GET /api/topics/:id
   router.get("/:id", async (req, res) => {
     if (!req.params.id) return res.sendStatus(400);
-    console.log("TOPIC ID");
     if (!(await isUserInTopic(req.user.userId, req.params.id, prisma))) return res.sendStatus(401);
     const topic = await prisma.topic.findUnique({
       where: {
