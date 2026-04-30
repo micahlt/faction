@@ -8,7 +8,7 @@ import apiGetQuery from "../utils/api/apiGetQuery";
 
 export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   const socket = useSocket();
-  const { notifyIfBlurred } = useNotifier();
+  const { notify } = useNotifier();
   const { data: faction } = useQuery({
     queryKey: ["factions", factionId],
     queryFn: () => apiGetQuery(`/api/factions/${factionId}`),
@@ -31,9 +31,10 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
       if (message.topicId === topicId) {
         updateMessageList(message);
       }
-      notifyIfBlurred(
+      notify(
         `Message from ${message.author.username} (${faction.name}, #${topic.name})`,
-        message.content
+        message.content,
+        message.author.imageUrl
       );
     };
 
