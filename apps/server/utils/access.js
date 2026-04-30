@@ -45,4 +45,35 @@ async function isUserInFaction(userId, factionId, prisma) {
   return Boolean(faction && faction.members.length > 0);
 }
 
-export { doesUserAdministrateFaction, isUserInFaction };
+/**
+ * Checks if a user has access to a topic
+ * @param {string} userId
+ * @param {string} topicId
+ * @param {PrismaClient} prisma Prisma database instance
+ * @returns {bool}
+ */
+async function isUserInTopic(userId, topicId, prisma) {
+  const topic = await prisma.topic.findUnique({
+    where: {
+      id: topicId,
+    },
+    select: {
+      faction: {
+        select: {
+          members: {
+            where: {
+              id: userId,
+            },
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return Boolean(topic && topic.faction.members.length > 0);
+}
+
+export { doesUserAdministrateFaction, isUserInFaction, isUserInTopic };

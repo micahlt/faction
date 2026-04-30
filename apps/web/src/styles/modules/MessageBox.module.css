@@ -40,7 +40,7 @@
 .messageBox::before {
   box-sizing: border-box;
   content: "";
-  background: linear-gradient(to top, var(--clr-surface), transparent);
+  background: linear-gradient(to top, var(--clr-surface) 30%, transparent 100%);
   position: absolute;
   z-index: -1;
   top: calc(-2.5rem - 2px);
@@ -52,10 +52,10 @@
     height 200ms;
 }
 
-.messageBox.isTyping::before {
+/* .messageBox.isTyping::before {
   top: calc(-4.5rem - 2px);
   height: 4.5rem;
-}
+} */
 
 .typingIndicator {
   position: absolute;

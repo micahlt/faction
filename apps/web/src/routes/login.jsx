@@ -8,6 +8,29 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const getRedirectTarget = () => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const r = params.get("redirect");
+      if (!r) return null;
+
+      // If it's an absolute URL and same-origin, convert to pathname+search+hash
+      try {
+        const parsed = new URL(r, window.location.origin);
+        if (parsed.origin === window.location.origin) {
+          return parsed.pathname + parsed.search + parsed.hash;
+        }
+        // Cross-origin absolute URL
+        return r;
+      } catch (e) {
+        // Not a full URL, treat as path
+        return r.startsWith("/") ? r : `/${r}`;
+      }
+    } catch (e) {
+      return null;
+    }
+  };
+
   const [formMode, setFormMode] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -78,6 +101,16 @@ function LoginPage() {
     });
 
     if (loginReq.ok) {
+      const target = getRedirectTarget();
+      if (target) {
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+          window.location.href = target;
+        } else {
+          window.location.href = target;
+        }
+        return;
+      }
+
       nav({ to: "/app", from: "/" });
     } else {
       const json = await loginReq.json();
@@ -110,6 +143,16 @@ function LoginPage() {
 
     if (signupReq.ok) {
       queryClient.invalidateQueries();
+      const target = getRedirectTarget();
+      if (target) {
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+          window.location.href = target;
+        } else {
+          window.location.assign(target);
+        }
+        return;
+      }
+
       nav({ to: "/app", reloadDocument: true });
     } else {
       const json = await signupReq.json();

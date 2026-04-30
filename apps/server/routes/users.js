@@ -6,11 +6,11 @@ import bcrypt from "bcrypt";
 const PASSWORD_REGEX = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g;
 
 /**
- * Router for /api/factions
+ * Router for /api/users
  * @param {PrismaClient} prisma
  */
 export default function usersRouter(prisma) {
-  // POST /api/users/me
+  // GET /api/users/me
   router.get("/me", async (req, res) => {
     const dbUser = await prisma.user.findUnique({
       where: { id: req.user?.userId },
@@ -18,9 +18,37 @@ export default function usersRouter(prisma) {
         factions: true,
       },
     });
+
     if (dbUser == null) {
       return res.status(401).send({ error: "User not found." });
     }
+
+    return res.status(200).send({
+      id: dbUser.id,
+      username: dbUser.username,
+      email: dbUser.email,
+      imageUrl: dbUser.imageUrl,
+      nickname: dbUser.nickname,
+      factions: dbUser.factions,
+    });
+  });
+
+  // PATCH /api/users/me
+  router.patch("/me", async (req, res) => {
+    const { imageUrl } = req.body;
+
+    if (typeof imageUrl !== "string" || !imageUrl.startsWith("http")) {
+      return res.status(400).send({ error: "Invalid image URL." });
+    }
+
+    const dbUser = await prisma.user.update({
+      where: { id: req.user?.userId },
+      data: { imageUrl },
+      include: {
+        factions: true,
+      },
+    });
+
     return res.status(200).send({
       id: dbUser.id,
       username: dbUser.username,

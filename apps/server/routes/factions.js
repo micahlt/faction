@@ -129,7 +129,7 @@ export default function factionsRouter(prisma) {
     }
   });
 
-  router.get("/invites/:inviteId", async (req, res) => {
+  router.get("/invite/:inviteId", async (req, res) => {
     if (!req.params.inviteId) return res.sendStatus(404);
     const foundInvite = await prisma.invite.findUnique({
       where: {
@@ -138,7 +138,6 @@ export default function factionsRouter(prisma) {
     });
 
     if (foundInvite) {
-      console.log(foundInvite);
       if (foundInvite.expiresAt >= new Date()) {
         const factionAddedTo = await prisma.faction.update({
           where: {
@@ -159,6 +158,8 @@ export default function factionsRouter(prisma) {
       } else {
         return res.status(410).send({ error: "This invite is expired." });
       }
+    } else {
+      return res.sendStatus(404);
     }
   });
 
