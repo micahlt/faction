@@ -1,5 +1,4 @@
 .topicListItem {
-  background-color: var(--clr-surface-20);
   padding: 0.25rem 0.5rem;
   display: block;
   border-radius: var(--radius-sm);
@@ -11,10 +10,12 @@
   color: var(--clr-light);
   text-decoration: none;
   position: relative;
+  font-size: 0.9rem;
 }
 
 .topicListItem:hover {
   border: 1px solid var(--clr-surface-30);
+  background-color: var(--clr-surface-20);
 }
 
 .topicListItem.active {
