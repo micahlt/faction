@@ -48,7 +48,9 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
           setMessagesList((oldMessages) => {
             return removeDuplicates([...oldMessages, ...newMessages]);
           });
-          setMessagesCursor(newMessages[newMessages.length - 1].id);
+          if (newMessages.length > 0) {
+            setMessagesCursor(newMessages[newMessages.length - 1].id);
+          }
           setNoMoreMessages(data.end);
           setTimeout(() => {
             setLoadingOlderMessages(false);
@@ -101,8 +103,10 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
         const messages = data.messages;
         setMessagesList(messages);
         setLoadingOlderMessages(false);
-        setMessagesCursor(messages[messages.length - 1].id);
         setNoMoreMessages(data.end)
+        if (messages.length > 0) {
+          setMessagesCursor(messages[messages.length - 1].id);
+        }
       });
   }, [topicId]);
 

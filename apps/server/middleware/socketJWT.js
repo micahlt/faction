@@ -9,6 +9,9 @@ import jwt from "jsonwebtoken";
  * @returns
  */
 export default function socketJWT(socket, next, prismaInstance) {
+  if (!socket.handshake?.headers?.cookie) {
+    return next(new Error("Unauthorized"));
+  }
   const cookie = parse(socket.handshake?.headers?.cookie);
   if (!cookie) {
     return next(new Error("Unauthorized"));

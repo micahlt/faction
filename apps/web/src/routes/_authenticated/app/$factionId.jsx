@@ -10,14 +10,15 @@ export const Route = createFileRoute("/_authenticated/app/$factionId")({
 
 function RouteComponent() {
   const { factionId } = Route.useParams();
-
   const socket = useSocket();
+
   useEffect(() => {
+    if (!socket) return;
     socket.emit("faction:join", factionId);
     return () => {
       socket.emit("faction:leave", factionId);
     };
-  }, [factionId]);
+  }, [factionId, socket]);
 
   return (
     <>
