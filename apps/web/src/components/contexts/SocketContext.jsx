@@ -12,7 +12,7 @@ const SocketContext = createContext(undefined);
  * @param {SocketProviderProps} props
  */
 export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */(undefined));
+  const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */ (undefined));
   useEffect(() => {
     setSocket(
       io(import.meta.env.VITE_API_URL || "http://localhost:3000", {

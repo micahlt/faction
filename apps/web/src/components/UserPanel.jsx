@@ -1,8 +1,10 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
 import s from "../styles/modules/UserPanel.module.css";
 import UserAvatar from "./UserAvatar";
+import Modal from "./Modal";
+import UserSettingsModal from "./UserSettingsModal";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
 import fileToBase64 from "../utils/fileToBase64";
 import shrinkImage from "../utils/shrinkImage";
@@ -10,6 +12,13 @@ import shrinkImage from "../utils/shrinkImage";
 export default function UserPanel({ loggedInUser = {} }) {
   const nav = useNavigate();
   const queryClient = useQueryClient();
+  const [showSettings, setShowSettings] = useState(false);
+
+  const handleSettingsSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    setShowSettings(false);
+  }
+
   const fileInput = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -111,8 +120,24 @@ export default function UserPanel({ loggedInUser = {} }) {
           });
         }}
       />
+      <GearSixIcon
+        weight="duotone"
+        size={24}
+        className={s.settingsIcon}
+        onClick={() => setShowSettings(true)}
+      />
 
-      <GearSixIcon weight="duotone" size={24} className={s.settingsIcon} />
-    </div>
+      {
+        showSettings && (
+          <Modal onClose={() => setShowSettings(false)}>
+            <UserSettingsModal
+              user={loggedInUser}
+              onClose={() => setShowSettings(false)}
+              onSuccess={handleSettingsSuccess}
+            />
+          </Modal>
+        )
+      }
+    </div >
   );
 }

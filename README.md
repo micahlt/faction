@@ -54,7 +54,7 @@ All of the code lives in this monorepo.
 
 ## Production
 
-This project is designed to work in production using Docker.  To run it in production, clone this repository to the host machine, add your customized environment variables to the `docker-compose.yml` file, and run `docker compose up -d --build` to start the container.
+This project is designed to work in production using Docker. To run it in production, clone this repository to the host machine, add your customized environment variables to the `docker-compose.yml` file, and run `docker compose up -d --build` to start the container.
 
 ## Git Cheatsheet
 
