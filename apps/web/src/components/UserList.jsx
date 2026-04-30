@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../utils/api/apiGetQuery";
 import { useSocket } from "./contexts/SocketContext";
 import UserAvatar from "./UserAvatar";
-import s from "../styles/modules/UserListPanel.module.css";
+import s from "../styles/modules/UserList.module.css";
 import { useEffect, useState } from "react";
 import { CaretLineRightIcon } from "@phosphor-icons/react";
 
