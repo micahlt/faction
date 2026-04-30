@@ -192,6 +192,7 @@ export default function factionsRouter(prisma, io) {
                   username: true,
                 },
               },
+              reactions: true,
             },
           });
 

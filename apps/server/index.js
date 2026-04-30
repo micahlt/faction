@@ -134,6 +134,7 @@ io.on("connection", (socket) => {
             username: true,
           },
         },
+        reactions: true,
       },
     });
 
