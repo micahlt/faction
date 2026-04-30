@@ -34,20 +34,18 @@ export default function UserAvatar({
   }, [size]);
 
   return (
-    <img
-      className={classNames(
-        s.userAvatar,
-        showActivityStatus && isOnline
-          ? s.statusOnline
-          : showActivityStatus && !isOnline
-            ? s.statusOffline
-            : ""
-      )}
-      src={imageUrl?.trim() ? imageUrl : defaultAvatar}
-      style={{
-        "--avatarSize": `${imageSize}px`,
-      }}
-      alt=" "
-    />
+    <div className={classNames(s.userAvatarWrapper, showActivityStatus && isOnline
+      ? s.statusOnline
+      : showActivityStatus && !isOnline
+        ? s.statusOffline
+        : "")} style={{
+          "--avatarSize": `${imageSize}px`,
+        }}>
+      <img
+        className={s.userAvatar}
+        src={imageUrl?.trim() ? imageUrl : defaultAvatar}
+        alt=" "
+      />
+    </div>
   );
 }

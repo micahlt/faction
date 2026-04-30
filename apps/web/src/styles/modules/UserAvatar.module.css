@@ -8,24 +8,32 @@
   background-color: var(--clr-dark);
 }
 
-.userAvatar.statusOnline::after {
+.userAvatarWrapper {
+  position: relative;
+  height: var(--avatarSize) !important;
+  width: var(--avatarSize) !important;
+}
+
+.statusOnline::after {
   content: "";
   position: absolute;
+  top: calc(var(--avatarSize) - 30%);
+  left: calc(var(--avatarSize) - 30%);
   display: block;
   height: 10px;
   width: 10px;
   border-radius: 100%;
-  transform: translate(calc(var(--avatarSize) * 0.7), calc(var(--avatarSize) * 0.7));
   background-color: var(--clr-success);
 }
 
-.userAvatar.statusOffline::after {
+.statusOffline::after {
   content: "";
   position: absolute;
+  top: calc(var(--avatarSize) - 30%);
+  left: calc(var(--avatarSize) - 30%);
   display: block;
   height: 10px;
   width: 10px;
   border-radius: 100%;
-  transform: translate(calc(var(--avatarSize) * 0.7), calc(var(--avatarSize) * 0.7));
   background-color: var(--clr-danger-10);
 }
