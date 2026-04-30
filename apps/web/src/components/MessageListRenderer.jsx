@@ -6,9 +6,15 @@ import useNotifier from "../hooks/useNotifier";
 import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../utils/api/apiGetQuery";
 
+function removeDuplicates(arr) {
+  const map = new Map(
+    arr.map(item => [item.id, item]));
+  return [...map.values()];
+}
+
 export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   const socket = useSocket();
-  const { notifyIfBlurred } = useNotifier();
+  const { notify } = useNotifier();
   const { data: faction } = useQuery({
     queryKey: ["factions", factionId],
     queryFn: () => apiGetQuery(`/api/factions/${factionId}`),
@@ -19,21 +25,48 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   });
 
   const [messagesList, setMessagesList] = useState([]);
+  const [messagesCursor, setMessagesCursor] = useState("");
+  const [loadingOlderMessages, setLoadingOlderMessages] = useState(true);
+  const [noMoreMessages, setNoMoreMessages] = useState(false);
 
   const updateMessageList = useCallback((message) => {
     setMessagesList((msgList) => [message, ...msgList]);
   }, []);
 
+  const handleScroll = useCallback((e) => {
+    if (noMoreMessages) return;
+    const el = e.target;
+    const END_THRESHOLD = 50;
+    const isAtEnd = el.scrollHeight - el.offsetHeight + el.scrollTop < END_THRESHOLD;
+    if (isAtEnd && messagesCursor != "" && !loadingOlderMessages) {
+      setLoadingOlderMessages(true);
+      fetch(`/api/topics/${topicId}/messages?last=${messagesCursor}`)
+        .then((messages) => messages.json())
+        .then((data) => {
+          const newMessages = data.messages;
+          console.log("Loading older from", messagesCursor)
+          setMessagesList((oldMessages) => {
+            return removeDuplicates([...oldMessages, ...newMessages]);
+          });
+          setMessagesCursor(newMessages[newMessages.length - 1].id);
+          setNoMoreMessages(data.end);
+          setTimeout(() => {
+            setLoadingOlderMessages(false);
+          }, 500);
+        });
+    }
+  }, [messagesCursor, loadingOlderMessages, setMessagesList, setMessagesCursor]);
+
   useEffect(() => {
     if (!socket) return;
-
     const handleMessage = (message) => {
       if (message.topicId === topicId) {
         updateMessageList(message);
       }
-      notifyIfBlurred(
+      notify(
         `Message from ${message.author.username} (${faction.name}, #${topic.name})`,
-        message.content
+        message.content,
+        message.author.imageUrl
       );
     };
 
@@ -62,24 +95,34 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   useEffect(() => {
     setMessagesList([]);
-
-    fetch(`/api/topics/${topicId}/messages?start=${Date.now() - 604000000}&end=${Date.now()}`)
+    fetch(`/api/topics/${topicId}/messages`)
       .then((messages) => messages.json())
       .then((data) => {
-        // messages were returned oldest on bottom, we want the most recent stuff on bottom
-        const messageOrder = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setMessagesList(messageOrder);
+        const messages = data.messages;
+        setMessagesList(messages);
+        setLoadingOlderMessages(false);
+        setMessagesCursor(messages[messages.length - 1].id);
+        setNoMoreMessages(data.end)
       });
   }, [topicId]);
 
+  useEffect(() => {
+    console.log("Message list updated");
+  }, [messagesList])
+
   return (
-    <div className={s.messageListRenderer}>
+    <div className={s.messageListRenderer} onScroll={handleScroll}>
       {messagesList.map((msg, index) => {
         const previousMessage = messagesList[index + 1];
         const hideAuthor = previousMessage?.author?.id === msg.author?.id;
 
         return <Message key={msg.id ?? index} message={msg} hideAuthor={hideAuthor} />;
       })}
+      {noMoreMessages && <div className={s.beginning}>
+        <span className={s.line}></span>
+        <span>This is the beginning of <b>{topic.name}</b>.</span>
+        <span className={s.line}></span>
+      </div>}
     </div>
   );
 }
