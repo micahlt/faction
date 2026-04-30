@@ -62,17 +62,12 @@ export default function UserListPanel({ factionId }) {
     // the actual listener for when someone comes online
     socket.on("user:online", handleUserOnline);
 
-    return () => {
-      socket.off("user:online");
-      userTimeouts.forEach((timeout) => clearTimeout(timeout));
-    };
-
-    //istener for away satus
+    // listener for away satus
     socket.on('user:away', ({ userId }) => {
       setAwayUserIds((prev) => new Set(prev).add(userId));
     });
 
-    //listener for back status
+    // listener for back status
     socket.on('user:back', ({ userId }) => {
       setAwayUserIds((prev) => {
         const newSet = new Set(prev);
@@ -80,6 +75,11 @@ export default function UserListPanel({ factionId }) {
         return newSet;
       });
     });
+
+    return () => {
+      socket.off("user:online");
+      userTimeouts.forEach((timeout) => clearTimeout(timeout));
+    };
   }, [socket, factionId]);
 
   //minor error handling, could be expanded on later.

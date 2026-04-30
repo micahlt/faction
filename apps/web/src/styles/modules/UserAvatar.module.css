@@ -14,38 +14,27 @@
   width: var(--avatarSize) !important;
 }
 
-.statusOnline::after {
+.statusIndicator::after {
   content: "";
   position: absolute;
-  top: calc(var(--avatarSize) - 30%);
-  left: calc(var(--avatarSize) - 30%);
+  top: calc(var(--avatarSize) - 25%);
+  left: calc(var(--avatarSize) - 25%);
   display: block;
-  height: 10px;
-  width: 10px;
+  height: 8px;
+  width: 8px;
   border-radius: 100%;
+  box-shadow: 0 0 0 0.2rem var(--clr-surface-10);
+  transition: background-color 150ms;
+}
+
+.statusOnline::after {
   background-color: var(--clr-success);
 }
 
 .statusAway::after {
-  content: "";
-  position: absolute;
-  top: calc(var(--avatarSize) - 30%);
-  left: calc(var(--avatarSize) - 30%);
-  display: block;
-  height: 10px;
-  width: 10px;
-  border-radius: 100%;
-  background-color: rgb(216, 205, 110);
+  background-color: #d2c44b;
 }
 
 .statusOffline::after {
-  content: "";
-  position: absolute;
-  top: calc(var(--avatarSize) - 30%);
-  left: calc(var(--avatarSize) - 30%);
-  display: block;
-  height: 10px;
-  width: 10px;
-  border-radius: 100%;
   background-color: var(--clr-danger-10);
 }

@@ -41,7 +41,7 @@ export default function UserAvatar({
         ? s.statusOnline
         : showActivityStatus && !isOnline
           ? s.statusOffline
-          : "")} style={{
+          : "", showActivityStatus && s.statusIndicator)} style={{
             "--avatarSize": `${imageSize}px`,
           }}>
       <img
