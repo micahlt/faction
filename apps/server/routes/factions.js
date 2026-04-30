@@ -154,7 +154,9 @@ export default function factionsRouter(prisma, io) {
           },
         });
 
-        if (existingUser) {
+        if (existingUser?.members?.length > 0) {
+          console.log(existingUser);
+          console.log("User already exists in faction");
           return res.redirect(`/app/${foundInvite.factionId}`);
         }
 
