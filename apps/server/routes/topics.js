@@ -117,7 +117,7 @@ export default function topicsRouter(prisma) {
         reactions: true,
       },
       orderBy: {
-        createdAt: "asc",
+        createdAt: "desc",
       },
     });
     return res.send({ messages: messages, end: messages.length < count - 1 });
