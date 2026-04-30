@@ -1,4 +1,5 @@
 import express from "express";
+import { Server } from "socket.io";
 const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
 import { doesUserAdministrateFaction, isUserInFaction } from "../utils/access.js";
@@ -7,8 +8,9 @@ import randomString from "../utils/randomString.js";
 /**
  * Router for /api/factions
  * @param {PrismaClient} prisma
+ * @param {Server} io
  */
-export default function factionsRouter(prisma) {
+export default function factionsRouter(prisma, io) {
   // GET /api/factions/:id
   router.get("/:id", async (req, res) => {
     if (!req.params.id) return res.sendStatus(400);
@@ -139,6 +141,23 @@ export default function factionsRouter(prisma) {
 
     if (foundInvite) {
       if (foundInvite.expiresAt >= new Date()) {
+        const existingUser = await prisma.faction.findUnique({
+          where: {
+            id: foundInvite.factionId,
+          },
+          select: {
+            members: {
+              where: {
+                id: req.user.userId,
+              },
+            },
+          },
+        });
+
+        if (existingUser) {
+          return res.redirect(`/app/${foundInvite.factionId}`);
+        }
+
         const factionAddedTo = await prisma.faction.update({
           where: {
             id: foundInvite.factionId,
@@ -150,9 +169,31 @@ export default function factionsRouter(prisma) {
               },
             },
           },
+          include: {
+            topics: true,
+          },
         });
 
         if (factionAddedTo) {
+          const createdMsg = await prisma.message.create({
+            data: {
+              content: `${req.user.username} just joined the faction!`,
+              authorId: "faction-bot",
+              topicId: factionAddedTo.topics[0].id,
+            },
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  imageUrl: true,
+                  nickname: true,
+                  username: true,
+                },
+              },
+            },
+          });
+
+          io.to(`t:${factionAddedTo.topics[0].id}`).emit("message:recieve", createdMsg);
           return res.redirect(`/app/${factionAddedTo.id}`);
         }
       } else {
