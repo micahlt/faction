@@ -4,7 +4,7 @@ import s from "../styles/modules/UserSettingsModal.module.css";
 
 export default function UserSettingsModal({ user, onClose, onSuccess }) {
   const queryClient = useQueryClient();
-  const [nickname, setNickname] = useState(user.nickname || "");
+  const [nickname, setNickname] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,7 +32,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nickname: nickname !== user.nickname ? nickname : undefined,
+          nickname: nickname.length > 0 ? nickname : user.nickname,
           currentPassword: currentPassword || undefined,
           newPassword: newPassword || undefined,
         }),
@@ -56,56 +56,58 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
   };
 
   return (
-    <div className={s.UserSettingsModal}>
+    <div className={s.settingsModal}>
       <h2>Settings</h2>
+      <div className={s.divider}></div>
       <form onSubmit={handleSubmit}>
-        <div className={s.formGroup}>
-          <label>Nickname</label>
-          <input
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="Enter a nickname"
-          />
+        <div className={s.formColumn}>
+          <h3>Change Nickname</h3>
+          <div className={s.formGroup}>
+            <label>Nickname</label>
+            <input
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder={user.nickname}
+            />
+          </div>
         </div>
+        <div className={s.formColumn}>
+          <h3>Change Password (optional)</h3>
 
-        <div className={s.divider}>Change Password (optional)</div>
+          <div className={s.formGroup}>
+            <label>Current Password</label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Enter current password"
+            />
+          </div>
 
-        <div className={s.formGroup}>
-          <label>Current Password</label>
-          <input
-            type="password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Enter current password"
-          />
-        </div>
+          <div className={s.formGroup}>
+            <label>New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+            />
+          </div>
 
-        <div className={s.formGroup}>
-          <label>New Password</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Enter new password"
-          />
-        </div>
+          <div className={s.formGroup}>
+            <label>Confirm New Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm new password"
+            />
+          </div>
 
-        <div className={s.formGroup}>
-          <label>Confirm New Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm new password"
-          />
-        </div>
-
-        {error && <div className={s.error}>{error}</div>}
+          {error && <div className={s.error}>{error}</div>}
+        </div>  
 
         <div className={s.actions}>
-          <button type="button" onClick={onClose} disabled={loading}>
-            Cancel
-          </button>
           <button type="submit" disabled={loading}>
             {loading ? "Saving..." : "Save Changes"}
           </button>
