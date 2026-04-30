@@ -20,6 +20,7 @@ export default function UserListPanel({ factionId }) {
 
   const socket = useSocket();
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
+  const [awayUserIds, setAwayUserIds] = useState(new Set());
   const [isCollapsed, setIsCollapsed] = useState(false);
   const users = faction.members || [];
 
@@ -65,6 +66,20 @@ export default function UserListPanel({ factionId }) {
       socket.off("user:online");
       userTimeouts.forEach((timeout) => clearTimeout(timeout));
     };
+
+    //istener for away satus
+    socket.on('user:away', ({ userId }) => {
+      setAwayUserIds((prev) => new Set(prev).add(userId));
+    });
+
+    //listener for back status
+    socket.on('user:back', ({ userId }) => {
+      setAwayUserIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
+    });
   }, [socket, factionId]);
 
   //minor error handling, could be expanded on later.
@@ -101,6 +116,7 @@ export default function UserListPanel({ factionId }) {
               <UserAvatar
                 size="sm"
                 imageUrl={user.imageUrl}
+                isAway={awayUserIds.has(user.id)}
                 isOnline={onlineUserIds.has(user.id)}
                 showActivityStatus={true}
               />

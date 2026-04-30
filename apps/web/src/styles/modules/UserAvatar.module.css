@@ -26,6 +26,18 @@
   background-color: var(--clr-success);
 }
 
+.statusAway::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--avatarSize) - 30%);
+  left: calc(var(--avatarSize) - 30%);
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-radius: 100%;
+  background-color: rgb(216, 205, 110);
+}
+
 .statusOffline::after {
   content: "";
   position: absolute;
