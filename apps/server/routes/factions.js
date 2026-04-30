@@ -4,6 +4,7 @@ const router = express.Router();
 import { PrismaClient } from "../generated/prisma/client.js";
 import { doesUserAdministrateFaction, isUserInFaction } from "../utils/access.js";
 import randomString from "../utils/randomString.js";
+import generateJoinMessage from "../utils/generateJoinMessage.js";
 
 /**
  * Router for /api/factions
@@ -179,7 +180,7 @@ export default function factionsRouter(prisma, io) {
         if (factionAddedTo) {
           const createdMsg = await prisma.message.create({
             data: {
-              content: `**${req.user.username}** just joined the faction!`,
+              content: generateJoinMessage(req.user.username),
               authorId: "faction-bot",
               topicId: factionAddedTo.topics[0].id,
             },
