@@ -17,7 +17,7 @@ export default function UserPanel({ loggedInUser = {} }) {
   const handleSettingsSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     setShowSettings(false);
-  }
+  };
 
   const fileInput = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -127,17 +127,15 @@ export default function UserPanel({ loggedInUser = {} }) {
         onClick={() => setShowSettings(true)}
       />
 
-      {
-        showSettings && (
-          <Modal onClose={() => setShowSettings(false)}>
-            <UserSettingsModal
-              user={loggedInUser}
-              onClose={() => setShowSettings(false)}
-              onSuccess={handleSettingsSuccess}
-            />
-          </Modal>
-        )
-      }
-    </div >
+      {showSettings && (
+        <Modal onClose={() => setShowSettings(false)}>
+          <UserSettingsModal
+            user={loggedInUser}
+            onClose={() => setShowSettings(false)}
+            onSuccess={handleSettingsSuccess}
+          />
+        </Modal>
+      )}
+    </div>
   );
 }

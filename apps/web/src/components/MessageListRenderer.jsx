@@ -31,7 +31,10 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
       if (message.topicId === topicId) {
         updateMessageList(message);
       }
-      notifyIfBlurred(`Message from ${message.author.username} (${faction.name}, #${topic.name})`, message.content);
+      notifyIfBlurred(
+        `Message from ${message.author.username} (${faction.name}, #${topic.name})`,
+        message.content
+      );
     };
 
     const handleUpdateReaction = ({ messageId, reactions }) => {

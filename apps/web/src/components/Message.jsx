@@ -3,8 +3,9 @@ import { createPortal } from "react-dom";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 import classNames from "classnames";
-import remarkGfm from 'remark-gfm'
-import Markdown from 'react-markdown'
+import remarkGfm from "remark-gfm";
+import remarkGemoji from "remark-gemoji";
+import Markdown from "react-markdown";
 const HoverReactions = lazy(() => import("../components/HoverReactions"));
 import { useSocket } from "../components/contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
@@ -69,14 +70,22 @@ export default function Message({ message = {}, hideAuthor = false }) {
       messageId: message.id,
       topicId,
       emoji,
-    })
-  }
+    });
+  };
 
   return (
     <>
-      <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+      <div
+        className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         {showReactions ? <HoverReactions onPick={sendReaction} isVisible={isHovering} /> : ""}
-        {hideAuthor ? <div className={s.avatarPlaceholder} /> : <UserAvatar imageUrl={message?.author?.imageUrl} />}
+        {hideAuthor ? (
+          <div className={s.avatarPlaceholder} />
+        ) : (
+          <UserAvatar imageUrl={message?.author?.imageUrl} />
+        )}
 
         <div className={s.main}>
           {!hideAuthor && (
@@ -101,9 +110,7 @@ export default function Message({ message = {}, hideAuthor = false }) {
                 onClick={() => setExpanded(true)}
               />
             ) : (
-              <Markdown remarkPlugins={[remarkGfm]}>
-                {message.content}
-              </Markdown>
+              <Markdown remarkPlugins={[remarkGfm, remarkGemoji]}>{message.content}</Markdown>
             )}
           </div>
 

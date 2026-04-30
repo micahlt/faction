@@ -31,15 +31,15 @@ export const SocketProvider = ({ children }) => {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        socket.emit('user:away');
+        socket.emit("user:away");
       } else {
-        socket.emit('user:back');
+        socket.emit("user:back");
       }
     };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [socket])
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [socket]);
 
   return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };

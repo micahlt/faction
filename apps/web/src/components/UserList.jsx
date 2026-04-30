@@ -63,12 +63,12 @@ export default function UserListPanel({ factionId }) {
     socket.on("user:online", handleUserOnline);
 
     // listener for away satus
-    socket.on('user:away', ({ userId }) => {
+    socket.on("user:away", ({ userId }) => {
       setAwayUserIds((prev) => new Set(prev).add(userId));
     });
 
     // listener for back status
-    socket.on('user:back', ({ userId }) => {
+    socket.on("user:back", ({ userId }) => {
       setAwayUserIds((prev) => {
         const newSet = new Set(prev);
         newSet.delete(userId);
