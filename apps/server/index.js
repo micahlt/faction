@@ -15,6 +15,8 @@ import {
 } from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import socketJWT from "./middleware/socketJWT.js";
+import { isUserInTopic } from "./utils/access.js";
+import instantiateBotUser from "./utils/instantiateBotUser.js";
 import { fileURLToPath } from "url";
 import path from "path";
 
@@ -23,6 +25,12 @@ const __dirname = path.dirname(__filename);
 
 const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL || "faction.db" });
 const prisma = new PrismaClient({ adapter });
+try {
+  instantiateBotUser(prisma);
+} catch (err) {
+  console.log(err);
+  exit();
+}
 
 const app = express();
 const httpServer = createServer(app);
@@ -38,7 +46,7 @@ const corsOptions = {
 };
 
 import cors from "cors";
-import { isUserInTopic } from "./utils/access.js";
+import { exit } from "process";
 app.use(cors(corsOptions));
 
 const io = new Server(httpServer, {
@@ -55,7 +63,7 @@ app.use(cookieParser());
 
 // Register REST endpoints here
 app.use("/api/auth", authRouter(prisma));
-app.use("/api/factions", expressJWT, factionsRouter(prisma));
+app.use("/api/factions", expressJWT, factionsRouter(prisma, io));
 app.use("/api/topics", expressJWT, topicsRouter(prisma));
 app.use("/api/users", expressJWT, usersRouter(prisma));
 app.use("/api/assets", expressJWT, assetsRouter(prisma));
@@ -197,21 +205,21 @@ io.on("connection", (socket) => {
       userId: socket.data.user.id,
     });
   });
-  
-  socket.on('user:away', () => {
+
+  socket.on("user:away", () => {
     //sets the status to away for all factions user is in
     socket.data.user.factions.forEach((faction) => {
-      io.to(`f:${faction.id}`).emit('user:away', {
+      io.to(`f:${faction.id}`).emit("user:away", {
         userId: socket.data.user.id,
         username: socket.data.user.username,
       });
     });
   });
 
-  socket.on('user:back', () => {
+  socket.on("user:back", () => {
     //User came back
     socket.data.user.factions.forEach((faction) => {
-      io.to(`f:${faction.id}`).emit('user:back', {
+      io.to(`f:${faction.id}`).emit("user:back", {
         userId: socket.data.user.id,
         username: socket.data.user.username,
       });

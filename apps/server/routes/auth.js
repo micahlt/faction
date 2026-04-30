@@ -128,7 +128,11 @@ export default function authRouter(prisma) {
       });
     }
     if (await bcrypt.compare(password, dbUser.password)) {
-      const token = jwt.sign({ userId: dbUser.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+      const token = jwt.sign(
+        { userId: dbUser.id, username: dbUser.username },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
       res.cookie("auth_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
