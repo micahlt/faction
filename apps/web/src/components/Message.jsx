@@ -9,6 +9,7 @@ import Markdown from "react-markdown";
 const HoverReactions = lazy(() => import("../components/HoverReactions"));
 import { useSocket } from "../components/contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
+import twas from 'twas';
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
@@ -105,11 +106,14 @@ export default function Message({ message = {}, hideAuthor = false }) {
           {!hideAuthor && (
             <span className={s.metadata}>
               <p>{message?.author?.nickname || message?.author?.username}</p>
-              <p className={s.date}>
-                {new Date(message.createdAt).toLocaleString("en-US", {
+              <p className={s.timestamp} title = {twas(new Date(message.createdAt))}>
+                {new Date(message.createdAt).toLocaleDateString("en-US", {
                   hour12: true,
                   minute: "numeric",
                   hour: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
                 })}
               </p>
             </span>
