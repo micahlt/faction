@@ -38,3 +38,18 @@
   display: block;
   text-align: center;
 }
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: transparent;
+  border: none;
+  color: var(--clr-surface-30);
+  cursor: pointer;
+  transition: color 150ms;
+}
+
+.closeButton:hover {
+  color: var(--clr-surface-50);
+}
