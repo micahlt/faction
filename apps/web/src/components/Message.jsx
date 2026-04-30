@@ -3,7 +3,8 @@ import { createPortal } from "react-dom";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 import classNames from "classnames";
-import { LinkItUrl } from "react-linkify-it"
+import remarkGfm from 'remark-gfm'
+import Markdown from 'react-markdown'
 const HoverReactions = lazy(() => import("../components/HoverReactions"));
 import { useSocket } from "../components/contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
@@ -100,9 +101,9 @@ export default function Message({ message = {}, hideAuthor = false }) {
                 onClick={() => setExpanded(true)}
               />
             ) : (
-              <LinkItUrl className={s.contentLink}>
+              <Markdown remarkPlugins={[remarkGfm]}>
                 {message.content}
-              </LinkItUrl>
+              </Markdown>
             )}
           </div>
 

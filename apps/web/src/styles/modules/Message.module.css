@@ -40,7 +40,7 @@
   font-weight: 300;
 }
 
-.contentLink {
+.content a {
   color: var(--clr-light);
 }
 
