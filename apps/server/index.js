@@ -15,7 +15,7 @@ import {
 } from "./routes/index.js";
 import cookieParser from "cookie-parser";
 import socketJWT from "./middleware/socketJWT.js";
-import { isUserInTopic } from "./utils/access.js";
+import { isUserInFaction, isUserInTopic } from "./utils/access.js";
 import instantiateBotUser from "./utils/instantiateBotUser.js";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -80,10 +80,20 @@ if (process.env.NODE_ENV === "production") {
 }
 
 io.on("connection", (socket) => {
-  socket.on("ping:alive", () => {
-    // console.log(`User ${socket.data.user.username} sent alive ping`);
-
+  socket.on("ping:alive", async () => {
     // notifies all factions the user is in that they are online
+    const user = await prisma.user.findUnique({
+      where: {
+        id: socket.data.user.id,
+      },
+      include: {
+        factions: true,
+      },
+    });
+    if (user) {
+      socket.data.user = user;
+      delete socket.data.user.password;
+    }
     socket.data.user.factions.forEach((faction) => {
       io.to(`f:${faction.id}`).emit("user:online", {
         userId: socket.data.user.id,
@@ -93,7 +103,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("faction:join", async (factionId) => {
-    if (socket.data.user.factions.findIndex((f) => f.id === factionId) != -1) {
+    if (isUserInFaction(socket.data.user.id, factionId, prisma)) {
       socket.join(`f:${factionId}`);
       console.log("Joined room", `f:${factionId}`);
       socket.data.user.factions.forEach((faction) => {
