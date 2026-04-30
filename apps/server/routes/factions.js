@@ -179,7 +179,7 @@ export default function factionsRouter(prisma, io) {
         if (factionAddedTo) {
           const createdMsg = await prisma.message.create({
             data: {
-              content: `${req.user.username} just joined the faction!`,
+              content: `**${req.user.username}** just joined the faction!`,
               authorId: "faction-bot",
               topicId: factionAddedTo.topics[0].id,
             },
