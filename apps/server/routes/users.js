@@ -83,7 +83,10 @@ export default function usersRouter(prisma) {
         }
         //password format validation
         if (!newPassword.match(PASSWORD_REGEX)) {
-          return res.status(400).send({ error: "Password does not meet requirements" });
+          return res.status(400).send({
+            error:
+              "You must use a password that is 8 to 64 characters long and contains a mix of upper and lower case characters, one number and one special character.",
+          });
         }
       }
 
