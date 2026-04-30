@@ -48,6 +48,13 @@
   font-weight: bold;
 }
 
+.content pre {
+  background: var(--clr-surface-10);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
 .content code {
   font-family: monospace;
   color: var(--clr-surface-50);
