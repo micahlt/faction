@@ -80,7 +80,7 @@
     font-size: 0.8rem;
   }
 
-  .date {
+  .timestamp{
     color: var(--clr-surface-50);
     font-weight: normal;
   }
