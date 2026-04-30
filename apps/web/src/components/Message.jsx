@@ -73,6 +73,20 @@ export default function Message({ message = {}, hideAuthor = false }) {
     });
   };
 
+  const [existingReactions, setExistingReactions] = useState([]);
+
+  useEffect(() => {
+    if (message && existingReactions.length < 1) {
+      const existing = [];
+      message.reactions.forEach(reaction => {
+        if (reaction.existing && !existingReactions.includes(reaction.emoji)) {
+          existing.push(reaction.emoji);
+        }
+      })
+      setExistingReactions(existing);
+    }
+  }, [message])
+
   return (
     <>
       <div
@@ -121,11 +135,14 @@ export default function Message({ message = {}, hideAuthor = false }) {
                   acc[r.emoji] = (acc[r.emoji] || 0) + 1;
                   return acc;
                 }, {})
-              ).map(([emoji, count]) => (
-                <div key={emoji} className={s.reactionChip} onClick={() => sendReaction(emoji)}>
-                  {emoji} <span>{count}</span>
-                </div>
-              ))}
+              ).map(([emoji, count]) => {
+                return (
+                  <div key={emoji} className={classNames(s.reactionChip, existingReactions.includes(emoji) ? s.existing : "")} onClick={() => sendReaction(emoji)}>
+                    <span className={s.emojiInBackground}>{emoji}</span>
+                    <span className={s.reactionEmoji}>{emoji}</span> <span className={s.reactionCounter}>{count}</span>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

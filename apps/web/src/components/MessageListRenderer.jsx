@@ -110,6 +110,8 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     console.log("Message list updated");
   }, [messagesList])
 
+  if (!topic) return <></>
+
   return (
     <div className={s.messageListRenderer} onScroll={handleScroll}>
       {messagesList.map((msg, index) => {

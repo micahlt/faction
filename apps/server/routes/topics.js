@@ -95,7 +95,7 @@ export default function topicsRouter(prisma) {
     if (!(await isUserInTopic(req.user.userId, req.params.id, prisma))) return res.sendStatus(401);
     const last = req.query.last;
     const count = req.query.count || 50;
-    const messages = await prisma.message.findMany({
+    let messages = await prisma.message.findMany({
       where: {
         topicId: req.params.id,
       },
@@ -119,6 +119,13 @@ export default function topicsRouter(prisma) {
       orderBy: {
         createdAt: "desc",
       },
+    });
+    messages.map((msg) => {
+      msg.reactions.map((react) => {
+        react.existing = true;
+        return react;
+      });
+      return msg;
     });
     return res.send({ messages: messages, end: messages.length < count - 1 });
   });
