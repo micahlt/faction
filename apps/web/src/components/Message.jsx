@@ -90,7 +90,7 @@ export default function Message({ message = {}, hideAuthor = false }) {
         <div className={s.main}>
           {!hideAuthor && (
             <span className={s.metadata}>
-              <p>{message.author.nickname}</p>
+              <p>{message?.author?.nickname || message?.author?.username}</p>
               <p className={s.date}>
                 {new Date(message.createdAt).toLocaleString("en-US", {
                   hour12: true,

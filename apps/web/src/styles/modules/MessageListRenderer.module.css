@@ -11,3 +11,24 @@
   justify-items: flex-end;
   scrollbar-width: none;
 }
+
+.beginning {
+  width: 100%;
+  color: var(--clr-surface-50);
+  text-align: center;
+  padding: 2rem 1rem;
+  font-style: italic;
+  display: flex;
+  text-wrap: nowrap;
+  column-gap: 1rem;
+}
+
+.beginning b {
+  color: var(--clr-primary);
+}
+
+.line {
+  border-bottom: 1px solid var(--clr-surface-10);
+  width: 100%;
+  transform: translateY(-0.5em);
+}
