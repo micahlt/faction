@@ -1,6 +1,6 @@
-# Faction
+<img src="apps/web/public/faction-logo.png" width="64" height="64">
 
-![](apps/web/public/faction-logo.png)
+# Faction
 
 Faction is a Discord clone/alternative built for group C's Software Engineering final in Spring 2026. The name came from Thesaurus.com, and is labeled as a "similar word" to Discord.
 
