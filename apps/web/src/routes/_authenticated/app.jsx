@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../../utils/api/apiGetQuery";
 import s from "../../styles/modules/app.module.css";
 import FactionList from "../../components/FactionList";
-import UserPanel from "../../components/UserPanel";
+import CurrentUser from "../../components/CurrentUser";
 import MessageBox from "../../components/MessageBox";
 import { createPortal } from "react-dom";
 import StepsModal from "../../components/StepsModal";
@@ -78,7 +78,7 @@ function RouteComponent() {
           </div>
           <div className={s.bottom}>
             <div className={s.user}>
-              <UserPanel loggedInUser={user} />
+              <CurrentUser loggedInUser={user} />
             </div>
             <div className={s.messagebox}>
               <MessageBox loggedInUser={user} />

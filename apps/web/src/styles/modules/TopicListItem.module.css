@@ -1,5 +1,4 @@
 .topicListItem {
-  background-color: var(--clr-surface-20);
   padding: 0.25rem 0.5rem;
   display: block;
   border-radius: var(--radius-sm);
@@ -8,18 +7,22 @@
   transition: all 100ms;
   border: 1px solid transparent;
   margin-bottom: 0.2rem;
-  color: var(--clr-light);
+  color: var(--clr-surface-tonal-50);
   text-decoration: none;
   position: relative;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .topicListItem:hover {
   border: 1px solid var(--clr-surface-30);
+  background-color: var(--clr-surface-20);
 }
 
 .topicListItem.active {
   border-color: var(--clr-surface-tonal-40);
   background-color: var(--clr-surface-tonal-10);
+  color: var(--clr-light);
   transition: all 100ms;
 }
 

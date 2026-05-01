@@ -1,3 +1,5 @@
+<img src="apps/web/public/faction-logo.png" width="64" height="64">
+
 # Faction
 
 Faction is a Discord clone/alternative built for group C's Software Engineering final in Spring 2026. The name came from Thesaurus.com, and is labeled as a "similar word" to Discord.
@@ -18,9 +20,10 @@ Faction is a Discord clone/alternative built for group C's Software Engineering 
 2. Clone this repository to your computer with `git clone https://github.com/micahlt/faction`
 3. Open a terminal at the root of the project.
 4. Run `npm install` to install dependencies
-5. Run the database migrations with `npm run db:migrate`
-6. Run `npm run dev:server` to run the server.
-7. In another terminal, run `npm run dev:web` to run the frontend.
+5. Copy the `.sample.env` file to a new file called `.env` and adjust the values accordingly.
+6. Run the database migrations with `npm run db:migrate`
+7. Run `npm run dev:server` to run the server.
+8. In another terminal, run `npm run dev:web` to run the frontend.
 
 Alternatively, you can also run `npm run dev` which will simultaneously start the server and the webapp. However, this means you cannot restart the web app without restarting the server, and vice versa.
 
@@ -54,7 +57,7 @@ All of the code lives in this monorepo.
 
 ## Production
 
-This project is designed to work in production using Docker.  To run it in production, clone this repository to the host machine, add your customized environment variables to the `docker-compose.yml` file, and run `docker compose up -d --build` to start the container.
+This project is designed to work in production using Docker. To run it in production, clone this repository to the host machine, add your customized environment variables to the `docker-compose.yml` file, and run `docker compose up -d --build` to start the container.
 
 ## Git Cheatsheet
 

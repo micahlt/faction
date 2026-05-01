@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../utils/api/apiGetQuery";
 import { useSocket } from "./contexts/SocketContext";
 import UserAvatar from "./UserAvatar";
-import s from "../styles/modules/UserListPanel.module.css";
+import s from "../styles/modules/UserList.module.css";
 import { useEffect, useState } from "react";
 import { CaretLineRightIcon } from "@phosphor-icons/react";
 
@@ -20,6 +20,7 @@ export default function UserListPanel({ factionId }) {
 
   const socket = useSocket();
   const [onlineUserIds, setOnlineUserIds] = useState(new Set());
+  const [awayUserIds, setAwayUserIds] = useState(new Set());
   const [isCollapsed, setIsCollapsed] = useState(false);
   const users = faction.members || [];
 
@@ -61,6 +62,20 @@ export default function UserListPanel({ factionId }) {
     // the actual listener for when someone comes online
     socket.on("user:online", handleUserOnline);
 
+    // listener for away satus
+    socket.on("user:away", ({ userId }) => {
+      setAwayUserIds((prev) => new Set(prev).add(userId));
+    });
+
+    // listener for back status
+    socket.on("user:back", ({ userId }) => {
+      setAwayUserIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(userId);
+        return newSet;
+      });
+    });
+
     return () => {
       socket.off("user:online");
       userTimeouts.forEach((timeout) => clearTimeout(timeout));
@@ -101,6 +116,7 @@ export default function UserListPanel({ factionId }) {
               <UserAvatar
                 size="sm"
                 imageUrl={user.imageUrl}
+                isAway={awayUserIds.has(user.id)}
                 isOnline={onlineUserIds.has(user.id)}
                 showActivityStatus={true}
               />

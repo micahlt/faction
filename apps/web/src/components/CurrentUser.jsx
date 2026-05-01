@@ -23,7 +23,7 @@ export default function UserPanel({ loggedInUser = {} }) {
   const [isUploading, setIsUploading] = useState(false);
 
   const uploadProfileImage = async (file) => {
-    const smallerFile = await shrinkImage(file, 512, 0.7);
+    const smallerFile = file.size > 5 * 1024 * 1024 ? await shrinkImage(file) : file;
     const image = await fileToBase64(smallerFile);
 
     const uploadRes = await fetch("/api/assets/upload/image", {

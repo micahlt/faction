@@ -1,6 +1,6 @@
 .hoverReactions {
   position: absolute;
-  top: -1rem;
+  bottom: -0.5rem;
   right: 1rem;
   background-color: var(--clr-surface-10);
   border: 1px solid var(--clr-surface-20);

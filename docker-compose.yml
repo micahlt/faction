@@ -17,5 +17,6 @@ services:
       - JWT_SECRET=change_this_to_a_secure_random_string
       - VITE_API_URL=http://localhost:3007
       - IMGBB_API_KEY=your_imgbb_key_goes_here
+      - BOT_PASSWORD=change_this_to_a_secure_random_string
     volumes:
       - ./faction_data:/app/data

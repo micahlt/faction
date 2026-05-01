@@ -6,7 +6,7 @@ import { ArrowCircleRightIcon, CheckCircleIcon } from "@phosphor-icons/react";
 
 export default function StepsModal({
   steps = [],
-  onComplete = () => {},
+  onComplete = () => { },
   showCompleteButton = true,
   showStepper = true,
 }) {
@@ -17,7 +17,7 @@ export default function StepsModal({
   }, [index]);
 
   return (
-    <Modal>
+    <Modal canCloseOnOverlay={false}>
       <div className={s.stepsModal}>
         <div className={s.content}>
           <h2>{currentStep.title}</h2>

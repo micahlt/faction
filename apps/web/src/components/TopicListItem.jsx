@@ -9,11 +9,13 @@ export default function TopicListItem({ topic = {}, active = false, typingInTopi
       to={`/app/${topic.factionId}/${topic.id}`}
     >
       {topic.name}
-      {typingInTopic && <div className={s.typingIndicator}>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>}
+      {typingInTopic && (
+        <div className={s.typingIndicator}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )}
     </Link>
   );
 }

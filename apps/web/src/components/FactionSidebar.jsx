@@ -10,7 +10,7 @@ import CreateTopicForm from "./CreateTopicForm";
 import CreateInviteForm from "./CreateInviteForm";
 import Modal from "./Modal";
 import useDoesHaveAdmin from "../hooks/useDoesHaveAdmin";
-import { useSocket } from "../components/contexts/SocketContext"
+import { useSocket } from "../components/contexts/SocketContext";
 
 export default function FactionSidebar({ factionId = "" }) {
   const {
@@ -58,7 +58,12 @@ export default function FactionSidebar({ factionId = "" }) {
           <h2>{faction?.name}</h2>
           <div className={s.topicsList}>
             {faction?.topics.map((topic) => (
-              <TopicListItem topic={topic} active={topic.id === topicId} typingInTopic={typingTopics.includes(topic.id)} key={topic.id} />
+              <TopicListItem
+                topic={topic}
+                active={topic.id === topicId}
+                typingInTopic={typingTopics.includes(topic.id)}
+                key={topic.id}
+              />
             ))}
           </div>
           {isAdmin && (

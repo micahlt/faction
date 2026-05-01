@@ -3,10 +3,13 @@ import { createPortal } from "react-dom";
 import UserAvatar from "./UserAvatar";
 import s from "../styles/modules/Message.module.css";
 import classNames from "classnames";
-import { LinkItUrl } from "react-linkify-it"
+import remarkGfm from "remark-gfm";
+import remarkGemoji from "remark-gemoji";
+import Markdown from "react-markdown";
 const HoverReactions = lazy(() => import("../components/HoverReactions"));
 import { useSocket } from "../components/contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
+import twas from 'twas';
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
@@ -68,24 +71,49 @@ export default function Message({ message = {}, hideAuthor = false }) {
       messageId: message.id,
       topicId,
       emoji,
-    })
-  }
+    });
+  };
+
+  const [existingReactions, setExistingReactions] = useState([]);
+
+  useEffect(() => {
+    if (message && existingReactions.length < 1) {
+      const existing = [];
+      message.reactions.forEach(reaction => {
+        if (reaction.existing && !existingReactions.includes(reaction.emoji)) {
+          existing.push(reaction.emoji);
+        }
+      })
+      setExistingReactions(existing);
+    }
+  }, [message])
 
   return (
     <>
-      <div className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+      <div
+        className={classNames(s.message, hideAuthor ? s.hiddenAuthor : "")}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
         {showReactions ? <HoverReactions onPick={sendReaction} isVisible={isHovering} /> : ""}
-        {hideAuthor ? <div className={s.avatarPlaceholder} /> : <UserAvatar imageUrl={message?.author?.imageUrl} />}
+        {hideAuthor ? (
+          <div className={s.avatarPlaceholder} />
+        ) : (
+          <UserAvatar imageUrl={message?.author?.imageUrl} />
+        )}
 
         <div className={s.main}>
           {!hideAuthor && (
             <span className={s.metadata}>
-              <p>{message.author.nickname}</p>
-              <p className={s.date}>
-                {new Date(message.createdAt).toLocaleString("en-US", {
+              <p>{message?.author?.nickname || message?.author?.username}</p>
+              <p className={s.timestamp} title = {twas(new Date(message.createdAt))}>
+                {new Date(message.createdAt).toLocaleDateString("en-US", {
                   hour12: true,
                   minute: "numeric",
                   hour: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
                 })}
               </p>
             </span>
@@ -100,9 +128,7 @@ export default function Message({ message = {}, hideAuthor = false }) {
                 onClick={() => setExpanded(true)}
               />
             ) : (
-              <LinkItUrl className={s.contentLink}>
-                {message.content}
-              </LinkItUrl>
+              <Markdown remarkPlugins={[remarkGfm, remarkGemoji]}>{message.content}</Markdown>
             )}
           </div>
 
@@ -113,11 +139,14 @@ export default function Message({ message = {}, hideAuthor = false }) {
                   acc[r.emoji] = (acc[r.emoji] || 0) + 1;
                   return acc;
                 }, {})
-              ).map(([emoji, count]) => (
-                <div key={emoji} className={s.reactionChip} onClick={() => sendReaction(emoji)}>
-                  {emoji} <span>{count}</span>
-                </div>
-              ))}
+              ).map(([emoji, count]) => {
+                return (
+                  <div key={emoji} className={classNames(s.reactionChip, existingReactions.includes(emoji) ? s.existing : "")} onClick={() => sendReaction(emoji)}>
+                    <span className={s.emojiInBackground}>{emoji}</span>
+                    <span className={s.reactionEmoji}>{emoji}</span> <span className={s.reactionCounter}>{count}</span>
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>

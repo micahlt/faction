@@ -40,8 +40,27 @@
   font-weight: 300;
 }
 
-.contentLink {
+.content a {
   color: var(--clr-light);
+}
+
+.content strong {
+  font-weight: bold;
+}
+
+.content pre {
+  background: var(--clr-surface-10);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.content code {
+  font-family: monospace;
+  color: var(--clr-surface-50);
+  background-color: var(--clr-surface-10);
+  border-radius: var(--radius-sm);
+  padding: 0.1rem 0.2rem;
 }
 
 .main {
@@ -61,7 +80,7 @@
     font-size: 0.8rem;
   }
 
-  .date {
+  .timestamp{
     color: var(--clr-surface-50);
     font-weight: normal;
   }
@@ -122,6 +141,8 @@
   cursor: pointer;
   user-select: none;
   transition: all 0.15s ease;
+  overflow: hidden;
+  position: relative;
 }
 
 .reactionChip:hover {
@@ -130,7 +151,74 @@
   box-shadow: 0 0 10px var(--clr-primary-transparent);
 }
 
-.reactionChip span {
+.reactionCounter {
   font-weight: 500;
   color: var(--clr-surface-50);
+}
+
+.emojiInBackground {
+  transform: scale(3) translateX(-100%);
+  filter: blur(5px);
+  opacity: 0;
+  position: absolute;
+  animation: glow 2s backwards;
+}
+
+.existing .emojiInBackground {
+  display: none;
+}
+
+.existing .reactionEmoji {
+  animation: none;
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0;
+    transform: scale(3) translateX(100%);
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(5) translateX(-100%);
+  }
+}
+
+.reactionEmoji {
+  animation: slam-in 0.7s
+    linear(
+      0,
+      0.618 4.6%,
+      1.072 9.7%,
+      1.358 15.3%,
+      1.446 18.4%,
+      1.497 21.7%,
+      1.512 23.9%,
+      1.514 26.2%,
+      1.481 31.5%,
+      1.421 36.4%,
+      1.174 53.4%,
+      1.108 59.5%,
+      1.059 65.7%,
+      1.028 71.9%,
+      1.009 78.9%,
+      1
+    )
+    backwards;
+}
+
+@keyframes slam-in {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }

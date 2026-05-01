@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import FactionSidebar from "../../../components/FactionSidebar";
-import UserListPanel from "../../../components/UserListPanel";
+import UserList from "../../../components/UserList";
 import { useSocket } from "../../../components/contexts/SocketContext";
 import { useEffect } from "react";
 
@@ -10,20 +10,21 @@ export const Route = createFileRoute("/_authenticated/app/$factionId")({
 
 function RouteComponent() {
   const { factionId } = Route.useParams();
-
   const socket = useSocket();
+
   useEffect(() => {
+    if (!socket) return;
     socket.emit("faction:join", factionId);
     return () => {
       socket.emit("faction:leave", factionId);
     };
-  }, [factionId]);
+  }, [factionId, socket]);
 
   return (
     <>
       <FactionSidebar factionId={factionId} />
       <Outlet />
-      <UserListPanel factionId={factionId} />
+      <UserList factionId={factionId} />
     </>
   );
 }

@@ -1,0 +1,79 @@
+.createInviteForm {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+}
+
+.title {
+  background-color: var(--clr-primary);
+  display: grid;
+  place-items: center;
+}
+
+.title h2 {
+  margin-bottom: 1rem;
+  color: var(--clr-dark);
+  font-size: 2rem;
+  line-height: 2rem;
+}
+
+.content {
+  display: grid;
+  place-items: center;
+}
+
+.content div {
+  text-align: center;
+}
+
+.createInviteForm input {
+  outline: none;
+  border: 1px solid var(--clr-surface-20);
+  background-color: var(--clr-surface-10);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+  color: var(--clr-light);
+}
+
+.createInviteForm input:focus {
+  border-color: var(--clr-primary);
+}
+
+.createInviteForm input::placeholder {
+  color: var(--clr-surface-30);
+}
+
+.createInviteForm input[type="date"] {
+  padding: 0.3rem 0.5rem;
+  margin-left: 0.3rem;
+}
+
+.createInviteForm button {
+  color: var(--clr-surface);
+  background-color: var(--clr-primary);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid var(--clr-primary-30);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 150ms;
+}
+
+.createInviteForm button:hover {
+  color: var(--clr-surface-tonal);
+  background-color: var(--clr-primary-30);
+  border-color: var(--clr-primary-50);
+}
+
+.copyView p {
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}

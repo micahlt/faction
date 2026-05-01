@@ -12,7 +12,7 @@ const SocketContext = createContext(undefined);
  * @param {SocketProviderProps} props
  */
 export const SocketProvider = ({ children }) => {
-  const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */(undefined));
+  const [socket, setSocket] = useState(/** @type {SocketInstance | undefined} */ (undefined));
   useEffect(() => {
     setSocket(
       io(import.meta.env.VITE_API_URL || "http://localhost:3000", {
@@ -24,6 +24,22 @@ export const SocketProvider = ({ children }) => {
     );
     return () => socket?.disconnect();
   }, []);
+
+  // detect when a user goes away
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        socket.emit("user:away");
+      } else {
+        socket.emit("user:back");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [socket]);
 
   return <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>;
 };

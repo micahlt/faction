@@ -14,6 +14,7 @@ export default function UserAvatar({
   size = "md",
   imageUrl = "",
   isOnline = undefined,
+  isAway = undefined,
   showActivityStatus = false,
 }) {
   const imageSize = useMemo(() => {
@@ -34,20 +35,23 @@ export default function UserAvatar({
   }, [size]);
 
   return (
-    <img
+    <div
       className={classNames(
-        s.userAvatar,
-        showActivityStatus && isOnline
-          ? s.statusOnline
-          : showActivityStatus && !isOnline
-            ? s.statusOffline
-            : ""
+        s.userAvatarWrapper,
+        showActivityStatus && isAway
+          ? s.statusAway
+          : showActivityStatus && isOnline
+            ? s.statusOnline
+            : showActivityStatus && !isOnline
+              ? s.statusOffline
+              : "",
+        showActivityStatus && s.statusIndicator
       )}
-      src={imageUrl?.trim() ? imageUrl : defaultAvatar}
       style={{
         "--avatarSize": `${imageSize}px`,
       }}
-      alt=" "
-    />
+    >
+      <img className={s.userAvatar} src={imageUrl?.trim() ? imageUrl : defaultAvatar} alt=" " />
+    </div>
   );
 }

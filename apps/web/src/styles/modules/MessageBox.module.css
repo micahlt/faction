@@ -50,6 +50,7 @@
   transition:
     top 200ms,
     height 200ms;
+  pointer-events: none;
 }
 
 /* .messageBox.isTyping::before {
