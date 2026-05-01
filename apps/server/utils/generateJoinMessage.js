@@ -4,6 +4,12 @@ export default function generateJoinMessage(username) {
     "$u hopped into the faction!",
     "Welcome to the faction, $u!",
     "Ah, $u.  We've been expecting you",
+    "Hello, hello, hello $u."
+    "The name's $u... $u, $u.",
+    "My name $u!",
+    "Greetings, $u.",
+    "Welcome to the party, $u!",
+    "Fancy seeing you here, $u."
   ];
   const i = Math.round(Math.random() * joinMessages.length - 1);
 
