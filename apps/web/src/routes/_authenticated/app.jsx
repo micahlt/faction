@@ -10,6 +10,11 @@ import StepsModal from "../../components/StepsModal";
 import InitialFactionForm from "../../components/InitialFactionForm";
 import { useEffect } from "react";
 import { useSocket } from "../../components/contexts/SocketContext";
+import classNames from "classnames";
+
+console.log(import.meta.env)
+
+const FACTIONS_ENABLED = import.meta.env.VITE_FACTIONS_ENABLED != "false";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: RouteComponent,
@@ -67,11 +72,12 @@ function RouteComponent() {
   return (
     <>
       {user && !userLoading && (
-        <main className={s.main}>
+        <main className={classNames(s.main, !FACTIONS_ENABLED && s.noFactions)}>
           <div className={s.top}>
-            <div className={s.myFactions}>
+            {FACTIONS_ENABLED && <div className={s.myFactions}>
               <FactionList factions={user.factions} />
             </div>
+            }
             <div className={s.currentFaction}>
               <Outlet />
             </div>
