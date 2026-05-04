@@ -67,6 +67,16 @@
   border-color: var(--clr-primary-50);
 }
 
+.submitButton {
+  background-color: var(--clr-primary);
+}
+
+.signupDisabled {
+  color: var(--clr-surface) !important;
+  background-color: var(--clr-surface-30) !important;
+  cursor: not-allowed !important;
+}
+
 .errorText {
   color: var(--clr-danger-20);
   font-size: 0.8rem;

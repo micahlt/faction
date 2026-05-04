@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import s from "../styles/modules/login.module.css";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import classNames from "classnames";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -240,12 +241,7 @@ function LoginPage() {
         <button
           type="submit"
           disabled={isSignupDisabled}
-          style={{
-            backgroundColor: isSignupDisabled ? "#555" : "#f4e600",
-            color: isSignupDisabled ? "#999" : "#111",
-            cursor: isSignupDisabled ? "not-allowed" : "pointer",
-            opacity: isSignupDisabled ? 0.6 : 1,
-          }}
+          className={classNames(s.submitButton, isSignupDisabled ? s.signupDisabled : "")}
         >
           {formMode === "login" ? "Log In" : "Sign Up"}
         </button>
