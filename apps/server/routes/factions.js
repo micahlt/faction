@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { Server } from "socket.io";
 const router = express.Router();
@@ -5,6 +6,7 @@ import { PrismaClient } from "../generated/prisma/client.js";
 import { doesUserAdministrateFaction, isUserInFaction } from "../utils/access.js";
 import randomString from "../utils/randomString.js";
 import generateJoinMessage from "../utils/generateJoinMessage.js";
+const FACTIONS_ENABLED = process.env.FACTIONS_ENABLED;
 
 /**
  * Router for /api/factions
@@ -42,7 +44,7 @@ export default function factionsRouter(prisma, io) {
 
   // POST /api/factions/new
   router.post("/new", async (req, res) => {
-    if (!req.body || !req.body.name) return res.sendStatus(400);
+    if (!req.body || !req.body.name || !FACTIONS_ENABLED) return res.sendStatus(400);
     const createdFaction = await prisma.faction.create({
       data: {
         name: req.body.name,
@@ -70,7 +72,7 @@ export default function factionsRouter(prisma, io) {
 
   // PUT /api/factions/:id
   router.put("/:id", async (req, res) => {
-    if (!req.params.id || !req.body) return res.sendStatus(400);
+    if (!req.params.id || !req.body || !FACTIONS_ENABLED) return res.sendStatus(400);
     if (await doesUserAdministrateFaction(req.user.userId, req.params.id, prisma)) {
       const modifiedFaction = await prisma.faction.update({
         where: {
@@ -115,7 +117,7 @@ export default function factionsRouter(prisma, io) {
 
   // POST /api/factions/:id/invite
   router.post("/:id/invite", async (req, res) => {
-    if (!req.params.id || !req.body) return res.sendStatus(400);
+    if (!req.params.id || !req.body || !FACTIONS_ENABLED) return res.sendStatus(400);
     const { expiresAt } = req.body;
     if (await doesUserAdministrateFaction(req.user.userId, req.params.id, prisma)) {
       const createdInvite = await prisma.invite.create({
