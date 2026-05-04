@@ -105,7 +105,7 @@ export default function UserSettingsModal({ user, onClose, onSuccess }) {
           </div>
 
           {error && <div className={s.error}>{error}</div>}
-        </div>  
+        </div>
 
         <div className={s.actions}>
           <button type="submit" disabled={loading}>

@@ -9,7 +9,7 @@ import Markdown from "react-markdown";
 const HoverReactions = lazy(() => import("../components/HoverReactions"));
 import { useSocket } from "../components/contexts/SocketContext";
 import { useParams } from "@tanstack/react-router";
-import twas from 'twas';
+import twas from "twas";
 
 const isImageUrl = (content = "") => /^https?:\/\/.+\.(png|jpe?g|gif|webp)(\?.*)?$/i.test(content);
 
@@ -79,14 +79,14 @@ export default function Message({ message = {}, hideAuthor = false }) {
   useEffect(() => {
     if (message && existingReactions.length < 1) {
       const existing = [];
-      message.reactions.forEach(reaction => {
+      message.reactions.forEach((reaction) => {
         if (reaction.existing && !existingReactions.includes(reaction.emoji)) {
           existing.push(reaction.emoji);
         }
-      })
+      });
       setExistingReactions(existing);
     }
-  }, [message])
+  }, [message]);
 
   return (
     <>
@@ -106,7 +106,7 @@ export default function Message({ message = {}, hideAuthor = false }) {
           {!hideAuthor && (
             <span className={s.metadata}>
               <p>{message?.author?.nickname || message?.author?.username}</p>
-              <p className={s.timestamp} title = {twas(new Date(message.createdAt))}>
+              <p className={s.timestamp} title={twas(new Date(message.createdAt))}>
                 {new Date(message.createdAt).toLocaleDateString("en-US", {
                   hour12: true,
                   minute: "numeric",
@@ -141,11 +141,19 @@ export default function Message({ message = {}, hideAuthor = false }) {
                 }, {})
               ).map(([emoji, count]) => {
                 return (
-                  <div key={emoji} className={classNames(s.reactionChip, existingReactions.includes(emoji) ? s.existing : "")} onClick={() => sendReaction(emoji)}>
+                  <div
+                    key={emoji}
+                    className={classNames(
+                      s.reactionChip,
+                      existingReactions.includes(emoji) ? s.existing : ""
+                    )}
+                    onClick={() => sendReaction(emoji)}
+                  >
                     <span className={s.emojiInBackground}>{emoji}</span>
-                    <span className={s.reactionEmoji}>{emoji}</span> <span className={s.reactionCounter}>{count}</span>
+                    <span className={s.reactionEmoji}>{emoji}</span>{" "}
+                    <span className={s.reactionCounter}>{count}</span>
                   </div>
-                )
+                );
               })}
             </div>
           )}

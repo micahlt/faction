@@ -7,8 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiGetQuery from "../utils/api/apiGetQuery";
 
 function removeDuplicates(arr) {
-  const map = new Map(
-    arr.map(item => [item.id, item]));
+  const map = new Map(arr.map((item) => [item.id, item]));
   return [...map.values()];
 }
 
@@ -33,31 +32,34 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
     setMessagesList((msgList) => [message, ...msgList]);
   }, []);
 
-  const handleScroll = useCallback((e) => {
-    if (noMoreMessages) return;
-    const el = e.target;
-    const END_THRESHOLD = 50;
-    const isAtEnd = el.scrollHeight - el.offsetHeight + el.scrollTop < END_THRESHOLD;
-    if (isAtEnd && messagesCursor != "" && !loadingOlderMessages) {
-      setLoadingOlderMessages(true);
-      fetch(`/api/topics/${topicId}/messages?last=${messagesCursor}`)
-        .then((messages) => messages.json())
-        .then((data) => {
-          const newMessages = data.messages;
-          console.log("Loading older from", messagesCursor)
-          setMessagesList((oldMessages) => {
-            return removeDuplicates([...oldMessages, ...newMessages]);
+  const handleScroll = useCallback(
+    (e) => {
+      if (noMoreMessages) return;
+      const el = e.target;
+      const END_THRESHOLD = 50;
+      const isAtEnd = el.scrollHeight - el.offsetHeight + el.scrollTop < END_THRESHOLD;
+      if (isAtEnd && messagesCursor != "" && !loadingOlderMessages) {
+        setLoadingOlderMessages(true);
+        fetch(`/api/topics/${topicId}/messages?last=${messagesCursor}`)
+          .then((messages) => messages.json())
+          .then((data) => {
+            const newMessages = data.messages;
+            console.log("Loading older from", messagesCursor);
+            setMessagesList((oldMessages) => {
+              return removeDuplicates([...oldMessages, ...newMessages]);
+            });
+            if (newMessages.length > 0) {
+              setMessagesCursor(newMessages[newMessages.length - 1].id);
+            }
+            setNoMoreMessages(data.end);
+            setTimeout(() => {
+              setLoadingOlderMessages(false);
+            }, 500);
           });
-          if (newMessages.length > 0) {
-            setMessagesCursor(newMessages[newMessages.length - 1].id);
-          }
-          setNoMoreMessages(data.end);
-          setTimeout(() => {
-            setLoadingOlderMessages(false);
-          }, 500);
-        });
-    }
-  }, [messagesCursor, loadingOlderMessages, setMessagesList, setMessagesCursor]);
+      }
+    },
+    [messagesCursor, loadingOlderMessages, setMessagesList, setMessagesCursor]
+  );
 
   useEffect(() => {
     if (!socket) return;
@@ -103,7 +105,7 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
         const messages = data.messages;
         setMessagesList(messages);
         setLoadingOlderMessages(false);
-        setNoMoreMessages(data.end)
+        setNoMoreMessages(data.end);
         if (messages.length > 0) {
           setMessagesCursor(messages[messages.length - 1].id);
         }
@@ -112,9 +114,9 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
   useEffect(() => {
     console.log("Message list updated");
-  }, [messagesList])
+  }, [messagesList]);
 
-  if (!topic) return <></>
+  if (!topic) return <></>;
 
   return (
     <div className={s.messageListRenderer} onScroll={handleScroll}>
@@ -124,11 +126,15 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
 
         return <Message key={msg.id ?? index} message={msg} hideAuthor={hideAuthor} />;
       })}
-      {noMoreMessages && <div className={s.beginning}>
-        <span className={s.line}></span>
-        <span>This is the beginning of <b>{topic.name}</b>.</span>
-        <span className={s.line}></span>
-      </div>}
+      {noMoreMessages && (
+        <div className={s.beginning}>
+          <span className={s.line}></span>
+          <span>
+            This is the beginning of <b>{topic.name}</b>.
+          </span>
+          <span className={s.line}></span>
+        </div>
+      )}
     </div>
   );
 }
