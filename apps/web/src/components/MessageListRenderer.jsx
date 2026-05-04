@@ -119,22 +119,24 @@ export default function MessageListRenderer({ factionId = "", topicId = "" }) {
   if (!topic) return <></>;
 
   return (
-    <div className={s.messageListRenderer} onScroll={handleScroll}>
-      {messagesList.map((msg, index) => {
-        const previousMessage = messagesList[index + 1];
-        const hideAuthor = previousMessage?.author?.id === msg.author?.id;
+    <div className={s.wrapper}>
+      <div className={s.messageListRenderer} onScroll={handleScroll}>
+        {messagesList.map((msg, index) => {
+          const previousMessage = messagesList[index + 1];
+          const hideAuthor = previousMessage?.author?.id === msg.author?.id;
 
-        return <Message key={msg.id ?? index} message={msg} hideAuthor={hideAuthor} />;
-      })}
-      {noMoreMessages && (
-        <div className={s.beginning}>
-          <span className={s.line}></span>
-          <span>
-            This is the beginning of <b>{topic.name}</b>.
-          </span>
-          <span className={s.line}></span>
-        </div>
-      )}
+          return <Message key={msg.id ?? index} message={msg} hideAuthor={hideAuthor} />;
+        })}
+        {noMoreMessages && (
+          <div className={s.beginning}>
+            <span className={s.line}></span>
+            <span>
+              This is the beginning of <b>{topic.name}</b>.
+            </span>
+            <span className={s.line}></span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

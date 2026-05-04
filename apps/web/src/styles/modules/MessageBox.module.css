@@ -37,27 +37,6 @@
   }
 }
 
-.messageBox::before {
-  box-sizing: border-box;
-  content: "";
-  background: linear-gradient(to top, var(--clr-surface) 30%, transparent 100%);
-  position: absolute;
-  z-index: -1;
-  top: calc(-2.5rem - 2px);
-  left: 0;
-  right: -1rem;
-  height: 2.5rem;
-  transition:
-    top 200ms,
-    height 200ms;
-  pointer-events: none;
-}
-
-/* .messageBox.isTyping::before {
-  top: calc(-4.5rem - 2px);
-  height: 4.5rem;
-} */
-
 .typingIndicator {
   position: absolute;
   top: -24px;

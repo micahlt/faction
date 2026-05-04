@@ -1,15 +1,36 @@
+.wrapper {
+  height: calc(100vh - 4rem);
+  scrollbar-width: none;
+  position: relative;
+}
+
 .messageListRenderer {
   margin-right: 0.5rem;
-  display: flex;
   height: calc(100vh - 6rem);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
   flex-direction: column-reverse;
   row-gap: 0.1rem;
   padding-bottom: 2rem;
-  overflow-x: hidden;
-  overflow-y: scroll;
   z-index: 0;
   justify-items: flex-end;
-  scrollbar-width: none;
+}
+
+.wrapper::after {
+  box-sizing: border-box;
+  content: "";
+  background: linear-gradient(to top, var(--clr-surface) 30%, transparent 100%);
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: -1rem;
+  height: 2.5rem;
+  transition:
+    top 200ms,
+    height 200ms;
+  pointer-events: none;
 }
 
 .beginning {
